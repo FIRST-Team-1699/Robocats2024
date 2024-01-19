@@ -1,4 +1,4 @@
-package frc.team1699.utils.leds.colors;
+package frc.team1699.lib.leds.colors;
 
 public class HSVColor {
     private int hue, saturation;

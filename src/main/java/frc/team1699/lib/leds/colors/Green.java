@@ -1,4 +1,4 @@
-package frc.team1699.utils.leds.colors;
+package frc.team1699.lib.leds.colors;
 
 public class Green extends HSVColor {
     public static final int greenHue = 45;

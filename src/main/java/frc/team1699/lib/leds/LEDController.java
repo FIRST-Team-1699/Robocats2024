@@ -1,4 +1,4 @@
-package frc.team1699.utils.leds;
+package frc.team1699.lib.leds;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;

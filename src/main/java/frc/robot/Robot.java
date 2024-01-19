@@ -6,19 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
+  private XboxController driverController;
+  private Drive swerve;
+
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    driverController = new XboxController(InputConstants.kDriveControllerPort);
+    swerve = new Drive(driverController);
+  }
 
   @Override
   public void robotPeriodic() {}
@@ -27,13 +23,22 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {}
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    swerve.update();
+  }
 
   @Override
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if(controller.getXButton()) {
+      swerve.setWantedState(DriveState.LOCK);
+    } else {
+      swerve.setWantedState(DriveState.TELEOP_DRIVE);
+    }
+    swerve.update();
+  }
 
   @Override
   public void disabledInit() {}
