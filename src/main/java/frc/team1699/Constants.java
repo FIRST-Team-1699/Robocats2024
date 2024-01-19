@@ -8,4 +8,3 @@ public class Constants {
         public static final double kMaxRetationalSpeed = Units.feetToMeters(10); // DOES THIS NEED TO BE DIFFRENT THAN MAX SPEED? 
     }
 }
-public stat
