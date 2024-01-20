@@ -120,6 +120,7 @@ public class Drive {
                 break;
             case LOCK:
                 lock();
+                System.out.println(trajTimer.get() < trajectory.getTotalTimeSeconds());
                 break;
             case TELEOP_DRIVE:
                 teleopDrive();

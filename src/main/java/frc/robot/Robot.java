@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,7 +33,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    auto = new TestTrajectoryMode(PathPlannerPath.fromPathFile("TestTrajectoryOne").getTrajectory(new ChassisSpeeds(), swerve.getHeading()), swerve);
+    PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), swerve.getHeading());
+    auto = new TestTrajectoryMode(trajectory, swerve);
+    auto.initialize();
   }
 
   @Override
