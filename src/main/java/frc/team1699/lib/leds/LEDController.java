@@ -2,7 +2,7 @@ package frc.team1699.lib.leds;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import frc.team1699.utils.leds.colors.HSVColor;
+import frc.team1699.lib.leds.colors.HSVColor;
 
 public class LEDController {
     private int rainbowFirstPixelHue = 50;

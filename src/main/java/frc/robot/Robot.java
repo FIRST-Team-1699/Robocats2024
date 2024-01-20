@@ -4,15 +4,25 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.path.PathPlannerPath;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.team1699.Constants.InputConstants;
+import frc.team1699.lib.auto.modes.AutoMode;
+import frc.team1699.lib.auto.modes.TestTrajectoryMode;
+import frc.team1699.subsystems.Drive;
+import frc.team1699.subsystems.Drive.DriveState;
 
 public class Robot extends TimedRobot {
   private XboxController driverController;
   private Drive swerve;
 
+  private AutoMode auto;
+
   @Override
   public void robotInit() {
-    driverController = new XboxController(InputConstants.kDriveControllerPort);
+    driverController = new XboxController(InputConstants.kDriverControllerPort);
     swerve = new Drive(driverController);
   }
 
@@ -20,10 +30,17 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {}
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    auto = new TestTrajectoryMode(PathPlannerPath.fromPathFile("TestTrajectoryOne").getTrajectory(new ChassisSpeeds(), swerve.getHeading()), swerve);
+  }
 
   @Override
   public void autonomousPeriodic() {
+    if(auto.isFinished()) {
+      auto.finish();
+    } else {
+      auto.run();
+    }
     swerve.update();
   }
 
@@ -32,8 +49,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if(controller.getXButton()) {
+    if(driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
+    } else if(driverController.getPOV() != -1) {
+      swerve.setWantedState(DriveState.TELEOP_HEADING_LOCKED);
     } else {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }

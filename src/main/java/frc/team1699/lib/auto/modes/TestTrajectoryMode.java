@@ -10,9 +10,9 @@ public class TestTrajectoryMode extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public FollowTraj(PathPlannerTrajectory trajectory, Drive swerve) {
+    public TestTrajectoryMode(PathPlannerTrajectory trajectory, Drive swerve) {
         events = new ArrayList<Event>();
-        events.add(new FollowTrajectory(trajectory, swerve));
+        events.add(new FollowTrajectoryEvent(trajectory, swerve));
 
         i = 0;
     }

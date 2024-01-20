@@ -6,6 +6,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -13,7 +14,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.team1699.Constants.SwerveConstants;
+import frc.team1699.Constants.SwerveConstants;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -28,6 +29,8 @@ public class Drive {
     private PIDConstants translationConstants = new PIDConstants(0.01);
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
+
+    private SwerveDirection targetDirection;
 
     private SwerveDrive swerve;
     private XboxController controller;
@@ -66,6 +69,25 @@ public class Drive {
         swerve.drive(new Translation2d(vX, vY), vR, true, false);
     }
 
+    private void headingControlledDrive() {
+        double vX = -controller.getLeftX();
+        double vY = -controller.getLeftY();
+        
+        // apply deadbands
+        if(Math.abs(vX) < SwerveConstants.kDeadband) {
+            vX = 0;
+        }
+        if(Math.abs(vY) < SwerveConstants.kDeadband) {
+            vY = 0;
+        }
+        // scale outputs
+        vX *= SwerveConstants.kMaxSpeed; 
+        vY *= SwerveConstants.kMaxSpeed;
+
+        // drive swerve
+        swerve.driveFieldOriented(swerve.getSwerveController().getTargetSpeeds(vX, vY, targetDirection.getRadians(), swerve.getYaw().getRadians(), SwerveConstants.kMaxSpeed));
+    }
+
     public void setTrajectory(PathPlannerTrajectory trajectory) {
         this.trajectory = trajectory;
     }
@@ -89,8 +111,6 @@ public class Drive {
                 if(trajTimer.get() < trajectory.getTotalTimeSeconds()) {
                     PathPlannerTrajectory.State targetState = trajectory.sample(trajTimer.get());
                     ChassisSpeeds targetSpeeds = driveController.calculateRobotRelativeSpeeds(swerve.getPose(), targetState);
-                    System.out.println(swerve.getPose().getRotation().getDegrees());
-                    System.out.println(targetState.getTargetHolonomicPose().getRotation().getDegrees());
                     swerve.drive(targetSpeeds);
                 } else {
                     trajTimer.stop();
@@ -104,6 +124,15 @@ public class Drive {
             case TELEOP_DRIVE:
                 teleopDrive();
                 break;
+            case TELEOP_HEADING_LOCKED:
+                int pov = controller.getPOV();
+                if(pov == -1) {
+                    setWantedState(DriveState.TELEOP_DRIVE);
+                } else {
+                    targetDirection = new SwerveDirection(pov);
+                    headingControlledDrive();
+                }
+                break;
             default:
                 break;
         }
@@ -115,11 +144,13 @@ public class Drive {
                 trajTimer.reset();
                 trajTimer.start();
                 doneWithTraj = false;
-                swerve.resetOdometry(trajectory.getInitialDifferentialPose());
+                swerve.resetOdometry(new Pose2d(trajectory.sample(0).positionMeters, swerve.getYaw()));
                 break;
             case LOCK:
                 break;
             case TELEOP_DRIVE:
+                break;
+            case TELEOP_HEADING_LOCKED:
                 break;
             default:
                 break;
@@ -150,12 +181,30 @@ public class Drive {
         return swerve.getPose();
     }
 
+    public Rotation2d getHeading() {
+        return swerve.getYaw();
+    }
+
     public boolean doneWithTraj() {
         return doneWithTraj;
     }
 
+    private static class SwerveDirection {
+        private double angle; 
+
+        /** Takes an angle from 0-360 */
+        public SwerveDirection(double angle) {
+            this.angle = angle > 180.0 ? angle - 360.0 : angle;
+        }
+
+        public double getRadians() {
+            return Rotation2d.fromDegrees(angle - 180).getRadians();
+        }
+    }
+
     public enum DriveState {
         TELEOP_DRIVE,
+        TELEOP_HEADING_LOCKED,
         LOCK,
         FOLLOW_TRAJ
     }

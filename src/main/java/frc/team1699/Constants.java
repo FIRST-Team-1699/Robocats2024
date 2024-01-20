@@ -1,4 +1,9 @@
 package frc.team1699;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
+
 public class Constants {
     // The DI/O port where the LED strip is plugged in
     public static final int kLEDPort = 0;
@@ -16,7 +21,7 @@ public class Constants {
         public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(kHalfTrackWidth, kHalfTrackWidth),
             new Translation2d(-kHalfTrackWidth, kHalfTrackWidth),
-            new Translation2d(kHalfTrackWidth, -kHalfTrackWidth,
+            new Translation2d(kHalfTrackWidth, -kHalfTrackWidth),
             new Translation2d(-kHalfTrackWidth, -kHalfTrackWidth)
         );
     }
