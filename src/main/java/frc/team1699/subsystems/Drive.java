@@ -36,6 +36,7 @@ public class Drive {
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
     private PIDController headingLockController = new PIDController(.015, .005, 0);
+    private PIDController headingAmpController = new PIDController(.025, 0.01, 0);
 
     private SwerveDrive swerve;
     private XboxController controller;
@@ -102,7 +103,8 @@ public class Drive {
         // get controller inputs
         double vX = -controller.getLeftY();
         double vY = controller.getLeftX();
-        double vR = headingLockController.calculate(getHeading().getDegrees(), -90);
+        double vR = -headingAmpController.calculate(getHeading().getDegrees(), 90);
+        System.out.println(getHeading().getDegrees());
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
             vX = 0;
@@ -166,17 +168,14 @@ public class Drive {
                 break;
             case LOCK:
                 lock();
-                System.out.println(trajTimer.get() < trajectory.getTotalTimeSeconds());
                 break;
             case TELEOP_DRIVE:
                 teleopDrive();
                 break;
             case TELEOP_APRILTAG_TRACK:
-                if(visionHandler.getTargetID() == 6) {
+                if(visionHandler.getTargetID() == 6 || visionHandler.getTargetID() == -1) {
                     teleopDriveHeadingAmp();
                 } else if(visionHandler.getTargetID() != -1) {
-                    teleopDriveHeadingPID(visionHandler.getTargetOffset());
-                } else {
                     teleopDriveHeadingPID(visionHandler.getTargetOffset());
                 }
                 break;
