@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), swerve.getHeading());
+    PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("New New Path").getTrajectory(new ChassisSpeeds(), swerve.getHeading());
     auto = new TestTrajectoryMode(trajectory, swerve);
     auto.initialize();
   }
@@ -53,6 +53,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    if(driverController.getYButtonPressed()) {
+      swerve.resetHeading();
+    }
     if(driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
     } else if(driverController.getPOV() != -1) {

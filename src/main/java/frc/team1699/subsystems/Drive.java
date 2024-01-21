@@ -7,6 +7,7 @@ import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -26,8 +27,8 @@ public class Drive {
     private Timer trajTimer = new Timer();
     private PathPlannerTrajectory trajectory;
     private PPHolonomicDriveController driveController;
-    private PIDConstants translationConstants = new PIDConstants(0.01);
-    private PIDConstants rotationConstants = new PIDConstants(0.2);
+    private PIDConstants translationConstants = new PIDConstants(0.005 , 0, 0.0);
+    private PIDConstants rotationConstants = new PIDConstants(0.01, 0, 0);
     private boolean doneWithTraj = true;
 
     private SwerveDirection targetDirection;
@@ -47,7 +48,7 @@ public class Drive {
 
     private void teleopDrive() {
         // get controller inputs
-        double vX = -controller.getLeftX();
+        double vX = controller.getLeftX();
         double vY = -controller.getLeftY();
         double vR = -controller.getRightX();
         // apply deadbands
@@ -61,12 +62,12 @@ public class Drive {
             vR = 0;
         }
         // scale outputs
-        vX *= SwerveConstants.kMaxSpeed; 
-        vY *= SwerveConstants.kMaxSpeed;
-        vR *= SwerveConstants.kMaxRotationalSpeed;
+        vX *= SwerveConstants.kMaxSpeed*0.70; 
+        vY *= SwerveConstants.kMaxSpeed*0.70;
+        vR *= SwerveConstants.kMaxRotationalSpeed * 0.70 *0.70;
 
-        // drive swerve
-        swerve.drive(new Translation2d(vX, vY), vR, true, false);
+        // drive swerv
+        swerve.drive(new Translation2d(vY, vX), vR, true, false);
     }
 
     private void headingControlledDrive() {
@@ -85,7 +86,7 @@ public class Drive {
         vY *= SwerveConstants.kMaxSpeed;
 
         // drive swerve
-        swerve.driveFieldOriented(swerve.getSwerveController().getTargetSpeeds(vX, vY, targetDirection.getRadians(), swerve.getYaw().getRadians(), SwerveConstants.kMaxSpeed));
+        swerve.driveFieldOriented(swerve.getSwerveController().getTargetSpeeds(vY, vX, targetDirection.getRadians(), swerve.getYaw().getRadians(), SwerveConstants.kMaxSpeed));
     }
 
     public void setTrajectory(PathPlannerTrajectory trajectory) {
@@ -105,6 +106,11 @@ public class Drive {
         swerve.lockPose();
     }
 
+    public void resetHeading() {
+        Rotation3d gyroReading = swerve.getGyroRotation3d();
+        swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
+    }
+
     public void update() {
         switch (currentState) {
             case FOLLOW_TRAJ:
@@ -120,7 +126,6 @@ public class Drive {
                 break;
             case LOCK:
                 lock();
-                System.out.println(trajTimer.get() < trajectory.getTotalTimeSeconds());
                 break;
             case TELEOP_DRIVE:
                 teleopDrive();
