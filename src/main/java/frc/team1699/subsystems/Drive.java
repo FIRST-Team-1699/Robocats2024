@@ -35,7 +35,7 @@ public class Drive {
     private PIDConstants translationConstants = new PIDConstants(0.01);
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
-    private PIDController headingLockController = new PIDController(.01, 0, 0);
+    private PIDController headingLockController = new PIDController(.015, .005, 0);
 
     private SwerveDrive swerve;
     private XboxController controller;
@@ -82,6 +82,7 @@ public class Drive {
         double vX = -controller.getLeftY();
         double vY = controller.getLeftX();
         double vR = headingLockController.calculate(targetOffset, 0.0);
+        System.out.println(vR);
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
             vX = 0;
