@@ -97,6 +97,26 @@ public class Drive {
         swerve.drive(new Translation2d(vX, vY), vR, true, false);
     }
 
+    private void teleopDriveHeadingAmp() {
+        // get controller inputs
+        double vX = -controller.getLeftY();
+        double vY = controller.getLeftX();
+        double vR = headingLockController.calculate(getHeading().getDegrees(), -90);
+        // apply deadbands
+        if(Math.abs(vX) < SwerveConstants.kDeadband) {
+            vX = 0;
+        }
+        if(Math.abs(vY) < SwerveConstants.kDeadband) {
+            vY = 0;
+        }
+        // scale outputs
+        vX *= SwerveConstants.kMaxSpeed; 
+        vY *= SwerveConstants.kMaxSpeed;
+        vR *= SwerveConstants.kMaxRotationalSpeed;
+        // drive swerve
+        swerve.drive(new Translation2d(vX, vY), vR, true, false);
+    }
+
     public void setTrajectory(PathPlannerTrajectory trajectory) {
         this.trajectory = trajectory;
     }
@@ -151,7 +171,13 @@ public class Drive {
                 teleopDrive();
                 break;
             case TELEOP_APRILTAG_TRACK:
-                teleopDriveHeadingPID(visionHandler.getTargetOffset());
+                if(visionHandler.getTargetID() == 6) {
+                    teleopDriveHeadingAmp();
+                } else if(visionHandler.getTargetID() != -1) {
+                    teleopDriveHeadingPID(visionHandler.getTargetOffset());
+                } else {
+                    teleopDriveHeadingPID(visionHandler.getTargetOffset());
+                }
                 break;
             default:
                 break;

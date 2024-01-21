@@ -50,4 +50,12 @@ public class VisionHandler {
         }
         return 0;
     }
+
+    public int getTargetID() {
+        PhotonPipelineResult result = camera.getLatestResult();
+        if(result.hasTargets()) {
+            return result.getBestTarget().getFiducialId();
+        }
+        return -1;
+    }
  }
