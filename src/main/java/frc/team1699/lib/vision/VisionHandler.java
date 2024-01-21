@@ -8,6 +8,8 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -39,5 +41,13 @@ public class VisionHandler {
         } catch (NoSuchElementException e) {
             return new VisionData();
         }
+    }
+
+    public double getTargetOffset() {
+        PhotonPipelineResult result = camera.getLatestResult();
+        if(result.hasTargets()) {
+            return result.getBestTarget().getYaw();
+        }
+        return 0;
     }
  }
