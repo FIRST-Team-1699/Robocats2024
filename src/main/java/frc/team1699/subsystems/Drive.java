@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.SwerveConstants;
+import frc.team1699.Constants.VisionConstants;
+import frc.team1699.lib.vision.VisionData;
+import frc.team1699.lib.vision.VisionHandler;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -34,6 +37,8 @@ public class Drive {
 
     private SwerveDrive swerve;
     private XboxController controller;
+    private VisionHandler visionHandler;
+
     public Drive(XboxController controller) {
         try {
             this.swerve = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve")).createSwerveDrive(Units.feetToMeters(15.1));
@@ -43,6 +48,7 @@ public class Drive {
         this.controller = controller;
         this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(14.5));
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+        visionHandler = new VisionHandler(VisionConstants.kCameraName, VisionConstants.kCameraPosition, VisionConstants.kAprilTagField);
     }
 
     private void teleopDrive() {
@@ -92,6 +98,10 @@ public class Drive {
         this.trajectory = trajectory;
     }
 
+    public void setHeading(double heading) {
+        swerve.addVisionMeasurement(getPose(), heading);
+    }
+
     // /** Manually set the module states
     //  * @param moduleStates
     //  * FL, FR, BL, BR
@@ -106,6 +116,10 @@ public class Drive {
     }
 
     public void update() {
+        VisionData estimatedData = visionHandler.getEstimatedPose();
+        if(estimatedData.getTimestamp() != -1.0) {
+            swerve.addVisionMeasurement(estimatedData.getPose2d(), estimatedData.getTimestamp());
+        }
         switch (currentState) {
             case FOLLOW_TRAJ:
                 if(trajTimer.get() < trajectory.getTotalTimeSeconds()) {

@@ -1,5 +1,8 @@
 package frc.team1699;
 
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -24,5 +27,16 @@ public class Constants {
             new Translation2d(kHalfTrackWidth, -kHalfTrackWidth),
             new Translation2d(-kHalfTrackWidth, -kHalfTrackWidth)
         );
+    }
+
+    public static class VisionConstants {
+        public static final String kCameraName = "LifeCamOne";
+        public static final Transform3d kCameraPosition = new Transform3d(
+            Units.inchesToMeters(0),
+            Units.inchesToMeters(14.25),
+            Units.inchesToMeters(4), 
+            new Rotation3d(0, Units.degreesToRadians(45), 0)
+        );
+        public static final AprilTagFields kAprilTagField = AprilTagFields.k2024Crescendo;
     }
 }

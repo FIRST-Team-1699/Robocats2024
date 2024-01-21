@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -53,6 +52,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    
     if(driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
     } else if(driverController.getPOV() != -1) {
