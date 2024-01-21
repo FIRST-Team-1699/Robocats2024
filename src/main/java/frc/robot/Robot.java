@@ -52,7 +52,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    
+    if(driverController.getYButtonPressed()) {
+      swerve.resetHeading();
+    }
     if(driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
     } else if(driverController.getPOV() != -1) {

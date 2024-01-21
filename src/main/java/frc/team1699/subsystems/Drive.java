@@ -7,6 +7,7 @@ import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -53,8 +54,8 @@ public class Drive {
 
     private void teleopDrive() {
         // get controller inputs
-        double vX = -controller.getLeftX();
-        double vY = -controller.getLeftY();
+        double vX = -controller.getLeftY();
+        double vY = controller.getLeftX();
         double vR = -controller.getRightX();
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
@@ -102,6 +103,11 @@ public class Drive {
         swerve.addVisionMeasurement(getPose(), heading);
     }
 
+    public void resetHeading() {
+        Rotation3d gyroReading = swerve.getGyroRotation3d();
+        swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
+    }
+
     // /** Manually set the module states
     //  * @param moduleStates
     //  * FL, FR, BL, BR
@@ -118,7 +124,10 @@ public class Drive {
     public void update() {
         VisionData estimatedData = visionHandler.getEstimatedPose();
         if(estimatedData.getTimestamp() != -1.0) {
-            swerve.addVisionMeasurement(estimatedData.getPose2d(), estimatedData.getTimestamp());
+            Pose2d estimatedPose = estimatedData.getPose2d();
+            swerve.addVisionMeasurement(estimatedPose, estimatedData.getTimestamp());
+            Rotation2d estimatedRotation = estimatedPose.getRotation();
+            swerve.setGyroOffset(new Rotation3d(0, 0, -estimatedRotation.getRadians()));
         }
         switch (currentState) {
             case FOLLOW_TRAJ:
