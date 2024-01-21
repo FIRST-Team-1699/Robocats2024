@@ -150,7 +150,7 @@ public class Drive {
             case TELEOP_DRIVE:
                 teleopDrive();
                 break;
-            case TELEOP_HEADING_LOCKED:
+            case TELEOP_APRILTAG_TRACK:
                 teleopDriveHeadingPID(visionHandler.getTargetOffset());
                 break;
             default:
@@ -170,7 +170,7 @@ public class Drive {
                 break;
             case TELEOP_DRIVE:
                 break;
-            case TELEOP_HEADING_LOCKED:
+            case TELEOP_APRILTAG_TRACK:
                 break;
             default:
                 break;
@@ -211,7 +211,7 @@ public class Drive {
 
     public enum DriveState {
         TELEOP_DRIVE,
-        TELEOP_HEADING_LOCKED,
+        TELEOP_APRILTAG_TRACK,
         LOCK,
         FOLLOW_TRAJ
     }

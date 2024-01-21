@@ -52,13 +52,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    if(driverController.getRightTriggerAxis() > 0) {
+      swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
+    }
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
     }
     if(driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
     } else if(driverController.getPOV() != -1) {
-      swerve.setWantedState(DriveState.TELEOP_HEADING_LOCKED);
+      swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
     } else {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
