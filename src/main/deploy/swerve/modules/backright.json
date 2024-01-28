@@ -1,10 +1,10 @@
 {
     "location": {
-      "front": 10.25,
-      "left": 10.25
+      "front": -10.25,
+      "left": -10.25
     },
-    "absoluteEncoderOffset": -144,
-    "absoluteEncoderInverted": true,
+    "absoluteEncoderOffset": 55,
+    "absoluteEncoderInverted": false,
     "drive": {
       "type": "sparkmax",
       "id": 29,
@@ -17,7 +17,7 @@
     },
     "conversionFactor": {
       "angle": 16.8,
-      "drive": 1.86168453546
+      "drive": 0.047286787200699704
     },
     "encoder": {
       "type": "thrifty",
@@ -26,6 +26,6 @@
     },
     "inverted": {
       "drive": true,
-      "angle": false
+      "angle": true
     }
 }

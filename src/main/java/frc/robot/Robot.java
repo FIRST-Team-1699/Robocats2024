@@ -18,12 +18,20 @@ import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Drive.DriveState;
 
 public class Robot extends TimedRobot {
+
+  /**
+   * This function is run when the robot is first started up and should be used for any
+   * initialization code.
+   */
+
   private XboxController driverController;
   private Drive swerve;
 
   private AutoMode auto;
-  private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), new Rotation2d());
 
+  //private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+
+  private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("New New Path").getTrajectory(new ChassisSpeeds(), new Rotation2d());
 
   @Override
   public void robotInit() {
@@ -59,11 +67,19 @@ public class Robot extends TimedRobot {
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
     }
-    if(driverController.getXButton()) {
+  // photonvision-heading
+  /*  if(driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
     } else if(driverController.getRightBumper()) {
       swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
-    } else {
+    } else { */
+
+    if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
+      swerve.setWantedState(DriveState.LOCK);
+    } else if(swerve.getState() != DriveState.TELEOP_APRILTAG_TRACK && driverController.getRightBumper()) {
+      swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
+    } else if(swerve.getState() != DriveState.TELEOP_DRIVE) {
+//main
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
     swerve.update();

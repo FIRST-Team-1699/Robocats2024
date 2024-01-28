@@ -16,7 +16,14 @@ public class Constants {
     }
 
     public static class SwerveConstants {
-        public static final double kDeadband = .15;
+// photonvision-heading
+   //     public static final double kDeadband = .15;
+//Updated upstream
+      //  public static final double kDeadband = .2;
+      //  public static final double kMaxspeed = Units.feetToMeters(15,1);
+      //  public static final double kMaxRetationalSpeed = Units.feetToMeters(10); // DOES THIS NEED TO BE DIFFRENT THAN MAX SPEED? 
+        public static final double kDeadband = .02;
+//main
         public static final double kSlowStrafeCoefficient = .75;
         public static final double kMaxSpeed = Units.feetToMeters(15.1) * kSlowStrafeCoefficient;
         public static final double kSlowRotationCoefficient = .60;
@@ -32,7 +39,11 @@ public class Constants {
     }
 
     public static class VisionConstants {
+// photonvision-heading
         public static final String kCameraName = "LifeCamOne";
+//
+        public static final String kCameraName = "Arducam_OV9281_USB_Camera";
+// main
         public static final Transform3d kCameraPosition = new Transform3d(
             Units.inchesToMeters(0),
             Units.inchesToMeters(14.25),
