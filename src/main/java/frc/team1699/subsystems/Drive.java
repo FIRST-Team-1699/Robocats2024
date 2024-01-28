@@ -85,7 +85,7 @@ public class Drive {
      //   swerve.drive(new Translation2d(vX, vY), vR, true, false);
     }
 
-    private void teleopDriveHeadingPID(double targetOffset) {
+    /*private void teleopDriveHeadingPID(double targetOffset) {
         // get controller inputs
         double vX = -controller.getLeftY();
         double vY = controller.getLeftX();
@@ -97,7 +97,7 @@ public class Drive {
         // drive swerve
         swerve.drive(new Translation2d(vY, vX), vR, true, false);
 
-    }
+    } */
 
      private void teleopDriveHeadingPID(double targetOffset) {
         // get controller inputs

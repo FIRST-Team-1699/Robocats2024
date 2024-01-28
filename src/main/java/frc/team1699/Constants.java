@@ -40,8 +40,7 @@ public class Constants {
 
     public static class VisionConstants {
 // photonvision-heading
-        public static final String kCameraName = "LifeCamOne";
-//
+//        public static final String kCameraName = "LifeCamOne";
         public static final String kCameraName = "Arducam_OV9281_USB_Camera";
 // main
         public static final Transform3d kCameraPosition = new Transform3d(
