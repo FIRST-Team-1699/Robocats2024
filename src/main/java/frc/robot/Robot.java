@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -16,28 +15,27 @@ import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.TestTrajectoryMode;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Drive.DriveState;
+import frc.team1699.subsystems.Climber;
 
 public class Robot extends TimedRobot {
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-
   private XboxController driverController;
   private Drive swerve;
+  private Climber climber;
 
   private AutoMode auto;
 
   //private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), new Rotation2d());
 
-  private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("New New Path").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+  private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("New New New Path").getTrajectory(new ChassisSpeeds(), new Rotation2d());
 
   @Override
   public void robotInit() {
     driverController = new XboxController(InputConstants.kDriverControllerPort);
     swerve = new Drive(driverController);
     swerve.setTrajectory(trajectory);
+
+    climber = new Climber();
   }
 
   @Override
@@ -67,6 +65,7 @@ public class Robot extends TimedRobot {
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
     }
+
   // photonvision-heading
   /*  if(driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
@@ -83,10 +82,13 @@ public class Robot extends TimedRobot {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
     swerve.update();
+    climber.update();
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+  }
 
   @Override
   public void disabledPeriodic() {}

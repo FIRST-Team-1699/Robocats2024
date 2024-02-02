@@ -15,6 +15,12 @@ public class Constants {
         public static final int kDriverControllerPort = 0;
     }
 
+    public static class ClimberConstants {
+        // CAN IDs of winch motors
+        public static final int kPortWinchID = -1;
+        public static final int kStarWinchID = -1;
+    }
+
     public static class SwerveConstants {
 // photonvision-heading
    //     public static final double kDeadband = .15;
@@ -40,7 +46,8 @@ public class Constants {
 
     public static class VisionConstants {
 // photonvision-heading
-//        public static final String kCameraName = "LifeCamOne";
+      //  public static final String kCameraName = "LifeCamOne";
+//
         public static final String kCameraName = "Arducam_OV9281_USB_Camera";
 // main
         public static final Transform3d kCameraPosition = new Transform3d(
