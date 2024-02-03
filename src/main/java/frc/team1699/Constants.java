@@ -19,6 +19,17 @@ public class Constants {
         // CAN IDs of winch motors
         public static final int kPortWinchID = -1;
         public static final int kStarWinchID = -1;
+        public static final double kClimberSpeed = 0.5; // -1 to 1
+    }
+
+    public static class IndexerConstants {
+        public static final int kMotorID = -1;
+        public static final double kIndexerSpeed = 0.3;
+    }
+
+    public static class IntakeConstants {
+        public static final int kMotorID = -1;
+        public static final double kIntakeSpeed = 0.4;
     }
 
     public static class SwerveConstants {
