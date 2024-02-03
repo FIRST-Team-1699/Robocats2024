@@ -32,6 +32,15 @@ public class Constants {
         public static final double kIntakeSpeed = 0.4;
     }
 
+    public static class PivoterConstants {
+        public static final int kMotorID = -1;
+    }
+
+    public static class ShooterConstants {
+        public static final int kTopMotorID = -1;
+        public static final int kBottomMotorID = -1;
+    }
+
     public static class SwerveConstants {
 // photonvision-heading
    //     public static final double kDeadband = .15;
