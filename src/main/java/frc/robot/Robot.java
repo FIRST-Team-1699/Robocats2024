@@ -14,8 +14,9 @@ import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.TestTrajectoryMode;
 import frc.team1699.subsystems.Drive;
-import frc.team1699.subsystems.Manipulator;
+import frc.team1699.subsystems.Intake;
 import frc.team1699.subsystems.Drive.DriveState;
+import frc.team1699.subsystems.Intake.IntakeStates;
 import frc.team1699.subsystems.Climber;
 
 public class Robot extends TimedRobot {
@@ -29,7 +30,7 @@ public class Robot extends TimedRobot {
   //private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), new Rotation2d());
 
   private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("New New New Path").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-  private Manipulator manipulator;
+  private Intake intake;
 
   @Override
   public void robotInit() {
@@ -37,8 +38,9 @@ public class Robot extends TimedRobot {
     swerve = new Drive(driverController);
     swerve.setTrajectory(trajectory);
 
-    climber = new Climber();
-    manipulator = new Manipulator();
+    // climber = new Climber();
+    // manipulator = new Manipulator();
+    intake = new Intake();
   }
 
   @Override
@@ -61,12 +63,26 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    intake.setWantedState(IntakeStates.IDLE);
+  }
 
   @Override
   public void teleopPeriodic() {
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
+    }
+
+    if(driverController.getLeftBumperPressed()) {
+      intake.setWantedState(IntakeStates.INTAKING);
+    } else if(driverController.getLeftBumperReleased()) {
+      intake.setWantedState(IntakeStates.IDLE);
+    }
+
+    if(driverController.getAButtonPressed()) {
+      intake.setWantedState(IntakeStates.REVERSING);
+    } else if(driverController.getAButtonReleased()) {
+      intake.setWantedState(IntakeStates.IDLE);
     }
 
   // photonvision-heading
@@ -86,7 +102,9 @@ public class Robot extends TimedRobot {
     }
     swerve.update();
     climber.update();
-    manipulator.update();
+
+    // and finally, the reason for the existence of this entire branch:
+    intake.update();
   }
 
   @Override
