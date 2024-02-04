@@ -14,6 +14,7 @@ import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.TestTrajectoryMode;
 import frc.team1699.subsystems.Drive;
+import frc.team1699.subsystems.Manipulator;
 import frc.team1699.subsystems.Drive.DriveState;
 import frc.team1699.subsystems.Climber;
 
@@ -28,6 +29,7 @@ public class Robot extends TimedRobot {
   //private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), new Rotation2d());
 
   private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("New New New Path").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+  private Manipulator manipulator;
 
   @Override
   public void robotInit() {
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
     swerve.setTrajectory(trajectory);
 
     climber = new Climber();
+    manipulator = new Manipulator();
   }
 
   @Override
@@ -83,6 +86,7 @@ public class Robot extends TimedRobot {
     }
     swerve.update();
     climber.update();
+    manipulator.update();
   }
 
   @Override

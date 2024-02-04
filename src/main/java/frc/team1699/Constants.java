@@ -41,6 +41,13 @@ public class Constants {
         public static final int kBottomMotorID = -1;
     }
 
+    public static class ManipulatorConstants {
+        public static final double kSpeakerSubwooferSpeed = 0.0;
+        public static final double kSpeakerStageSpeed = 0.0;
+        public static final double kAmpSpeed = 0.0;
+        public static final double kTrapSpeed = 0.0;
+    }
+
     public static class SwerveConstants {
 // photonvision-heading
    //     public static final double kDeadband = .15;

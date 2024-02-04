@@ -8,15 +8,27 @@ import frc.team1699.Constants.IndexerConstants;
 public class Indexer {
     private IndexStates wantedState;
     private IndexStates currentState;
-    public CANSparkMax indexMotor;
+    private CANSparkMax indexMotor;
+    private boolean hasNote;
+
     public Indexer() {
         indexMotor = new CANSparkMax(IndexerConstants.kMotorID, MotorType.kBrushless);
+        hasNote = false;
+    }
+
+    public boolean isLoaded() {
+        // TODO check if there is a note present with a sensor
+        return false;
     }
 
     public void update() {
+        if(isLoaded()) {
+            hasNote = true;
+        } else {
+            hasNote = false;
+        }
         switch(currentState) {
             case EMPTY:
-                // TODO check if you're loaded continually
                 break;
             case FEEDING:
                 break;
@@ -24,6 +36,10 @@ public class Indexer {
                 break;
             case REVERSING:
                 break;
+            case INTAKING:
+                if(hasNote) {
+                    setWantedState(IndexStates.LOADED);
+                }
             default:
                 break;
 
@@ -33,15 +49,19 @@ public class Indexer {
     private void handleStateTransition() {
         switch(wantedState) {
             case EMPTY:
+                indexMotor.set(0);
                 break;
             case FEEDING:
-                // TODO start feeding
+                indexMotor.set(IndexerConstants.kIndexerSpeed);
                 break;
             case LOADED:
-                // TODO i feel like something needs to go here
+                indexMotor.set(0);
                 break;
             case REVERSING:
-                // TODO start reversing
+                indexMotor.set(-IndexerConstants.kIndexerSpeed);
+                break;
+            case INTAKING:
+                indexMotor.set(IndexerConstants.kIndexerSpeed);
                 break;
             default:
                 break;
@@ -57,10 +77,15 @@ public class Indexer {
             }
     }
 
+    public IndexStates getCurrentState() {
+        return currentState;
+    }
+
     public enum IndexStates {
         LOADED,
         EMPTY,
         FEEDING,
-        REVERSING
+        REVERSING,
+        INTAKING
     }
 }

@@ -25,4 +25,18 @@ public class Shooter {
         topFX = new TalonFX(ShooterConstants.kTopMotorID);
         bottomFX = new TalonFX(ShooterConstants.kBottomMotorID);
     }
+
+    public void setSpeed(double speed) {
+        // TODO give the motors a new setpoint
+        // is at speed becomes false
+    }
+
+    public boolean atSpeed() {
+        // returns the value of isatspeed
+        return false;
+    }
+
+    public void update() {
+        // check if we are at speed and anything else i think of later
+    }
 }

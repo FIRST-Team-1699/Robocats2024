@@ -6,8 +6,8 @@ import frc.team1699.Constants.PivoterConstants;
 
 public class Pivoter {
     public CANSparkMax pivotMotor;
-    private pivoterStates wantedState;
-    private pivoterStates currentState;
+    private PivoterStates wantedState;
+    private PivoterStates currentState;
 
     public Pivoter() {
         pivotMotor = new CANSparkMax(PivoterConstants.kMotorID, MotorType.kBrushless);
@@ -27,6 +27,7 @@ public class Pivoter {
                 break;
         }
     }
+
     private void handleStateTransition() { // TODO set the pivoter to the respective position initially
         switch(wantedState) {
             case AMP:
@@ -41,15 +42,16 @@ public class Pivoter {
                 break;
             
         }
+        currentState = wantedState;
     }
 
-    public void setWantedState(pivoterStates state) {
+    public void setWantedState(PivoterStates state) {
             if(this.wantedState != state) {
                 wantedState = state;
                 handleStateTransition();
             }
     }
-    public enum pivoterStates {
+    public enum PivoterStates {
         SPEAKER,
         AMP,
         TRAP,
