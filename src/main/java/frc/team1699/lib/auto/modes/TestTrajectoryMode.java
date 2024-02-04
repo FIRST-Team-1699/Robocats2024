@@ -3,7 +3,7 @@ package frc.team1699.lib.auto.modes;
 import java.util.ArrayList;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 import frc.team1699.lib.auto.events.Event;
-import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
+import frc.team1699.lib.auto.events.pathfollowers.FollowTrajectoryEvent;
 import frc.team1699.subsystems.Drive;
 
 public class TestTrajectoryMode extends AutoMode {
@@ -12,7 +12,7 @@ public class TestTrajectoryMode extends AutoMode {
 
     public TestTrajectoryMode(PathPlannerTrajectory trajectory, Drive swerve) {
         events = new ArrayList<Event>();
-        events.add(new FollowTrajectoryEvent(trajectory, swerve));
+        events.add(FollowTrajectoryEvent.getSWFToCenterPreset(swerve));
 
         i = 0;
     }
