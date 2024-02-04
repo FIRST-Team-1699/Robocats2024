@@ -82,7 +82,7 @@ public class Drive {
 
 
         // drive swerve
-     //   swerve.drive(new Translation2d(vX, vY), vR, true, false);
+        swerve.drive(new Translation2d(vY, vX), vR, true, false);
     }
 
     /*private void teleopDriveHeadingPID(double targetOffset) {
