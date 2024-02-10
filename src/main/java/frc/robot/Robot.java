@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
+import frc.team1699.lib.auto.modes.TestIntakeMode;
 import frc.team1699.lib.auto.modes.TestTrajectoryMode;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Intake;
@@ -22,23 +23,15 @@ public class Robot extends TimedRobot {
 
   private XboxController driverController, operatorController;
   private Drive swerve;
+  private Intake intake;
 
   private AutoMode auto;
-
-  //private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("TestTrajectory").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-
-  private PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("New New New Path").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-  private Intake intake;
 
   @Override
   public void robotInit() {
     driverController = new XboxController(InputConstants.kDriverControllerPort);
     operatorController = new XboxController(InputConstants.kOperatorControllerPort);
     swerve = new Drive(driverController);
-    swerve.setTrajectory(trajectory);
-
-    // climber = new Climber();
-    // manipulator = new Manipulator();
     intake = new Intake();
   }
 
@@ -47,7 +40,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    auto = new TestTrajectoryMode(trajectory, swerve);
+    auto = new TestIntakeMode(intake, swerve);
     auto.initialize();
   }
 

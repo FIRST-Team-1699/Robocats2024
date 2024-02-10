@@ -1,9 +1,10 @@
 package frc.team1699.lib.auto.modes;
 
 import java.util.ArrayList;
-
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
-
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
@@ -15,8 +16,9 @@ public class TestIntakeMode extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public TestIntakeMode(PathPlannerTrajectory trajectory, Intake intake, Drive swerve) {
+    public TestIntakeMode(Intake intake, Drive swerve) {
         events.add(new RunIntakeEvent(intake));
+        PathPlannerTrajectory trajectory = PathPlannerPath.fromPathFile("Auto Intake Test").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         events.add(new FollowTrajectoryEvent(trajectory, swerve));
         events.add(new StopIntakeEvent(intake));
 
