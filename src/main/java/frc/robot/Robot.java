@@ -17,13 +17,11 @@ import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Intake;
 import frc.team1699.subsystems.Drive.DriveState;
 import frc.team1699.subsystems.Intake.IntakeStates;
-import frc.team1699.subsystems.Climber;
 
 public class Robot extends TimedRobot {
 
-  private XboxController driverController;
+  private XboxController driverController, operatorController;
   private Drive swerve;
-  private Climber climber;
 
   private AutoMode auto;
 
@@ -35,6 +33,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driverController = new XboxController(InputConstants.kDriverControllerPort);
+    operatorController = new XboxController(InputConstants.kOperatorControllerPort);
     swerve = new Drive(driverController);
     swerve.setTrajectory(trajectory);
 
@@ -73,15 +72,11 @@ public class Robot extends TimedRobot {
       swerve.resetHeading();
     }
 
-    if(driverController.getLeftBumperPressed()) {
+    if(operatorController.getLeftTriggerAxis() > 0.1) {
+      intake.setWantedState(IntakeStates.REVERSING); 
+    } else if(operatorController.getRightTriggerAxis() > 0.1) {
       intake.setWantedState(IntakeStates.INTAKING);
-    } else if(driverController.getLeftBumperReleased()) {
-      intake.setWantedState(IntakeStates.IDLE);
-    }
-
-    if(driverController.getAButtonPressed()) {
-      intake.setWantedState(IntakeStates.REVERSING);
-    } else if(driverController.getAButtonReleased()) {
+    } else {
       intake.setWantedState(IntakeStates.IDLE);
     }
 
@@ -97,12 +92,9 @@ public class Robot extends TimedRobot {
     } else if(swerve.getState() != DriveState.TELEOP_APRILTAG_TRACK && driverController.getRightBumper()) {
       swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
     } else if(swerve.getState() != DriveState.TELEOP_DRIVE) {
-//main
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
     swerve.update();
-    climber.update();
-
     // and finally, the reason for the existence of this entire branch:
     intake.update();
   }
