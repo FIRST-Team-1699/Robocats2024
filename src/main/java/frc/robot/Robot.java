@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
@@ -19,14 +20,14 @@ public class Robot extends TimedRobot {
 
   private XboxController driverController, operatorController;
   private Drive swerve;
-  private Intake intake;
+private Intake intake;
 
   private AutoMode auto;
 
   @Override
   public void robotInit() {
     driverController = new XboxController(InputConstants.kDriverControllerPort);
-    operatorController = new XboxController(InputConstants.kOperatorControllerPort);
+operatorController = new XboxController(InputConstants.kOperatorControllerPort);
     swerve = new Drive(driverController);
     intake = new Intake();
   }
@@ -71,10 +72,10 @@ public class Robot extends TimedRobot {
 
   // photonvision-heading
   /*  if(driverController.getXButton()) {
-      swerve.setWantedState(DriveState.LOCK);
-    } else if(driverController.getRightBumper()) {
-      swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
-    } else { */
+  swerve.setWantedState(DriveState.LOCK);
+  } else if(driverController.getRightBumper()) {
+  swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
+  } else { */
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
@@ -84,7 +85,7 @@ public class Robot extends TimedRobot {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
     swerve.update();
-    // and finally, the reason for the existence of this entire branch:
+// and finally, the reason for the existence of this entire branch:
     intake.update();
   }
 

@@ -1,60 +1,44 @@
 package frc.team1699.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
+
 import frc.team1699.Constants.PivoterConstants;
 
 public class Pivoter {
-    public CANSparkMax pivotMotor;
-    private PivoterStates wantedState;
-    private PivoterStates currentState;
+    private CANSparkMax pivotMotor;
+    private SparkAbsoluteEncoder pivotEncoder;
+    private SparkPIDController pivotController;
+    private double setpoint;
 
     public Pivoter() {
         pivotMotor = new CANSparkMax(PivoterConstants.kMotorID, MotorType.kBrushless);
+        pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
+        pivotEncoder.setPositionConversionFactor(360.0);
+        pivotEncoder.setZeroOffset(PivoterConstants.kEncoderOffset);
+        pivotController = pivotMotor.getPIDController();
+        pivotController.setFeedbackDevice(pivotEncoder);
+        pivotController.setP(PivoterConstants.kP);
+        pivotController.setI(PivoterConstants.kI);
+        pivotController.setD(PivoterConstants.kD);
     }
 
-    public void update() { // TODO maybe use some real time tracking using vision
-        switch (currentState) {
-            case AMP:
-                break;
-            case SPEAKER:
-                break;
-            case STORED:
-                break;
-            case TRAP:
-                break;
-            default:
-                break;
+    public void setAngle(double angle) {
+        pivotController.setReference(angle, ControlType.kPosition);
+    }
+
+    public boolean isAtAngle() {
+        if(Math.abs(pivotEncoder.getPosition() - setpoint) <= PivoterConstants.kTolerance) {
+            return true;
         }
+        return false;
     }
 
-    private void handleStateTransition() { // TODO set the pivoter to the respective position initially
-        switch(wantedState) {
-            case AMP:
-                break;
-            case SPEAKER:
-                break;
-            case STORED:
-                break;
-            case TRAP:
-                break;
-            default:
-                break;
-            
-        }
-        currentState = wantedState;
-    }
-
-    public void setWantedState(PivoterStates state) {
-            if(this.wantedState != state) {
-                wantedState = state;
-                handleStateTransition();
-            }
-    }
-    public enum PivoterStates {
-        SPEAKER,
-        AMP,
-        TRAP,
-        STORED
+    public void printEncoderValue() {
+        System.out.println(pivotEncoder.getPosition());
     }
 }

@@ -37,6 +37,11 @@ public class Constants {
 
     public static class PivoterConstants {
         public static final int kMotorID = -1;
+        public static final double kEncoderOffset = 0.0;
+        public static final double kTolerance = 2.0;
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
     }
 
     public static class ShooterConstants {
@@ -46,9 +51,15 @@ public class Constants {
 
     public static class ManipulatorConstants {
         public static final double kSpeakerSubwooferSpeed = 0.0;
+        public static final double kSpeakerSubwooferAngle = 0.0;
         public static final double kSpeakerStageSpeed = 0.0;
+        public static final double kSpeakerStageAngle = 0.0;
         public static final double kAmpSpeed = 0.0;
+        public static final double kAmpAngle = 0.0;
         public static final double kTrapSpeed = 0.0;
+        public static final double kTrapAngle = 0.0;
+        public static final double kIdleAngle = 0.0;
+        public static final double kIntakeAngle = 0.0;
     }
 
     public static class SwerveConstants {
@@ -76,8 +87,7 @@ public class Constants {
 
     public static class VisionConstants {
 // photonvision-heading
-      //  public static final String kCameraName = "LifeCamOne";
-//
+//        public static final String kCameraName = "LifeCamOne";
         public static final String kCameraName = "Arducam_OV9281_USB_Camera";
 // main
         public static final Transform3d kCameraPosition = new Transform3d(

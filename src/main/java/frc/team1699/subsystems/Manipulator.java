@@ -3,7 +3,6 @@ package frc.team1699.subsystems;
 import frc.team1699.Constants.ManipulatorConstants;
 import frc.team1699.subsystems.Indexer.IndexStates;
 import frc.team1699.subsystems.Intake.IntakeStates;
-import frc.team1699.subsystems.Pivoter.PivoterStates;
 
 public class Manipulator {
     private Intake intake;
@@ -21,6 +20,10 @@ public class Manipulator {
         indexer = new Indexer();
         pivot = new Pivoter();
         shooter = new Shooter();
+    }
+
+    public void startOrchestra() {
+        shooter.startOrchestra();
     }
 
     public void update() {
@@ -54,7 +57,6 @@ public class Manipulator {
         indexer.update();
         intake.update();
         shooter.update();
-        pivot.update();
     }
 
     private void handleStateTransition() {
@@ -65,29 +67,29 @@ public class Manipulator {
                 break;
             case IDLE:
                 intake.setWantedState(IntakeStates.IDLE);
-                pivot.setWantedState(PivoterStates.STORED);
+                pivot.setAngle(ManipulatorConstants.kIdleAngle);
                 break;
             case INTAKING:
                 // TODO check if you are loaded. if so, you can't intake and the transition is failed
                 intake.setWantedState(IntakeStates.INTAKING);
-                pivot.setWantedState(PivoterStates.STORED);
+                pivot.setAngle(ManipulatorConstants.kIntakeAngle);
                 shooter.setSpeed(0);
                 break;
             case STORED:
                 intake.setWantedState(IntakeStates.IDLE);
-                pivot.setWantedState(PivoterStates.STORED);
+                pivot.setAngle(ManipulatorConstants.kIdleAngle);
                 break;
             case TRAP_SHOOT:
                 // TODO check if you are loaded (with indexer.isLoaded()). if you aren't, the state transition is failed and you go back to idle
-                pivot.setWantedState(PivoterStates.TRAP);
+                pivot.setAngle(ManipulatorConstants.kTrapAngle);
                 shooter.setSpeed(ManipulatorConstants.kTrapSpeed);
                 break;
             case AMP_SHOOT:
-                pivot.setWantedState(PivoterStates.AMP);
+                pivot.setAngle(ManipulatorConstants.kAmpAngle);
                 shooter.setSpeed(ManipulatorConstants.kAmpSpeed);
                 break;
             case SPEAKER_SHOOT:
-                pivot.setWantedState(PivoterStates.SPEAKER);
+                pivot.setAngle(ManipulatorConstants.kSpeakerSubwooferAngle);
                 shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                 break;
             default:
