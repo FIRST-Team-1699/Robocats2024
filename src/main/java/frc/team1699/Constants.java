@@ -13,6 +13,7 @@ public class Constants {
 
     public static class InputConstants {
         public static final int kDriverControllerPort = 0;
+        public static final int kOperatorControllerPort = 1;
     }
 
     public static class ClimberConstants {
@@ -28,8 +29,10 @@ public class Constants {
     }
 
     public static class IntakeConstants {
-        public static final int kMotorID = -1;
-        public static final double kIntakeSpeed = 0.4;
+        public static final int kDeckMotorID = 31;
+        public static final int kBilgeMotorID = 32;
+        public static final double kDeckSpeed = -0.75;
+        public static final double kBilgeSpeed = -0.75;
     }
 
     public static class PivoterConstants {

@@ -43,7 +43,7 @@ public class Drive {
 
     private SwerveDrive swerve;
     private XboxController controller;
-    private VisionHandler visionHandler;
+    // private VisionHandler visionHandler;
 
     public Drive(XboxController controller) {
         try {
@@ -54,8 +54,8 @@ public class Drive {
         }
         this.controller = controller;
         this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(14.5));
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-        visionHandler = new VisionHandler(VisionConstants.kCameraName, VisionConstants.kCameraPosition, VisionConstants.kAprilTagField);
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
+        // visionHandler = new VisionHandler(VisionConstants.kCameraName, VisionConstants.kCameraPosition, VisionConstants.kAprilTagField);
     }
 
     private void teleopDrive() {
@@ -148,7 +148,7 @@ public class Drive {
         vY *= SwerveConstants.kMaxSpeed;
         vR *= SwerveConstants.kMaxRotationalSpeed;
         // drive swerve
-        swerve.drive(new Translation2d(vX, vY), vR, true, false);
+        swerve.drive(new Translation2d(vX, vY), vR, false, false);
     } 
 
      public void setTrajectory(PathPlannerTrajectory trajectory) {
@@ -199,13 +199,13 @@ public class Drive {
 
     private void updateVisionData() {
 
-        VisionData estimatedData = visionHandler.getEstimatedPose();
-        if(estimatedData.getTimestamp() != -1.0) {
-            Pose2d estimatedPose = estimatedData.getPose2d();
-            swerve.addVisionMeasurement(estimatedPose, estimatedData.getTimestamp());
-            Rotation2d estimatedRotation = estimatedPose.getRotation();
-            swerve.setGyroOffset(new Rotation3d(0, 0, -estimatedRotation.getRadians()));
-        }
+        // VisionData estimatedData = visionHandler.getEstimatedPose();
+        // if(estimatedData.getTimestamp() != -1.0) {
+        //     Pose2d estimatedPose = estimatedData.getPose2d();
+        //     swerve.addVisionMeasurement(estimatedPose, estimatedData.getTimestamp());
+        //     Rotation2d estimatedRotation = estimatedPose.getRotation();
+        //     swerve.setGyroOffset(new Rotation3d(0, 0, -estimatedRotation.getRadians()));
+        // }
 
       /*  switch (currentState) {
             case FOLLOW_TRAJ:
@@ -235,11 +235,11 @@ public class Drive {
                 teleopDrive();
                 break;
             case TELEOP_APRILTAG_TRACK:
-                if(visionHandler.getTargetID() == 6 || visionHandler.getTargetID() == -1) {
-                    teleopDriveHeadingAmp();
-                } else if(visionHandler.getTargetID() != -1) {
-                    teleopDriveHeadingPID(visionHandler.getTargetOffset());
-                }
+                // if(visionHandler.getTargetID() == 6 || visionHandler.getTargetID() == -1) {
+                //     teleopDriveHeadingAmp();
+                // } else if(visionHandler.getTargetID() != -1) {
+                //     teleopDriveHeadingPID(visionHandler.getTargetOffset());
+                // }
                 break;
             default:
                 break;

@@ -6,12 +6,14 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.team1699.Constants.IntakeConstants;
 
 public class Intake {
-    private CANSparkMax intakeMotor;
+    private CANSparkMax deckIntakeMotor;
+    private CANSparkMax bilgeIntakeMotor;
     private IntakeStates wantedState;
     private IntakeStates currentState = IntakeStates.IDLE;
 
     public Intake() {
-        intakeMotor = new CANSparkMax(IntakeConstants.kMotorID, MotorType.kBrushless);
+        deckIntakeMotor = new CANSparkMax(IntakeConstants.kDeckMotorID, MotorType.kBrushless);
+        bilgeIntakeMotor = new CANSparkMax(IntakeConstants.kBilgeMotorID, MotorType.kBrushless);
     }
 
     public void update() {
@@ -31,13 +33,16 @@ public class Intake {
     private void handleStateTransition() {
         switch(wantedState) {
             case IDLE:
-                intakeMotor.set(0);
+                deckIntakeMotor.set(0);
+                bilgeIntakeMotor.set(0);
                 break;
             case INTAKING:
-                intakeMotor.set(IntakeConstants.kIntakeSpeed);
+                deckIntakeMotor.set(IntakeConstants.kDeckSpeed);
+                bilgeIntakeMotor.set(IntakeConstants.kBilgeSpeed);
                 break;
             case REVERSING:
-                intakeMotor.set(-IntakeConstants.kIntakeSpeed);
+                deckIntakeMotor.set(-IntakeConstants.kDeckSpeed);
+                bilgeIntakeMotor.set(-IntakeConstants.kBilgeSpeed);
                 break;
             default:
                 break;
