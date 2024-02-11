@@ -4,16 +4,12 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.TestIntakeMode;
-import frc.team1699.lib.auto.modes.TestTrajectoryMode;
+import frc.team1699.lib.auto.modes.ThreeNoteIntakeTest;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Intake;
 import frc.team1699.subsystems.Drive.DriveState;
@@ -40,7 +36,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    auto = new TestIntakeMode(intake, swerve);
+    auto = new ThreeNoteIntakeTest(intake, swerve);
     auto.initialize();
   }
 
@@ -65,9 +61,9 @@ public class Robot extends TimedRobot {
       swerve.resetHeading();
     }
 
-    if(operatorController.getLeftTriggerAxis() > 0.1) {
+    if(driverController.getLeftTriggerAxis() > 0.1) {
       intake.setWantedState(IntakeStates.REVERSING); 
-    } else if(operatorController.getRightTriggerAxis() > 0.1) {
+    } else if(driverController.getRightTriggerAxis() > 0.1) {
       intake.setWantedState(IntakeStates.INTAKING);
     } else {
       intake.setWantedState(IntakeStates.IDLE);

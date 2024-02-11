@@ -13,19 +13,22 @@ import frc.team1699.lib.auto.events.WaitEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Intake;
 
-public class TestIntakeMode extends AutoMode {
+public class ThreeNoteIntakeTest extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public TestIntakeMode(Intake intake, Drive swerve) {
+    public ThreeNoteIntakeTest(Intake intake, Drive swerve) {
         events = new ArrayList<Event>();
         events.add(new RunIntakeEvent(intake));
-        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("Auto Intake Test").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("TestIntakeSecond").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("TestTwoPathOne").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("TestTwoPathTwo").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(45));
+        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("TestTwoPathThree").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
         events.add(new WaitEvent(0.5));
         events.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
         events.add(new WaitEvent(0.5));
+        events.add(new FollowTrajectoryEvent(trajectoryThree, swerve));
+        events.add(new WaitEvent(1.0));
         events.add(new StopIntakeEvent(intake));
 
         i = 0;

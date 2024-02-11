@@ -29,10 +29,10 @@ public class Constants {
     }
 
     public static class IntakeConstants {
-        public static final int kDeckMotorID = -1;
-        public static final int kBilgeMotorID = -1;
-        public static final double kDeckSpeed = 0.25;
-        public static final double kBilgeSpeed = -0.25;
+        public static final int kDeckMotorID = 31;
+        public static final int kBilgeMotorID = 32;
+        public static final double kDeckSpeed = -0.75;
+        public static final double kBilgeSpeed = -0.75;
     }
 
     public static class PivoterConstants {
