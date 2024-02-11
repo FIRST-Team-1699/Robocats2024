@@ -13,7 +13,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
+<<<<<<< Updated upstream
 import frc.team1699.lib.auto.modes.TestTrajectoryMode;
+=======
+import frc.team1699.lib.auto.modes.ThreeNoteIntakeTest;
+>>>>>>> Stashed changes
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Drive.DriveState;
 
@@ -83,13 +87,19 @@ public class Robot extends TimedRobot {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
     swerve.update();
+<<<<<<< Updated upstream
+=======
+    intake.update();
+>>>>>>> Stashed changes
   }
 
   @Override
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    // manipulator.startOrchestra();
+  }
 
   @Override
   public void testInit() {}

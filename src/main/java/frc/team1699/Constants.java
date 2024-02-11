@@ -13,6 +13,56 @@ public class Constants {
 
     public static class InputConstants {
         public static final int kDriverControllerPort = 0;
+<<<<<<< Updated upstream
+=======
+        public static final int kOperatorControllerPort = 1;
+    }
+
+    public static class ClimberConstants {
+        // CAN IDs of winch motors
+        public static final int kPortWinchID = -1;
+        public static final int kStarWinchID = -1;
+        public static final double kClimberSpeed = 0.5; // -1 to 1
+    }
+
+    public static class IndexerConstants {
+        public static final int kMotorID = -1;
+        public static final double kIndexerSpeed = 0.3;
+    }
+
+    public static class IntakeConstants {
+        public static final int kDeckMotorID = 31;
+        public static final int kBilgeMotorID = 32;
+        public static final double kDeckSpeed = -0.75;
+        public static final double kBilgeSpeed = -0.75;
+    }
+
+    public static class PivoterConstants {
+        public static final int kMotorID = -1;
+        public static final double kEncoderOffset = 0.0;
+        public static final double kTolerance = 2.0;
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+    }
+
+    public static class ShooterConstants {
+        public static final int kTopMotorID = -1;
+        public static final int kBottomMotorID = -1;
+    }
+
+    public static class ManipulatorConstants {
+        public static final double kSpeakerSubwooferSpeed = 0.0;
+        public static final double kSpeakerSubwooferAngle = 0.0;
+        public static final double kSpeakerStageSpeed = 0.0;
+        public static final double kSpeakerStageAngle = 0.0;
+        public static final double kAmpSpeed = 0.0;
+        public static final double kAmpAngle = 0.0;
+        public static final double kTrapSpeed = 0.0;
+        public static final double kTrapAngle = 0.0;
+        public static final double kIdleAngle = 0.0;
+        public static final double kIntakeAngle = 0.0;
+>>>>>>> Stashed changes
     }
 
     public static class SwerveConstants {
