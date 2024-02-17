@@ -4,21 +4,24 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.team1699.Constants.IndexerConstants;
+import frc.team1699.lib.sensors.BeamBreak;
+import frc.team1699.subsystems.Intake.IntakeStates;
 
 public class Indexer {
     private IndexStates wantedState;
     private IndexStates currentState;
     private CANSparkMax indexMotor;
+    private BeamBreak indexBeamBreak;
     private boolean hasNote;
 
     public Indexer() {
         indexMotor = new CANSparkMax(IndexerConstants.kMotorID, MotorType.kBrushless);
+        indexBeamBreak = new BeamBreak(IndexerConstants.kBeamBreakID);
         hasNote = false;
     }
 
     public boolean isLoaded() {
-        // TODO check if there is a note present with a sensor
-        return false;
+        return indexBeamBreak.isBroken();
     }
 
     public void update() {
@@ -31,6 +34,9 @@ public class Indexer {
             case EMPTY:
                 break;
             case FEEDING:
+                if(!hasNote) {
+                    setWantedState(IndexStates.EMPTY);
+                }
                 break;
             case LOADED:
                 break;

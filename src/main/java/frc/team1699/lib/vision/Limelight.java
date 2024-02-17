@@ -1,10 +1,9 @@
 package frc.team1699.lib.vision;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1699.lib.vision.LimelightHelpers.LimelightResults;
 import java.text.DecimalFormat;
@@ -85,17 +84,17 @@ public class Limelight {
     /* ::: Pose Retrieval ::: */
 
     /**
-     * @return the corresponding LL Pose3d for the alliance in DriverStation.java. Will default to
-     *     blue if invalid alliance.
+     * @return the current LL pose3d
      */
-    private Pose3d getAlliancePose() {
-        if (DriverStation.getAlliance().get() == Alliance.Blue) {
-            return LimelightHelpers.getBotPose3d_wpiBlue(CAMERA_NAME);
-        } else if (DriverStation.getAlliance().get() == Alliance.Red) {
-            return LimelightHelpers.getBotPose3d_wpiRed(CAMERA_NAME);
-        }
-        DriverStation.reportWarning("Invalid Team", false);
-        return LimelightHelpers.getBotPose3d_wpiBlue(CAMERA_NAME); // send blue by default
+    private Pose3d getPose3d() {
+        return LimelightHelpers.getBotPose3d_wpiBlue(CAMERA_NAME);
+    }
+
+    /**
+     * @return the current LL pose2d
+     */
+    public Pose2d getPose2d() {
+        return getPose3d().toPose2d();
     }
 
     /*
@@ -159,7 +158,7 @@ public class Limelight {
 
     /** Prints the vision, estimated, and odometry pose to SmartDashboard */
     public void printDebug() {
-        Pose3d botPose3d = getAlliancePose();
+        Pose3d botPose3d = getPose3d();
         SmartDashboard.putString("LimelightX", df.format(botPose3d.getTranslation().getX()));
         SmartDashboard.putString("LimelightY", df.format(botPose3d.getTranslation().getY()));
         SmartDashboard.putString("LimelightZ", df.format(botPose3d.getTranslation().getZ()));

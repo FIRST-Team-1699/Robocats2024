@@ -1,8 +1,5 @@
 package frc.team1699;
 
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -27,6 +24,7 @@ public class Constants {
     public static class IndexerConstants {
         public static final int kMotorID = -1;
         public static final double kIndexerSpeed = 0.3;
+        public static final int kBeamBreakID = 0;
     }
 
     public static class IntakeConstants {
@@ -43,6 +41,8 @@ public class Constants {
         public static final double kP = 0.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
+        public static final double kMinAngle = 45.0;
+        public static final double kMaxAngle = 100.0; 
     }
 
     public static class ShooterConstants {
@@ -89,6 +89,8 @@ public class Constants {
     public static class VisionConstants {
         public static final String kLimelightName = "limelight";
         public static final int kPipelineID = 0;
-        public static final PhysicalConfig kCameraPosition = new PhysicalConfig().withTranslation(0.0, 0.0, 0.0).withRotation(0.0, 0.0, 0.0);
+        // FORWARD VALUE IS TEMPORARY
+        public static final PhysicalConfig kCameraPosition = new PhysicalConfig().withTranslation(-10, 0.0, 8.5).withRotation(55.0, 0.0, 180.0);
+        public static final double kSpeakerAimHeight = Units.inchesToMeters(81);
     }
 }

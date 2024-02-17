@@ -43,7 +43,7 @@ public class Shooter {
     
     public Shooter() {
         motorRequest = new VoltageOut(0);
-        TalonFXConfiguration configs = new TalonFXConfiguration();
+        configs = new TalonFXConfiguration();
         topFX = new TalonFX(ShooterConstants.kTopMotorID);
         bottomFX = new TalonFX(ShooterConstants.kBottomMotorID);
 

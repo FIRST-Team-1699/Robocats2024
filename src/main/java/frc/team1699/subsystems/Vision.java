@@ -1,5 +1,6 @@
 package frc.team1699.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.team1699.Constants.VisionConstants;
@@ -12,6 +13,14 @@ public class Vision {
         this.limelight = new Limelight(VisionConstants.kLimelightName, VisionConstants.kPipelineID, VisionConstants.kCameraPosition);
     }
 
+    public boolean hasTargetInView() {
+        return limelight.targetInView();
+    }
+
+    public Pose2d getPose2d() {
+        return limelight.getPose2d();
+    }
+
     public double getSpeakerX() {
         if(DriverStation.getAlliance().isPresent() && limelight.targetInView()) {
             Alliance alliance = DriverStation.getAlliance().get();
@@ -20,6 +29,20 @@ public class Vision {
             } else {
                 return getTagHorizontalOffset(8);
             }
+        }
+        return 0.0;
+    }
+
+    public double getSpeakerAngle() {
+        if(DriverStation.getAlliance().isPresent() && limelight.targetInView()) {
+            Alliance alliance = DriverStation.getAlliance().get();
+            if(alliance.equals(Alliance.Red)) {
+                limelight.setLimelightPipeline(8);
+                
+            } else {
+                limelight.setLimelightPipeline(4);
+            }
+            return Math.atan(VisionConstants.kSpeakerAimHeight / limelight.getDistanceToTarget(VisionConstants.kSpeakerAimHeight));
         }
         return 0.0;
     }

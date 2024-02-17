@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.math.MathUtil;
 import frc.team1699.Constants.PivoterConstants;
 
 public class Pivoter {
@@ -28,6 +29,7 @@ public class Pivoter {
     }
 
     public void setAngle(double angle) {
+        angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
         pivotController.setReference(angle, ControlType.kPosition);
     }
 

@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
-import frc.team1699.lib.auto.modes.TestIntakeMode;
 import frc.team1699.lib.auto.modes.ThreeNoteIntakeTest;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Intake;
+import frc.team1699.subsystems.Pivoter;
 import frc.team1699.subsystems.Drive.DriveState;
 import frc.team1699.subsystems.Intake.IntakeStates;
 
@@ -20,20 +20,24 @@ public class Robot extends TimedRobot {
 
   private XboxController driverController, operatorController;
   private Drive swerve;
-private Intake intake;
+  private Intake intake;
+  private Pivoter pivot;
 
   private AutoMode auto;
 
   @Override
   public void robotInit() {
     driverController = new XboxController(InputConstants.kDriverControllerPort);
-operatorController = new XboxController(InputConstants.kOperatorControllerPort);
+    operatorController = new XboxController(InputConstants.kOperatorControllerPort);
     swerve = new Drive(driverController);
     intake = new Intake();
+    pivot = new Pivoter();
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    pivot.printEncoderValue();
+  }
 
   @Override
   public void autonomousInit() {
@@ -79,8 +83,8 @@ operatorController = new XboxController(InputConstants.kOperatorControllerPort);
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
-    } else if(swerve.getState() != DriveState.TELEOP_APRILTAG_TRACK && driverController.getRightBumper()) {
-      swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
+    } else if(swerve.getState() != DriveState.TELEOP_SPEAKER_TRACK && driverController.getRightBumper()) {
+      swerve.setWantedState(DriveState.TELEOP_SPEAKER_TRACK);
     } else if(swerve.getState() != DriveState.TELEOP_DRIVE) {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }

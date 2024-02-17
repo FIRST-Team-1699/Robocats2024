@@ -106,7 +106,15 @@ public class Manipulator {
         }
     }
 
-    enum ManipulatorStates {
+    public ManipulatorStates getCurrentState() {
+        return currentState;
+    }
+
+    public boolean shooterAtSpeed() {
+        return shooter.atSpeed();
+    }
+
+    public enum ManipulatorStates {
         INTAKING,
         SPEAKER_SHOOT,
         AIMING,
