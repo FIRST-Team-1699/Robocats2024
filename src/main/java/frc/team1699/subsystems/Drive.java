@@ -36,7 +36,6 @@ public class Drive {
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
     private PIDController headingLockController = new PIDController(.015, .005, 0);
-    private PIDController headingAmpController = new PIDController(.025, 0.01, 0);
 
     private SwerveDrive swerve;
     private XboxController controller;
@@ -52,6 +51,7 @@ public class Drive {
         this.controller = controller;
         this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(14.5));
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
+        headingLockController.enableContinuousInput(-180, 180);
         this.vision = new Vision();
     }
 
@@ -80,23 +80,8 @@ public class Drive {
         swerve.drive(new Translation2d(vY, vX), vR, true, false);
     }
 
-    /*private void teleopDriveHeadingPID(double targetOffset) {
+    private void teleopDriveHeadingPID(double targetOffset) {
         // get controller inputs
-        double vX = -controller.getLeftY();
-        double vY = controller.getLeftX();
-        double vR = headingLockController.calculate(targetOffset, 0.0);
-        System.out.println(vR); 
-        //System.out.println(swerve.getOdometryHeading());
-        System.out.println("X:  " + vX + "   vY:   " + vY);
-
-        // drive swerve
-        swerve.drive(new Translation2d(vY, vX), vR, true, false);
-
-    } */
-
-     private void teleopDriveHeadingPID(double targetOffset) {
-        // get controller inputs
-        System.out.println("BAD IF I AM SAWED");
         double vX = controller.getLeftX();
         double vY = controller.getLeftY();
         double vR = headingLockController.calculate(targetOffset, 0.0);
@@ -109,42 +94,12 @@ public class Drive {
             vY = 0;
         }
         // scale outputs
-        vX *= SwerveConstants.kMaxSpeed; 
-        vY *= SwerveConstants.kMaxSpeed;
-        vR *= SwerveConstants.kMaxRotationalSpeed;
+        vX *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient; 
+        vY *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient;
+        vR *= SwerveConstants.kMaxRotationalSpeed * SwerveConstants.kSlowRotationCoefficient;
         // drive swerve
         swerve.drive(new Translation2d(vX, vY), vR, true, false);
     }
-
-   /* private void teleopDriveHeadingAmp() {
-        // get controller inputs
-        double vX = -controller.getLeftY();
-        double vY = controller.getLeftX();
-        double vR = -headingAmpController.calculate(getHeading().getDegrees(), 90); */
-
-    //  private void teleopDriveHeadingAmp() {
-    //     // get controller inputs
-    //             System.out.println("BAD IF I AM SAWED AMP");
-
-    //     double vX = controller.getLeftY();
-    //     double vY = controller.getLeftX();
-    //     double vR = headingAmpController.calculate(getHeading().getDegrees(), 90);
-
-    //     System.out.println(getHeading().getDegrees());
-    //     // apply deadbands
-    //     if(Math.abs(vX) < SwerveConstants.kDeadband) {
-    //         vX = 0;
-    //     }
-    //     if(Math.abs(vY) < SwerveConstants.kDeadband) {
-    //         vY = 0;
-    //     }
-    //     // scale outputs
-    //     vX *= SwerveConstants.kMaxSpeed; 
-    //     vY *= SwerveConstants.kMaxSpeed;
-    //     vR *= SwerveConstants.kMaxRotationalSpeed;
-    //     // drive swerve
-    //     swerve.drive(new Translation2d(vX, vY), vR, false, false);
-    // } 
 
      public void setTrajectory(PathPlannerTrajectory trajectory) {
 
@@ -213,6 +168,9 @@ public class Drive {
             case TELEOP_SPEAKER_TRACK:
                 teleopDriveHeadingPID(vision.getSpeakerX());
                 break;
+            case TELEOP_AMP_TRACK:
+                teleopDriveHeadingPID(Rotation2d.fromDegrees(90).minus(getHeading()).getDegrees());
+            break;
             default:
                 break;
         }
@@ -262,9 +220,7 @@ public class Drive {
     }
 
     public Rotation2d getHeading() {
-      //  return swerve.getYaw();
         return swerve.getOdometryHeading();
-
     }
 
     public boolean doneWithTraj() {
@@ -274,6 +230,7 @@ public class Drive {
     public enum DriveState {
         TELEOP_DRIVE,
         TELEOP_SPEAKER_TRACK,
+        TELEOP_AMP_TRACK,
         LOCK,
         FOLLOW_TRAJ
     }
