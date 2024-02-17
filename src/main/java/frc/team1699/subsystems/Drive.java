@@ -106,15 +106,10 @@ public class Drive {
         this.trajectory = trajectory;
     }
 
-    public void setHeading(double heading) {
-        swerve.addVisionMeasurement(getPose(), heading);
-    }
-
     public void resetHeading() {
         Rotation3d gyroReading = swerve.getGyroRotation3d();
         swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
     } 
-
 
     // /** Manually set the module states
     //  * @param moduleStates

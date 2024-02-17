@@ -18,7 +18,14 @@ public class Constants {
         // CAN IDs of winch motors
         public static final int kPortWinchID = 12;
         public static final int kStarWinchID = 23;
-        public static final double kClimberSpeed = 0.5; // -1 to 1
+        public static final double kP = 0.5;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kF = 0.0;
+        public static final double kPortClimberTopPosition = 0.0;
+        public static final double kPortClimberBottomPosition = -430;
+        public static final double kStarClimberTopPosition = 0.0;
+        public static final double kStarClimberBottomPosition = -430;
     }
 
     public static class IndexerConstants {

@@ -11,9 +11,11 @@ import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.ThreeNoteIntakeTest;
 import frc.team1699.lib.sensors.BeamBreak;
+import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Intake;
 import frc.team1699.subsystems.Pivoter;
+import frc.team1699.subsystems.Climber.ClimbStates;
 import frc.team1699.subsystems.Drive.DriveState;
 import frc.team1699.subsystems.Intake.IntakeStates;
 
@@ -23,9 +25,9 @@ public class Robot extends TimedRobot {
   private Drive swerve;
   private Intake intake;
   // private Pivoter pivot;
+  private Climber climber;
 
   private AutoMode auto;
-  private BeamBreak beamBreak;
 
   @Override
   public void robotInit() {
@@ -34,19 +36,19 @@ public class Robot extends TimedRobot {
     swerve = new Drive(driverController);
     intake = new Intake();
     // pivot = new Pivoter();
-    beamBreak = new BeamBreak(0);
+    climber = new Climber();
   }
 
   @Override
   public void robotPeriodic() {
     // pivot.printEncoderValue();
-    System.out.println(beamBreak.isBroken());
   }
 
   @Override
   public void autonomousInit() {
     auto = new ThreeNoteIntakeTest(intake, swerve);
     auto.initialize();
+    climber.setWantedState(ClimbStates.DOWN);
   }
 
   @Override
@@ -57,6 +59,7 @@ public class Robot extends TimedRobot {
       auto.run();
     }
     swerve.update();
+    climber.update();
   }
 
   @Override
@@ -78,13 +81,6 @@ public class Robot extends TimedRobot {
       intake.setWantedState(IntakeStates.IDLE);
     }
 
-  // photonvision-heading
-  /*  if(driverController.getXButton()) {
-  swerve.setWantedState(DriveState.LOCK);
-  } else if(driverController.getRightBumper()) {
-  swerve.setWantedState(DriveState.TELEOP_APRILTAG_TRACK);
-  } else { */
-
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
     } else if(swerve.getState() != DriveState.TELEOP_SPEAKER_TRACK && driverController.getRightBumper()) {
@@ -92,9 +88,15 @@ public class Robot extends TimedRobot {
     } else if(swerve.getState() != DriveState.TELEOP_DRIVE) {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
+
+    if(operatorController.getLeftTriggerAxis() >= .1) {
+      climber.setWantedState(ClimbStates.EXTENDING);
+    } else if(operatorController.getRightTriggerAxis() >= .1) {
+      climber.setWantedState(ClimbStates.RETRACTING);
+    }
     swerve.update();
-// and finally, the reason for the existence of this entire branch:
     intake.update();
+    climber.update();
   }
 
   @Override
