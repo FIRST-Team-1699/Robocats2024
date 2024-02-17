@@ -2,10 +2,8 @@ package frc.team1699.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import frc.team1699.Constants.IndexerConstants;
 import frc.team1699.lib.sensors.BeamBreak;
-import frc.team1699.subsystems.Intake.IntakeStates;
 
 public class Indexer {
     private IndexStates wantedState;

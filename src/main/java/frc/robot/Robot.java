@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.ThreeNoteIntakeTest;
+import frc.team1699.lib.sensors.BeamBreak;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Intake;
 import frc.team1699.subsystems.Pivoter;
@@ -21,9 +22,10 @@ public class Robot extends TimedRobot {
   private XboxController driverController, operatorController;
   private Drive swerve;
   private Intake intake;
-  private Pivoter pivot;
+  // private Pivoter pivot;
 
   private AutoMode auto;
+  private BeamBreak beamBreak;
 
   @Override
   public void robotInit() {
@@ -31,12 +33,14 @@ public class Robot extends TimedRobot {
     operatorController = new XboxController(InputConstants.kOperatorControllerPort);
     swerve = new Drive(driverController);
     intake = new Intake();
-    pivot = new Pivoter();
+    // pivot = new Pivoter();
+    beamBreak = new BeamBreak(0);
   }
 
   @Override
   public void robotPeriodic() {
-    pivot.printEncoderValue();
+    // pivot.printEncoderValue();
+    System.out.println(beamBreak.isBroken());
   }
 
   @Override

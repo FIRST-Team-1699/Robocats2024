@@ -16,8 +16,8 @@ public class Constants {
 
     public static class ClimberConstants {
         // CAN IDs of winch motors
-        public static final int kPortWinchID = -1;
-        public static final int kStarWinchID = -1;
+        public static final int kPortWinchID = 12;
+        public static final int kStarWinchID = 23;
         public static final double kClimberSpeed = 0.5; // -1 to 1
     }
 
