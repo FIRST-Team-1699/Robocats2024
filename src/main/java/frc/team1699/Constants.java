@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.team1699.lib.vision.Limelight.PhysicalConfig;
 
 public class Constants {
     // The DI/O port where the LED strip is plugged in
@@ -86,16 +87,8 @@ public class Constants {
     }
 
     public static class VisionConstants {
-// photonvision-heading
-//        public static final String kCameraName = "LifeCamOne";
-        public static final String kCameraName = "Arducam_OV9281_USB_Camera";
-// main
-        public static final Transform3d kCameraPosition = new Transform3d(
-            Units.inchesToMeters(0),
-            Units.inchesToMeters(14.25),
-            Units.inchesToMeters(4), 
-            new Rotation3d(0, Units.degreesToRadians(45), 0)
-        );
-        public static final AprilTagFields kAprilTagField = AprilTagFields.k2024Crescendo;
+        public static final String kLimelightName = "limelight";
+        public static final int kPipelineID = 0;
+        public static final PhysicalConfig kCameraPosition = new PhysicalConfig().withTranslation(0.0, 0.0, 0.0).withRotation(0.0, 0.0, 0.0);
     }
 }

@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.SwerveConstants;
 import frc.team1699.Constants.VisionConstants;
-import frc.team1699.lib.vision.VisionData;
-import frc.team1699.lib.vision.VisionHandler;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -65,6 +63,9 @@ public class Drive {
         double vX = -controller.getLeftX();
         double vY = -controller.getLeftY();
         double vR = -controller.getRightX();
+        vX *= 0.9;
+        vY *= 0.9;
+        vR *= 0.9;
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
             vX = 0;
