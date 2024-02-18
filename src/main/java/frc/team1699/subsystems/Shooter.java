@@ -26,30 +26,36 @@ public class Shooter {
     private TalonFX bottomFX;
     private TalonFXConfiguration configs;
 
-    private VoltageOut motorRequest;
+    private VelocityVoltage motorRequest;
 
-    private PIDController topPID;
-    private PIDController bottomPID;
+    // private PIDController topPID;
+    // private PIDController bottomPID;
 
-    private final double kTopP = 0.002;
-    private final double kTopI = 0.0;
-    private final double kTopD = 0.0;
-
-    private final double kBottomP = 0.002;
-    private final double kBottomI = 0.0;
-    private final double kBottomD = 0.0;
+    private final double kP = 0.0;
+    private final double kI = 0.0;
+    private final double kD = 0.0;
+    private final double kV = 0.11;
 
     private Orchestra orchestra;
     
     public Shooter() {
-        motorRequest = new VoltageOut(0);
+        motorRequest = new VelocityVoltage(0.0);
         configs = new TalonFXConfiguration();
+        configs.Slot0.kP = kP;
+        configs.Slot0.kI = kI;
+        configs.Slot0.kD = kD;
+        configs.Slot0.kV = kV;
+        configs.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 1;
         topFX = new TalonFX(ShooterConstants.kTopMotorID);
+        topFX.getConfigurator().apply(configs);
         bottomFX = new TalonFX(ShooterConstants.kBottomMotorID);
+        bottomFX.getConfigurator().apply(configs);
 
         // PIDs
-        topPID = new PIDController(kTopP, kTopI, kTopD);
-        bottomPID = new PIDController(kBottomP, kBottomI, kBottomD);
+        // topPID = new PIDController(kTopP, kTopI, kTopD);
+        // bottomPID = new PIDController(kBottomP, kBottomI, kBottomD);
+        // topPID.setTolerance(20);
+        // bottomPID.setTolerance(20);
 
         orchestra = new Orchestra();
         orchestra.addInstrument(topFX);
@@ -67,22 +73,24 @@ public class Shooter {
     public void setSpeed(double speed) {
         // TODO give the motors a new setpoint
         // is at speed becomes false
-        topPID.setSetpoint(speed);
-        bottomPID.setSetpoint(speed);
-
+        setpoint = speed;
+        // topPID.setSetpoint(speed);
+        // bottomPID.setSetpoint(speed);
     }
 
     public boolean atSpeed() {
-        // returns the value of isatspeed
-        if(topPID.atSetpoint() && bottomPID.atSetpoint()) {
-            return true;
+        if(Math.abs(topFX.getVelocity().getValueAsDouble() - setpoint) >= 5) {
+            return false;
         }
-        return false;
+        if(Math.abs(bottomFX.getVelocity().getValueAsDouble() - setpoint) >= 5) {
+            return false;
+        }
+        return true;
     }
 
     public void update() {
         // check if we are at speed and anything else i think of later
-        topFX.setControl(motorRequest.withOutput(topPID.calculate(topFX.getVelocity().getValueAsDouble())));
-        bottomFX.setControl(motorRequest.withOutput(bottomPID.calculate(bottomFX.getVelocity().getValueAsDouble())));
+        topFX.setControl(motorRequest.withVelocity(setpoint));
+        bottomFX.setControl(motorRequest.withVelocity(setpoint));
     }
 }

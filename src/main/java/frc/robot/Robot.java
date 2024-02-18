@@ -32,7 +32,6 @@ public class Robot extends TimedRobot {
     swerve = new Drive(driverController);
     manipulator = new Manipulator();
     climber = new Climber();
-    manipulator.startOrchestra();
   }
 
   @Override
@@ -53,6 +52,7 @@ public class Robot extends TimedRobot {
       auto.run();
     }
     swerve.update();
+    manipulator.update();
     climber.update();
   }
 
@@ -71,10 +71,12 @@ public class Robot extends TimedRobot {
       manipulator.setWantedState(ManipulatorStates.OUTTAKING);
     } else if(operatorController.getRightTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.INTAKING);
-    } else if(operatorController.getRightBumper()) {
-      manipulator.setWantedState(ManipulatorStates.SPEAKER_SHOOT);
-    } else if(operatorController.getLeftBumper()) {
+    } else if(operatorController.getBButtonPressed()) {
+      manipulator.setWantedState(ManipulatorStates.SPEAKER_SUB_SHOOT);
+    } else if(operatorController.getAButtonPressed()) {
       manipulator.setWantedState(ManipulatorStates.AMP_SHOOT);
+    } else if(operatorController.getRightBumper()) {
+      manipulator.setWantedState(ManipulatorStates.SHOOTING);
     } else {
       manipulator.setWantedState(ManipulatorStates.IDLE);
     }
@@ -110,7 +112,15 @@ public class Robot extends TimedRobot {
   public void testInit() {}
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    if(operatorController.getPOV() == 180) {
+      climber.setWantedState(ClimbStates.MANUAL_DOWN);
+    } else {
+      climber.setWantedState(ClimbStates.DOWN);
+      climber.overridePosition();
+    }
+    climber.update();
+  }
 
   @Override
   public void simulationInit() {}

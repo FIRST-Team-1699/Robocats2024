@@ -21,18 +21,18 @@ public class Pivoter {
         pivotEncoder = pivotMotor.getAlternateEncoder(Type.kQuadrature, 8192);
         pivotEncoder.setPositionConversionFactor(360);
         pivotEncoder.setInverted(true);
-        pivotEncoder.setPosition(26);
         pivotController = pivotMotor.getPIDController();
         pivotController.setFeedbackDevice(pivotEncoder);
         pivotController.setP(PivoterConstants.kP);
         pivotController.setI(PivoterConstants.kI);
         pivotController.setD(PivoterConstants.kD);
-        pivotController.setOutputRange(-.3, .3);
+        pivotController.setOutputRange(-.5, .5);
     }
 
     public void setAngle(double angle) {
         angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
-        pivotController.setReference(angle, ControlType.kPosition);
+        setpoint = angle - 23;
+        pivotController.setReference(setpoint, ControlType.kPosition);
     }
 
     public boolean isAtAngle() {

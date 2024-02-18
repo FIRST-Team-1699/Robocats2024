@@ -15,11 +15,14 @@ public class Manipulator {
 
     private boolean isLoaded;
 
+    private PivotPoses lastPose;
+
     public Manipulator() {
         intake = new Intake();
         indexer = new Indexer();
         pivot = new Pivoter();
         shooter = new Shooter();
+        this.lastPose = PivotPoses.IDLE;
     }
 
     public void startOrchestra() {
@@ -33,7 +36,10 @@ public class Manipulator {
             isLoaded = false;
         }
         switch(currentState) {
-            case AIMING:
+            case SHOOTING:
+                if(shooter.atSpeed() && pivot.isAtAngle()) {
+                    indexer.setWantedState(IndexStates.FEEDING);
+                }
                 break;
             case IDLE:
                 break;
@@ -45,19 +51,11 @@ public class Manipulator {
             case STORED:
                 break;
             case TRAP_SHOOT:
-                if(shooter.atSpeed()) {
-                    indexer.setWantedState(IndexStates.FEEDING);
-                }
+                
                 break;
             case AMP_SHOOT:
-                if(shooter.atSpeed()) {
-                    indexer.setWantedState(IndexStates.FEEDING);
-                }
                 break;
-            case SPEAKER_SHOOT:
-                if(shooter.atSpeed()) {
-                    indexer.setWantedState(IndexStates.FEEDING);
-                }
+            case SPEAKER_SUB_SHOOT:
                 break;
             default:
                 break;
@@ -68,14 +66,30 @@ public class Manipulator {
     }
 
     private void handleStateTransition() {
-        // TODO add indexer stuff after we know about indexer
+        System.out.println(lastPose);
+        System.out.println(currentState);
         switch(wantedState) {
-            case AIMING:
+            case SHOOTING:
+                switch(lastPose) {
+                    case AMP:
+                        shooter.setSpeed(ManipulatorConstants.kAmpSpeed);
+                        break;
+                    case IDLE:
+                        break;
+                    case SPEAKER_SUB:
+                        shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
+                        break;
+                    default:
+                        break;
+
+                }
                 // TODO tell the pivoter to start aiming
                 break;
             case IDLE:
                 intake.setWantedState(IntakeStates.IDLE);
-                pivot.setAngle(ManipulatorConstants.kIdleAngle);
+                indexer.setWantedState(IndexStates.EMPTY);
+                // pivot.setAngle(ManipulatorConstants.kIdleAngle);
+                shooter.setSpeed(0.0);
                 break;
             case INTAKING:
                 // TODO check if you are loaded. if so, you can't intake and the transition is failed
@@ -102,10 +116,11 @@ public class Manipulator {
             case AMP_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kAmpAngle);
                 shooter.setSpeed(ManipulatorConstants.kAmpSpeed);
+                lastPose = PivotPoses.AMP;
                 break;
-            case SPEAKER_SHOOT:
+            case SPEAKER_SUB_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kSpeakerSubwooferAngle);
-                shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
+                lastPose = PivotPoses.SPEAKER_SUB;
                 break;
             default:
                 break;
@@ -129,11 +144,25 @@ public class Manipulator {
         return shooter.atSpeed();
     }
 
+    public boolean autoHasShot() {
+        return !indexer.isLoaded();
+    }
+
+    public boolean loaded() {
+        return indexer.isLoaded();
+    }
+
+    public enum PivotPoses {
+        SPEAKER_SUB,
+        AMP,
+        IDLE
+    }
+
     public enum ManipulatorStates {
         INTAKING,
         OUTTAKING,
-        SPEAKER_SHOOT,
-        AIMING,
+        SPEAKER_SUB_SHOOT,
+        SHOOTING,
         IDLE,
         STORED,
         TRAP_SHOOT,

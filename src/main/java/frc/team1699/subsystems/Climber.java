@@ -38,9 +38,12 @@ public class Climber {
         starController.setFF(ClimberConstants.kF); 
     }
 
+    public void overridePosition() {
+        portEncoder.setPosition(0);
+        starEncoder.setPosition(0);
+    }
+
     public void update() {
-        System.out.println(currentState.toString());
-        System.out.println(portEncoder.getPosition());
         switch(currentState) {
             case DOWN:
                 break;
@@ -80,6 +83,9 @@ public class Climber {
                 portController.setReference(0, ControlType.kVoltage);
                 starController.setReference(0, ControlType.kVoltage);
                 break;
+            case MANUAL_DOWN:
+                portController.setReference(-1, ControlType.kVoltage);
+                starController.setReference(-1, ControlType.kVoltage);
             default:
                 break;
         }
@@ -98,6 +104,7 @@ public class Climber {
         EXTENDING,
         RETRACTING,
         UP,
-        DOWN
+        DOWN,
+        MANUAL_DOWN
     }
 }

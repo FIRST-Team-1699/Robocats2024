@@ -1,8 +1,10 @@
 package frc.team1699.lib.auto.modes;
 
 import java.util.ArrayList;
+
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.team1699.lib.auto.events.Event;
@@ -14,22 +16,19 @@ import frc.team1699.lib.auto.events.WaitUntilLoadedEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
 
-public class FourPieceCenter extends AutoMode {
+public class ThreePieceClose extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public FourPieceCenter(Manipulator manipulator, Drive swerve) {
-        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("TestTwoPathOne").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("TestTwoPathTwo").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(45));
-        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("TestTwoPathThree").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("FourPiecePathFour").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+    public ThreePieceClose(Manipulator manipulator, Drive swerve) {
+        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("ThreePieceCloseOne").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("ThreePieceCloseTwo").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(45));
+        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("ThreePieceCloseThree").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("ThreePieceCloseFour").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         events = new ArrayList<Event>();
         events.add(new SpeakerShootEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
-        events.add(new WaitUntilLoadedEvent(manipulator));
-        events.add(new SpeakerShootEvent(manipulator));
-        events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootEvent(manipulator));
@@ -38,7 +37,6 @@ public class FourPieceCenter extends AutoMode {
         events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootEvent(manipulator));
-        events.add(new StopIntakeEvent(manipulator));
         i = 0;
 
     }

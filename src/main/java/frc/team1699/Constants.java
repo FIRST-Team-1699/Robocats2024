@@ -22,15 +22,15 @@ public class Constants {
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kF = 0.0;
-        public static final double kPortClimberTopPosition = 0.0;
-        public static final double kPortClimberBottomPosition = -440;
-        public static final double kStarClimberTopPosition = 0.0;
-        public static final double kStarClimberBottomPosition = -440;
+        public static final double kPortClimberTopPosition = 440;
+        public static final double kPortClimberBottomPosition = 0.0;
+        public static final double kStarClimberTopPosition = 440;
+        public static final double kStarClimberBottomPosition = 0.0;
     }
 
     public static class IndexerConstants {
         public static final int kMotorID = 16;
-        public static final double kIndexerSpeed = 0.3;
+        public static final double kIndexerSpeed = 0.25;
         public static final int kBeamBreakID = 0;
     }
 
@@ -49,11 +49,11 @@ public class Constants {
         public static final int kMotorID = 35;
         public static final double kEncoderOffset = 0.0;
         public static final double kTolerance = 2.0;
-        public static final double kP = 0.004;
+        public static final double kP = 0.008;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kMinAngle = 35.0;
-        public static final double kMaxAngle = 120.0; 
+        public static final double kMaxAngle = 130.0; 
     }
 
     public static class ShooterConstants {
@@ -62,16 +62,16 @@ public class Constants {
     }
 
     public static class ManipulatorConstants {
-        public static final double kSpeakerSubwooferSpeed = 7000;
-        public static final double kSpeakerSubwooferAngle = 70;
-        public static final double kSpeakerStageSpeed = 7000;
+        public static final double kSpeakerSubwooferSpeed = 50;
+        public static final double kSpeakerSubwooferAngle = 50;
+        public static final double kSpeakerStageSpeed = 20;
         public static final double kSpeakerStageAngle = 35;
-        public static final double kAmpSpeed = 200;
-        public static final double kAmpAngle = 60;
+        public static final double kAmpSpeed = 20;
+        public static final double kAmpAngle = 110;
         public static final double kTrapSpeed = 0.0;
         public static final double kTrapAngle = 80;
-        public static final double kIdleAngle = 60;
-        public static final double kIntakeAngle = 60;
+        public static final double kIdleAngle = 50;
+        public static final double kIntakeAngle = 50;
     }
 
     public static class SwerveConstants {

@@ -7,12 +7,10 @@ import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 // TODO: make it not jank by having shooter logic to see if shooting is done, preferably not with a timer. Color sensor?
 public class SpeakerShootEvent extends Event {
     private Manipulator manipulator;
-    private boolean shooting;
     private Timer timer;
 
     public SpeakerShootEvent(Manipulator manipulator) {
         this.manipulator = manipulator;
-        this.shooting = false;
         this.timer = new Timer();
         timer.stop();
         timer.reset();
@@ -20,23 +18,16 @@ public class SpeakerShootEvent extends Event {
 
     @Override
     public void initialize() {
-        manipulator.setWantedState(ManipulatorStates.SPEAKER_SHOOT);
+        manipulator.setWantedState(ManipulatorStates.SPEAKER_SUB_SHOOT);
+        manipulator.setWantedState(ManipulatorStates.SHOOTING);
     }
 
     @Override
-    public void update() {
-        if(manipulator.shooterAtSpeed() && !shooting) {
-            timer.start();
-            shooting = true;
-        }
-    }
+    public void update() {}
 
     @Override
     public boolean isFinished() {
-        if(timer.advanceIfElapsed(1.0)) {
-            return true;
-        }
-        return false;
+        return manipulator.autoHasShot();
     }
 
     @Override

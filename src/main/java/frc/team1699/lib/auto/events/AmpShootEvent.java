@@ -21,6 +21,7 @@ public class AmpShootEvent extends Event {
     @Override
     public void initialize() {
         manipulator.setWantedState(ManipulatorStates.AMP_SHOOT);
+        manipulator.setWantedState(ManipulatorStates.SHOOTING);
     }
 
     @Override

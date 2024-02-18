@@ -21,6 +21,7 @@ public class TrapShootEvent extends Event {
     @Override
     public void initialize() {
         manipulator.setWantedState(ManipulatorStates.TRAP_SHOOT);
+        manipulator.setWantedState(ManipulatorStates.SHOOTING);
     }
 
     @Override
