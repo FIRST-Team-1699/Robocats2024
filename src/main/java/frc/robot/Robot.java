@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
-import frc.team1699.lib.auto.modes.FourPieceCenter;
+import frc.team1699.lib.auto.modes.ThreePieceClose;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    auto = new FourPieceCenter(manipulator, swerve);
+    auto = new ThreePieceClose(manipulator, swerve);
     auto.initialize();
     climber.setWantedState(ClimbStates.RETRACTING);
   }
