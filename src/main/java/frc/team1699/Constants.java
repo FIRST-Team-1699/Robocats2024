@@ -76,9 +76,9 @@ public class Constants {
 
     public static class SwerveConstants {
         public static final double kDeadband = .02;
-        public static final double kSlowStrafeCoefficient = .75;
+        public static final double kSlowStrafeCoefficient = .85;
         public static final double kMaxSpeed = Units.feetToMeters(15.1) * kSlowStrafeCoefficient;
-        public static final double kSlowRotationCoefficient = .60;
+        public static final double kSlowRotationCoefficient = .75;
         public static final double kMaxRotationalSpeed = Units.degreesToRadians(720) * kSlowRotationCoefficient;
         public static final double kTrackWidth = Units.inchesToMeters(20.5);
         public static final double kHalfTrackWidth = kTrackWidth / 2.0;

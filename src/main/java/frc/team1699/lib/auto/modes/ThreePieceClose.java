@@ -11,7 +11,6 @@ import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
 import frc.team1699.lib.auto.events.SpeakerShootEvent;
-import frc.team1699.lib.auto.events.StopIntakeEvent;
 import frc.team1699.lib.auto.events.WaitUntilLoadedEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
@@ -25,6 +24,7 @@ public class ThreePieceClose extends AutoMode {
         PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("ThreePieceCloseTwo").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(45));
         PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("ThreePieceCloseThree").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("ThreePieceCloseFour").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("ThreePieceCloseFive").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         events = new ArrayList<Event>();
         events.add(new SpeakerShootEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
@@ -37,6 +37,8 @@ public class ThreePieceClose extends AutoMode {
         events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootEvent(manipulator));
+        events.add(new RunIntakeEvent(manipulator));
+        events.add(new FollowTrajectoryEvent(trajectoryFive, swerve));
         i = 0;
 
     }
