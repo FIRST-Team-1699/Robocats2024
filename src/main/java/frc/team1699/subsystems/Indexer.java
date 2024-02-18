@@ -30,6 +30,9 @@ public class Indexer {
         }
         switch(currentState) {
             case EMPTY:
+                if(hasNote) {
+                    setWantedState(IndexStates.LOADED);
+                }
                 break;
             case FEEDING:
                 if(!hasNote) {

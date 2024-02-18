@@ -23,13 +23,13 @@ public class Constants {
         public static final double kD = 0.0;
         public static final double kF = 0.0;
         public static final double kPortClimberTopPosition = 0.0;
-        public static final double kPortClimberBottomPosition = -430;
+        public static final double kPortClimberBottomPosition = -440;
         public static final double kStarClimberTopPosition = 0.0;
-        public static final double kStarClimberBottomPosition = -430;
+        public static final double kStarClimberBottomPosition = -440;
     }
 
     public static class IndexerConstants {
-        public static final int kMotorID = -1;
+        public static final int kMotorID = 16;
         public static final double kIndexerSpeed = 0.3;
         public static final int kBeamBreakID = 0;
     }
@@ -39,46 +39,43 @@ public class Constants {
         public static final int kBilgeMotorID = 32;
         public static final double kDeckSpeed = -0.75;
         public static final double kBilgeSpeed = -0.75;
+        // for later
+        // indexer = 1 x 1000/20
+        // bottom intake = .5 x 1000/7
+        // top intake = 1 x 1000/28
     }
 
     public static class PivoterConstants {
-        public static final int kMotorID = -1;
+        public static final int kMotorID = 35;
         public static final double kEncoderOffset = 0.0;
         public static final double kTolerance = 2.0;
-        public static final double kP = 0.0;
+        public static final double kP = 0.004;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
-        public static final double kMinAngle = 45.0;
-        public static final double kMaxAngle = 100.0; 
+        public static final double kMinAngle = 35.0;
+        public static final double kMaxAngle = 120.0; 
     }
 
     public static class ShooterConstants {
-        public static final int kTopMotorID = -1;
-        public static final int kBottomMotorID = -1;
+        public static final int kTopMotorID = 33;
+        public static final int kBottomMotorID = 34;
     }
 
     public static class ManipulatorConstants {
-        public static final double kSpeakerSubwooferSpeed = 0.0;
-        public static final double kSpeakerSubwooferAngle = 0.0;
-        public static final double kSpeakerStageSpeed = 0.0;
-        public static final double kSpeakerStageAngle = 0.0;
-        public static final double kAmpSpeed = 0.0;
-        public static final double kAmpAngle = 0.0;
+        public static final double kSpeakerSubwooferSpeed = 7000;
+        public static final double kSpeakerSubwooferAngle = 70;
+        public static final double kSpeakerStageSpeed = 7000;
+        public static final double kSpeakerStageAngle = 35;
+        public static final double kAmpSpeed = 200;
+        public static final double kAmpAngle = 60;
         public static final double kTrapSpeed = 0.0;
-        public static final double kTrapAngle = 0.0;
-        public static final double kIdleAngle = 0.0;
-        public static final double kIntakeAngle = 0.0;
+        public static final double kTrapAngle = 80;
+        public static final double kIdleAngle = 60;
+        public static final double kIntakeAngle = 60;
     }
 
     public static class SwerveConstants {
-// photonvision-heading
-   //     public static final double kDeadband = .15;
-//Updated upstream
-      //  public static final double kDeadband = .2;
-      //  public static final double kMaxspeed = Units.feetToMeters(15,1);
-      //  public static final double kMaxRetationalSpeed = Units.feetToMeters(10); // DOES THIS NEED TO BE DIFFRENT THAN MAX SPEED? 
         public static final double kDeadband = .02;
-//main
         public static final double kSlowStrafeCoefficient = .75;
         public static final double kMaxSpeed = Units.feetToMeters(15.1) * kSlowStrafeCoefficient;
         public static final double kSlowRotationCoefficient = .60;

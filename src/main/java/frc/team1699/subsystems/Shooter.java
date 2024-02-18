@@ -31,11 +31,11 @@ public class Shooter {
     private PIDController topPID;
     private PIDController bottomPID;
 
-    private final double kTopP = 0.0;
+    private final double kTopP = 0.002;
     private final double kTopI = 0.0;
     private final double kTopD = 0.0;
 
-    private final double kBottomP = 0.0;
+    private final double kBottomP = 0.002;
     private final double kBottomI = 0.0;
     private final double kBottomD = 0.0;
 
@@ -54,7 +54,7 @@ public class Shooter {
         orchestra = new Orchestra();
         orchestra.addInstrument(topFX);
         orchestra.addInstrument(bottomFX);
-        orchestra.loadMusic(null);
+        orchestra.loadMusic("stacy.chrp");
     }
 
     public void startOrchestra() {

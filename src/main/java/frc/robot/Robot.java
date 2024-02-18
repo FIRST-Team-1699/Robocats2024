@@ -9,24 +9,26 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
-import frc.team1699.lib.auto.modes.ThreeNoteIntakeTest;
-import frc.team1699.lib.sensors.BeamBreak;
+import frc.team1699.lib.auto.modes.FourPieceCenter;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
+import frc.team1699.subsystems.Indexer;
 import frc.team1699.subsystems.Intake;
+import frc.team1699.subsystems.Manipulator;
 import frc.team1699.subsystems.Pivoter;
+import frc.team1699.subsystems.Shooter;
 import frc.team1699.subsystems.Climber.ClimbStates;
 import frc.team1699.subsystems.Drive.DriveState;
+import frc.team1699.subsystems.Indexer.IndexStates;
 import frc.team1699.subsystems.Intake.IntakeStates;
+import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 
 public class Robot extends TimedRobot {
 
   private XboxController driverController, operatorController;
   private Drive swerve;
-  private Intake intake;
-  // private Pivoter pivot;
+  private Manipulator manipulator;
   private Climber climber;
-
   private AutoMode auto;
 
   @Override
@@ -34,21 +36,18 @@ public class Robot extends TimedRobot {
     driverController = new XboxController(InputConstants.kDriverControllerPort);
     operatorController = new XboxController(InputConstants.kOperatorControllerPort);
     swerve = new Drive(driverController);
-    intake = new Intake();
-    // pivot = new Pivoter();
+    manipulator = new Manipulator();
     climber = new Climber();
   }
 
   @Override
-  public void robotPeriodic() {
-    // pivot.printEncoderValue();
-  }
+  public void robotPeriodic() {}
 
   @Override
   public void autonomousInit() {
-    auto = new ThreeNoteIntakeTest(intake, swerve);
-    auto.initialize();
-    climber.setWantedState(ClimbStates.DOWN);
+    // auto = new FourPieceCenter(manipulator, swerve);
+    // auto.initialize();
+    climber.setWantedState(ClimbStates.RETRACTING);
   }
 
   @Override
@@ -64,7 +63,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    intake.setWantedState(IntakeStates.IDLE);
+    manipulator.setWantedState(ManipulatorStates.IDLE);
   }
 
   @Override
@@ -73,12 +72,24 @@ public class Robot extends TimedRobot {
       swerve.resetHeading();
     }
 
-    if(driverController.getLeftTriggerAxis() > 0.1) {
-      intake.setWantedState(IntakeStates.REVERSING); 
-    } else if(driverController.getRightTriggerAxis() > 0.1) {
-      intake.setWantedState(IntakeStates.INTAKING);
+    // if(driverController.getLeftTriggerAxis() > 0.1) {
+    //   manipulator.setWantedState(ManipulatorStates.OUTTAKING); 
+    // } else if(driverController.getRightTriggerAxis() > 0.1) {
+    //   manipulator.setWantedState(ManipulatorStates.INTAKING);
+    // } else {
+    //   manipulator.setWantedState(ManipulatorStates.IDLE);
+    // }
+
+    if(operatorController.getLeftTriggerAxis() > 0.1) {
+      manipulator.setWantedState(ManipulatorStates.OUTTAKING);
+    } else if(operatorController.getRightTriggerAxis() > 0.1) {
+      manipulator.setWantedState(ManipulatorStates.INTAKING);
+    } else if(operatorController.getRightBumper()) {
+      manipulator.setWantedState(ManipulatorStates.SPEAKER_SHOOT);
+    } else if(operatorController.getLeftBumper()) {
+      manipulator.setWantedState(ManipulatorStates.AMP_SHOOT);
     } else {
-      intake.setWantedState(IntakeStates.IDLE);
+      manipulator.setWantedState(ManipulatorStates.IDLE);
     }
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
@@ -89,13 +100,28 @@ public class Robot extends TimedRobot {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
 
-    if(operatorController.getLeftTriggerAxis() >= .1) {
+    // if(operatorController.getRightBumperPressed()) {
+    //   shooter.setSpeed(5000);
+    // } else if(operatorController.getLeftBumperPressed()) {
+    //   shooter.setSpeed(0);
+    // }
+
+    if(operatorController.getPOV() == 0) {
       climber.setWantedState(ClimbStates.EXTENDING);
-    } else if(operatorController.getRightTriggerAxis() >= .1) {
+    } else if(operatorController.getPOV() == 180) {
       climber.setWantedState(ClimbStates.RETRACTING);
     }
+
+    // if(operatorController.getAButton()) {
+    //   pivot.setAngle(45);
+    // }
+
+    // if(operatorController.getXButton()) {
+    //   pivot.setAngle(60);
+    // }
+
     swerve.update();
-    intake.update();
+    manipulator.update();
     climber.update();
   }
 

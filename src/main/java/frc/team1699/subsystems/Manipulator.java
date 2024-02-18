@@ -27,12 +27,20 @@ public class Manipulator {
     }
 
     public void update() {
+        if(indexer.isLoaded()) {
+            isLoaded = true;
+        } else {
+            isLoaded = false;
+        }
         switch(currentState) {
             case AIMING:
                 break;
             case IDLE:
                 break;
             case INTAKING:
+                if(isLoaded) {
+                    indexer.setWantedState(IndexStates.LOADED);
+                }
                 break;
             case STORED:
                 break;
@@ -73,11 +81,18 @@ public class Manipulator {
                 // TODO check if you are loaded. if so, you can't intake and the transition is failed
                 intake.setWantedState(IntakeStates.INTAKING);
                 pivot.setAngle(ManipulatorConstants.kIntakeAngle);
+                indexer.setWantedState(IndexStates.INTAKING);
                 shooter.setSpeed(0);
                 break;
+            case OUTTAKING:
+                intake.setWantedState(IntakeStates.REVERSING);
+                pivot.setAngle(ManipulatorConstants.kIntakeAngle);
+                shooter.setSpeed(0);
+                indexer.setWantedState(IndexStates.REVERSING);
             case STORED:
                 intake.setWantedState(IntakeStates.IDLE);
                 pivot.setAngle(ManipulatorConstants.kIdleAngle);
+                indexer.setWantedState(IndexStates.LOADED);
                 break;
             case TRAP_SHOOT:
                 // TODO check if you are loaded (with indexer.isLoaded()). if you aren't, the state transition is failed and you go back to idle
@@ -116,6 +131,7 @@ public class Manipulator {
 
     public enum ManipulatorStates {
         INTAKING,
+        OUTTAKING,
         SPEAKER_SHOOT,
         AIMING,
         IDLE,

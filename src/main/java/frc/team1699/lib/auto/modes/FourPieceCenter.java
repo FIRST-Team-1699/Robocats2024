@@ -8,30 +8,36 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
+import frc.team1699.lib.auto.events.SpeakerShootEvent;
 import frc.team1699.lib.auto.events.StopIntakeEvent;
-import frc.team1699.lib.auto.events.WaitEvent;
 import frc.team1699.subsystems.Drive;
-import frc.team1699.subsystems.Intake;
+import frc.team1699.subsystems.Manipulator;
 
-public class ThreeNoteIntakeTest extends AutoMode {
+public class FourPieceCenter extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public ThreeNoteIntakeTest(Intake intake, Drive swerve) {
-        events = new ArrayList<Event>();
-        events.add(new RunIntakeEvent(intake));
+    public FourPieceCenter(Manipulator manipulator, Drive swerve) {
         PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("TestTwoPathOne").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("TestTwoPathTwo").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(45));
         PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("TestTwoPathThree").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("FourPiecePathFour").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        events = new ArrayList<Event>();
+        events.add(new SpeakerShootEvent(manipulator));
+        events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
-        events.add(new WaitEvent(0.5));
+        events.add(new StopIntakeEvent(manipulator));
+        events.add(new SpeakerShootEvent(manipulator));
+        events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
-        events.add(new WaitEvent(0.5));
+        events.add(new StopIntakeEvent(manipulator));
+        events.add(new SpeakerShootEvent(manipulator));
+        events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryThree, swerve));
-        events.add(new WaitEvent(1.0));
-        events.add(new StopIntakeEvent(intake));
-
+        events.add(new StopIntakeEvent(manipulator));
+        events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         i = 0;
+
     }
 
     @Override
