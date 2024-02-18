@@ -117,8 +117,8 @@ public class Manipulator {
     public void setWantedState(ManipulatorStates state) {
         if(this.wantedState != state) {
             wantedState = state;
-            handleStateTransition();
         }
+        handleStateTransition();
     }
 
     public ManipulatorStates getCurrentState() {

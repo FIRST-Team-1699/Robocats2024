@@ -16,6 +16,8 @@ public class Indexer {
         indexMotor = new CANSparkMax(IndexerConstants.kMotorID, MotorType.kBrushless);
         indexBeamBreak = new BeamBreak(IndexerConstants.kBeamBreakID);
         hasNote = false;
+        wantedState = IndexStates.EMPTY;
+        currentState = IndexStates.EMPTY;
     }
 
     public boolean isLoaded() {
@@ -23,6 +25,7 @@ public class Indexer {
     }
 
     public void update() {
+        System.out.println(isLoaded());
         if(isLoaded()) {
             hasNote = true;
         } else {

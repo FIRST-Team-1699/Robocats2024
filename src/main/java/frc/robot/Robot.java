@@ -12,15 +12,9 @@ import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.FourPieceCenter;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
-import frc.team1699.subsystems.Indexer;
-import frc.team1699.subsystems.Intake;
 import frc.team1699.subsystems.Manipulator;
-import frc.team1699.subsystems.Pivoter;
-import frc.team1699.subsystems.Shooter;
 import frc.team1699.subsystems.Climber.ClimbStates;
 import frc.team1699.subsystems.Drive.DriveState;
-import frc.team1699.subsystems.Indexer.IndexStates;
-import frc.team1699.subsystems.Intake.IntakeStates;
 import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 
 public class Robot extends TimedRobot {
@@ -38,6 +32,7 @@ public class Robot extends TimedRobot {
     swerve = new Drive(driverController);
     manipulator = new Manipulator();
     climber = new Climber();
+    manipulator.startOrchestra();
   }
 
   @Override
@@ -45,8 +40,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // auto = new FourPieceCenter(manipulator, swerve);
-    // auto.initialize();
+    auto = new FourPieceCenter(manipulator, swerve);
+    auto.initialize();
     climber.setWantedState(ClimbStates.RETRACTING);
   }
 
@@ -72,14 +67,6 @@ public class Robot extends TimedRobot {
       swerve.resetHeading();
     }
 
-    // if(driverController.getLeftTriggerAxis() > 0.1) {
-    //   manipulator.setWantedState(ManipulatorStates.OUTTAKING); 
-    // } else if(driverController.getRightTriggerAxis() > 0.1) {
-    //   manipulator.setWantedState(ManipulatorStates.INTAKING);
-    // } else {
-    //   manipulator.setWantedState(ManipulatorStates.IDLE);
-    // }
-
     if(operatorController.getLeftTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.OUTTAKING);
     } else if(operatorController.getRightTriggerAxis() > 0.1) {
@@ -100,25 +87,11 @@ public class Robot extends TimedRobot {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
 
-    // if(operatorController.getRightBumperPressed()) {
-    //   shooter.setSpeed(5000);
-    // } else if(operatorController.getLeftBumperPressed()) {
-    //   shooter.setSpeed(0);
-    // }
-
     if(operatorController.getPOV() == 0) {
       climber.setWantedState(ClimbStates.EXTENDING);
     } else if(operatorController.getPOV() == 180) {
       climber.setWantedState(ClimbStates.RETRACTING);
     }
-
-    // if(operatorController.getAButton()) {
-    //   pivot.setAngle(45);
-    // }
-
-    // if(operatorController.getXButton()) {
-    //   pivot.setAngle(60);
-    // }
 
     swerve.update();
     manipulator.update();
