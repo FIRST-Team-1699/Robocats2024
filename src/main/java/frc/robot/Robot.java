@@ -66,8 +66,9 @@ public class Robot extends TimedRobot {
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
     }
-
-    if(operatorController.getLeftTriggerAxis() > 0.1) {
+    if(driverController.getRightBumperPressed()) {
+      manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
+    } else if(operatorController.getLeftTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.OUTTAKING);
     } else if(operatorController.getRightTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.INTAKING);

@@ -48,10 +48,11 @@ public class Manipulator {
                     indexer.setWantedState(IndexStates.LOADED);
                 }
                 break;
+            case OUTTAKING:
+                break;
             case STORED:
                 break;
             case TRAP_SHOOT:
-                
                 break;
             case AMP_SHOOT:
                 break;
@@ -80,6 +81,8 @@ public class Manipulator {
                     case SPEAKER_SUB:
                         shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                         break;
+                    case SPEAKER_AUTO:
+                        shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                     default:
                         break;
 
@@ -124,7 +127,7 @@ public class Manipulator {
                 lastPose = PivotPoses.SPEAKER_SUB;
                 break;
             case SPEAKER_LL_SHOOT:
-                shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
+                lastPose = PivotPoses.SPEAKER_AUTO;
                 break;
             default:
                 break;
