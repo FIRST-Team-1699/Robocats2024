@@ -148,11 +148,7 @@ public class Manipulator {
         return shooter.atSpeed();
     }
 
-    public boolean autoHasShot() {
-        return !indexer.isLoaded();
-    }
-
-    public boolean loaded() {
+    public boolean isLoaded() {
         return indexer.isLoaded();
     }
 

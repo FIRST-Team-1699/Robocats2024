@@ -19,17 +19,15 @@ import frc.team1699.lib.auto.modes.AutoMode;
 // YES I KNOW THIS VIOLATES EVERY CONVENTION
 // FROM EVERY OTHER SUBSYSTEM, LET ME COOK.
 public class Shooter {
-    private boolean isAtSpeed = true;
-    private double setpoint = 0.0;
+    private boolean isAtSpeed = false;
+    private double topSetpoint = 0.0;
+    private double bottomSetpoint = 0.0;
 
     private TalonFX topFX;
     private TalonFX bottomFX;
     private TalonFXConfiguration configs;
 
     private VelocityVoltage motorRequest;
-
-    // private PIDController topPID;
-    // private PIDController bottomPID;
 
     private final double kP = 0.0;
     private final double kI = 0.0;
@@ -51,12 +49,6 @@ public class Shooter {
         bottomFX = new TalonFX(ShooterConstants.kBottomMotorID);
         bottomFX.getConfigurator().apply(configs);
 
-        // PIDs
-        // topPID = new PIDController(kTopP, kTopI, kTopD);
-        // bottomPID = new PIDController(kBottomP, kBottomI, kBottomD);
-        // topPID.setTolerance(20);
-        // bottomPID.setTolerance(20);
-
         orchestra = new Orchestra();
         orchestra.addInstrument(topFX);
         orchestra.addInstrument(bottomFX);
@@ -71,18 +63,20 @@ public class Shooter {
     }
 
     public void setSpeed(double speed) {
-        // TODO give the motors a new setpoint
-        // is at speed becomes false
-        setpoint = speed;
-        // topPID.setSetpoint(speed);
-        // bottomPID.setSetpoint(speed);
+        topSetpoint = speed;
+        bottomSetpoint = speed;
+    }
+
+    public void setSeparateSpeeds(double topSpeed, double bottomSpeed) {
+        topSetpoint = topSpeed;
+        bottomSetpoint = bottomSpeed;
     }
 
     public boolean atSpeed() {
-        if(Math.abs(topFX.getVelocity().getValueAsDouble() - setpoint) >= 5) {
+        if(Math.abs(topFX.getVelocity().getValueAsDouble() - topSetpoint) >= 5) {
             return false;
         }
-        if(Math.abs(bottomFX.getVelocity().getValueAsDouble() - setpoint) >= 5) {
+        if(Math.abs(bottomFX.getVelocity().getValueAsDouble() - bottomSetpoint) >= 5) {
             return false;
         }
         return true;
@@ -90,7 +84,7 @@ public class Shooter {
 
     public void update() {
         // check if we are at speed and anything else i think of later
-        topFX.setControl(motorRequest.withVelocity(setpoint));
-        bottomFX.setControl(motorRequest.withVelocity(setpoint));
+        topFX.setControl(motorRequest.withVelocity(topSetpoint));
+        bottomFX.setControl(motorRequest.withVelocity(bottomSetpoint));
     }
 }
