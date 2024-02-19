@@ -32,7 +32,7 @@ public class Shooter {
     private final double kP = 0.0;
     private final double kI = 0.0;
     private final double kD = 0.0;
-    private final double kV = 0.11;
+    private final double kV = 0.13;
 
     private Orchestra orchestra;
     

@@ -26,7 +26,7 @@ public class Pivoter {
         pivotController.setP(PivoterConstants.kP);
         pivotController.setI(PivoterConstants.kI);
         pivotController.setD(PivoterConstants.kD);
-        pivotController.setOutputRange(-.5, .5);
+        pivotController.setOutputRange(-.8, .8);
     }
 
     public void setAngle(double angle) {

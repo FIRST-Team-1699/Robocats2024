@@ -35,7 +35,7 @@ public class Drive {
     private PIDConstants translationConstants = new PIDConstants(0.01);
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
-    private PIDController headingLockController = new PIDController(.2, 0, 0);
+    private PIDController headingLockController = new PIDController(.01, 0, 0);
 
     private SwerveDrive swerve;
     private XboxController controller;
@@ -82,8 +82,8 @@ public class Drive {
 
     private void teleopDriveHeadingPID(double targetOffset) {
         // get controller inputs
-        double vX = controller.getLeftX();
-        double vY = controller.getLeftY();
+        double vX = -controller.getLeftX();
+        double vY = -controller.getLeftY();
         double vR = headingLockController.calculate(targetOffset, 0.0);
 
         // apply deadbands
@@ -106,7 +106,7 @@ public class Drive {
         }
         
         // drive swerve
-        swerve.drive(new Translation2d(vX, vY), vR, true, false);
+        swerve.drive(new Translation2d(vY, vX), vR, true, false);
     }
 
      public void setTrajectory(PathPlannerTrajectory trajectory) {

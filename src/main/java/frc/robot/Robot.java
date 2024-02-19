@@ -7,6 +7,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.FourPieceCenter;
@@ -36,7 +37,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    // manipulator.startOrchestra();
+  }
 
   @Override
   public void autonomousInit() {
@@ -47,6 +50,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    driverController.setRumble(RumbleType.kBothRumble, 1);
+    operatorController.setRumble(RumbleType.kBothRumble, 1);
     if(auto.isFinished()) {
       auto.finish();
     } else {
@@ -67,8 +72,8 @@ public class Robot extends TimedRobot {
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
     }
-    if(driverController.getRightBumperPressed()) {
-      manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
+    if(operatorController.getRightBumper()) {
+      manipulator.setWantedState(ManipulatorStates.SHOOTING);
     } else if(operatorController.getLeftTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.OUTTAKING);
     } else if(operatorController.getRightTriggerAxis() > 0.1) {
@@ -77,8 +82,8 @@ public class Robot extends TimedRobot {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_SUB_SHOOT);
     } else if(operatorController.getAButtonPressed()) {
       manipulator.setWantedState(ManipulatorStates.AMP_SHOOT);
-    } else if(operatorController.getRightBumper()) {
-      manipulator.setWantedState(ManipulatorStates.SHOOTING);
+    } else if(driverController.getRightBumper()) {
+      manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
     } else {
       manipulator.setWantedState(ManipulatorStates.IDLE);
     }
@@ -104,7 +109,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-
+    driverController.setRumble(RumbleType.kBothRumble, 0);
+    operatorController.setRumble(RumbleType.kBothRumble, 0);
   }
 
   @Override
