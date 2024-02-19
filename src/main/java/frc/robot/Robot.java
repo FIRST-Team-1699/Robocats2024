@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
+import frc.team1699.lib.auto.modes.FourPieceCenter;
 import frc.team1699.lib.auto.modes.ThreePieceClose;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
@@ -39,7 +40,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    auto = new ThreePieceClose(manipulator, swerve);
+    auto = new FourPieceCenter(manipulator, swerve);
     auto.initialize();
     climber.setWantedState(ClimbStates.RETRACTING);
   }
@@ -84,7 +85,7 @@ public class Robot extends TimedRobot {
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
-    } else if(swerve.getState() != DriveState.TELEOP_SPEAKER_TRACK && driverController.getRightBumper()) {
+    } else if(driverController.getRightBumper()) {
       swerve.setWantedState(DriveState.TELEOP_SPEAKER_TRACK);
     } else if(swerve.getState() != DriveState.TELEOP_DRIVE) {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);

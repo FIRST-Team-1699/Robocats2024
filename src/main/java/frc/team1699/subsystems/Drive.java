@@ -35,7 +35,7 @@ public class Drive {
     private PIDConstants translationConstants = new PIDConstants(0.01);
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
-    private PIDController headingLockController = new PIDController(.015, .005, 0);
+    private PIDController headingLockController = new PIDController(.2, 0, 0);
 
     private SwerveDrive swerve;
     private XboxController controller;
@@ -157,7 +157,7 @@ public class Drive {
     } 
 
     public void update() {
-        updateVisionData();
+        // updateVisionData();
         switch (currentState) {
             case FOLLOW_TRAJ:
                 driveTraj();

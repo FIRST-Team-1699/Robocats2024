@@ -64,7 +64,7 @@ public class Indexer {
                 indexMotor.set(0);
                 break;
             case FEEDING:
-                indexMotor.set(IndexerConstants.kIndexerSpeed);
+                indexMotor.set(IndexerConstants.kFeedSpeed);
                 break;
             case LOADED:
                 indexMotor.set(0);

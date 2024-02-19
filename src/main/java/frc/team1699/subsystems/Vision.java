@@ -31,26 +31,21 @@ public class Vision {
 
     public double getSpeakerX() {
         if(DriverStation.getAlliance().isPresent() && limelight.targetInView()) {
-            Alliance alliance = DriverStation.getAlliance().get();
-            if(alliance.equals(Alliance.Red)) {
-                return getTagHorizontalOffset(4);
-            } else {
-                return getTagHorizontalOffset(8);
-            }
+            return limelight.getHorizontalOffset();
         }
         return 0.0;
     }
 
     public double getSpeakerAngle() {
         if(DriverStation.getAlliance().isPresent() && limelight.targetInView()) {
-            Alliance alliance = DriverStation.getAlliance().get();
-            if(alliance.equals(Alliance.Red)) {
-                limelight.setLimelightPipeline(8);
-                
-            } else {
-                limelight.setLimelightPipeline(4);
-            }
             return Math.atan(VisionConstants.kSpeakerAimHeight / limelight.getDistanceToTarget(VisionConstants.kSpeakerAimHeight));
+        }
+        return -1.0;
+    }
+
+    public double getSpeakerDistance() {
+        if(limelight.targetInView()) {
+            return limelight.getDistanceToTarget(VisionConstants.kSpeakerAimHeight);
         }
         return -1.0;
     }

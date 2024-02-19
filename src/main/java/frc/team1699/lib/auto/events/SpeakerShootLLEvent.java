@@ -18,11 +18,15 @@ public class SpeakerShootLLEvent extends Event {
     @Override
     public void initialize() {
         manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
-        manipulator.setWantedState(ManipulatorStates.SHOOTING);
+        timer.start();
     }
 
     @Override
-    public void update() {}
+    public void update() {
+        if(timer.advanceIfElapsed(.5)) {
+            manipulator.setWantedState(ManipulatorStates.SHOOTING);
+        }
+    }
 
     @Override
     public boolean isFinished() {

@@ -1,5 +1,6 @@
 package frc.team1699.subsystems;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.team1699.Constants.ManipulatorConstants;
 import frc.team1699.subsystems.Indexer.IndexStates;
 import frc.team1699.subsystems.Intake.IntakeStates;
@@ -17,12 +18,20 @@ public class Manipulator {
 
     private PivotPoses lastPose;
 
+    private InterpolatingDoubleTreeMap pivotMap;
+
     public Manipulator() {
         intake = new Intake();
         indexer = new Indexer();
         pivot = new Pivoter();
         shooter = new Shooter();
         this.lastPose = PivotPoses.IDLE;
+        pivotMap = new InterpolatingDoubleTreeMap();
+        pivotMap.put(0.5, 55.0);
+        pivotMap.put(1.0, 45.0);
+        pivotMap.put(1.5, 40.0);
+        pivotMap.put(2.0, 35.0);
+        pivotMap.put(2.5, 32.0);
     }
 
     public void startOrchestra() {
@@ -59,7 +68,7 @@ public class Manipulator {
             case SPEAKER_SUB_SHOOT:
                 break;
             case SPEAKER_LL_SHOOT:
-                pivot.setAngle(Vision.getInstance().getSpeakerAngle());
+                pivot.setAngle(pivotMap.get(Vision.getInstance().getSpeakerDistance()));
                 break;
             default:
                 break;
@@ -74,7 +83,7 @@ public class Manipulator {
             case SHOOTING:
                 switch(lastPose) {
                     case AMP:
-                        shooter.setSpeed(ManipulatorConstants.kAmpSpeed);
+                        shooter.setSeparateSpeeds(ManipulatorConstants.kAmpTopSpeed, ManipulatorConstants.kAmpBottomSpeed);
                         break;
                     case IDLE:
                         break;
@@ -119,7 +128,7 @@ public class Manipulator {
                 break;
             case AMP_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kAmpAngle);
-                shooter.setSpeed(ManipulatorConstants.kAmpSpeed);
+                shooter.setSeparateSpeeds(ManipulatorConstants.kAmpTopSpeed, ManipulatorConstants.kAmpBottomSpeed);
                 lastPose = PivotPoses.AMP;
                 break;
             case SPEAKER_SUB_SHOOT:
