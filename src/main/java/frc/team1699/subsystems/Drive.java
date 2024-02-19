@@ -93,10 +93,18 @@ public class Drive {
         if(Math.abs(vY) < SwerveConstants.kDeadband) {
             vY = 0;
         }
+
         // scale outputs
-        vX *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient; 
-        vY *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient;
-        vR *= SwerveConstants.kMaxRotationalSpeed * SwerveConstants.kSlowRotationCoefficient;
+        if(currentState == DriveState.TELEOP_SPEAKER_TRACK) {
+            vX *= SwerveConstants.kMaxSpeed * SwerveConstants.kADSStrafeCoefficient;
+            vY *= SwerveConstants.kMaxSpeed * SwerveConstants.kADSStrafeCoefficient;
+            vR *= SwerveConstants.kMaxRotationalSpeed;
+        } else {
+            vX *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient; 
+            vY *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient;
+            vR *= SwerveConstants.kMaxRotationalSpeed;
+        }
+        
         // drive swerve
         swerve.drive(new Translation2d(vX, vY), vR, true, false);
     }
