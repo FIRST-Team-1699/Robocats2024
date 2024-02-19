@@ -52,7 +52,7 @@ public class Drive {
         this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(14.5));
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
         headingLockController.enableContinuousInput(-180, 180);
-        // this.vision = new Vision();
+        this.vision = Vision.getInstance();
     }
 
     private void teleopDrive() {
@@ -149,7 +149,7 @@ public class Drive {
     } 
 
     public void update() {
-        // updateVisionData();
+        updateVisionData();
         switch (currentState) {
             case FOLLOW_TRAJ:
                 driveTraj();

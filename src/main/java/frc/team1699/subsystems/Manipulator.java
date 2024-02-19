@@ -57,6 +57,9 @@ public class Manipulator {
                 break;
             case SPEAKER_SUB_SHOOT:
                 break;
+            case SPEAKER_LL_SHOOT:
+                pivot.setAngle(Vision.getInstance().getSpeakerAngle());
+                break;
             default:
                 break;
         }
@@ -66,8 +69,6 @@ public class Manipulator {
     }
 
     private void handleStateTransition() {
-        System.out.println(lastPose);
-        System.out.println(currentState);
         switch(wantedState) {
             case SHOOTING:
                 switch(lastPose) {
@@ -122,6 +123,9 @@ public class Manipulator {
                 pivot.setAngle(ManipulatorConstants.kSpeakerSubwooferAngle);
                 lastPose = PivotPoses.SPEAKER_SUB;
                 break;
+            case SPEAKER_LL_SHOOT:
+                shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
+                break;
             default:
                 break;
             
@@ -154,6 +158,7 @@ public class Manipulator {
 
     public enum PivotPoses {
         SPEAKER_SUB,
+        SPEAKER_AUTO,
         AMP,
         IDLE
     }
@@ -161,10 +166,11 @@ public class Manipulator {
     public enum ManipulatorStates {
         INTAKING,
         OUTTAKING,
-        SPEAKER_SUB_SHOOT,
         SHOOTING,
         IDLE,
         STORED,
+        SPEAKER_SUB_SHOOT,
+        SPEAKER_LL_SHOOT,
         TRAP_SHOOT,
         AMP_SHOOT
     }

@@ -7,9 +7,17 @@ import frc.team1699.Constants.VisionConstants;
 import frc.team1699.lib.vision.Limelight;
 
 public class Vision {
+    private static Vision vision;
+    public static Vision getInstance() {
+        if(vision == null) {
+            vision = new Vision();
+        }
+        return vision;
+    }
+
     private Limelight limelight;
 
-    public Vision() {
+    private Vision() {
         this.limelight = new Limelight(VisionConstants.kLimelightName, VisionConstants.kPipelineID, VisionConstants.kCameraPosition);
     }
 
@@ -44,7 +52,7 @@ public class Vision {
             }
             return Math.atan(VisionConstants.kSpeakerAimHeight / limelight.getDistanceToTarget(VisionConstants.kSpeakerAimHeight));
         }
-        return 0.0;
+        return -1.0;
     }
 
     public double getTagHorizontalOffset(int tagID) {
