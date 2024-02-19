@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
-import frc.team1699.lib.auto.modes.FourPieceCenter;
-import frc.team1699.lib.auto.modes.ThreePieceClose;
+import frc.team1699.lib.auto.modes.OptimFourPiece;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
@@ -43,15 +42,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    auto = new FourPieceCenter(manipulator, swerve);
+    auto = new OptimFourPiece(manipulator, swerve);
     auto.initialize();
     climber.setWantedState(ClimbStates.RETRACTING);
   }
 
   @Override
   public void autonomousPeriodic() {
-    driverController.setRumble(RumbleType.kBothRumble, 1);
-    operatorController.setRumble(RumbleType.kBothRumble, 1);
     if(auto.isFinished()) {
       auto.finish();
     } else {
@@ -74,6 +71,8 @@ public class Robot extends TimedRobot {
     }
     if(operatorController.getRightBumper()) {
       manipulator.setWantedState(ManipulatorStates.SHOOTING);
+      driverController.setRumble(RumbleType.kBothRumble, 1);
+      operatorController.setRumble(RumbleType.kBothRumble, 1);
     } else if(operatorController.getLeftTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.OUTTAKING);
     } else if(operatorController.getRightTriggerAxis() > 0.1) {
@@ -86,6 +85,8 @@ public class Robot extends TimedRobot {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
     } else {
       manipulator.setWantedState(ManipulatorStates.IDLE);
+      driverController.setRumble(RumbleType.kBothRumble, 0);
+      operatorController.setRumble(RumbleType.kBothRumble, 0);
     }
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
