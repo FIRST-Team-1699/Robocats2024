@@ -42,6 +42,10 @@ public class Vision {
         return 35.0 + LimelightHelpers.getTY("limelight") * .9;
     }
 
+    public double getTY() {
+        return LimelightHelpers.getTY("limelight");
+    }
+
     public double getSpeakerDistance() {
         if(limelight.targetInView()) {
             return limelight.getDistanceToTarget(VisionConstants.kSpeakerAimHeight);

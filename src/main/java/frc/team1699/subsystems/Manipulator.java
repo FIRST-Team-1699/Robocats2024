@@ -27,9 +27,10 @@ public class Manipulator {
         shooter = new Shooter();
         this.lastPose = PivotPoses.IDLE;
         pivotMap = new InterpolatingDoubleTreeMap();
-        pivotMap.put(0.5, 55.0);
-        pivotMap.put(1.0, 45.0);
-        pivotMap.put(1.5, 40.0);
+        // key: angle offset, value: pivot angle
+        pivotMap.put(-30.0, 60.0);
+        pivotMap.put(-25.0, 55.0);
+        pivotMap.put(-20.0, 50.0);
         pivotMap.put(2.0, 35.0);
         pivotMap.put(2.5, 32.0);
     }
@@ -71,7 +72,11 @@ public class Manipulator {
             case SPEAKER_SUB_SHOOT:
                 break;
             case SPEAKER_LL_SHOOT:
-                pivot.setAngle(Vision.getInstance().getSpeakerAngle());
+                if(ManipulatorConstants.kUseShooterTable) {
+                    pivot.setAngle(pivotMap.get(Vision.getInstance().getTY()));
+                } else {
+                    pivot.setAngle(Vision.getInstance().getSpeakerAngle());
+                }
                 break;
             default:
                 break;
