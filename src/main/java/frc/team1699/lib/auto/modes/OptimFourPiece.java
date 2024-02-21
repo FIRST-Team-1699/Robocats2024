@@ -52,6 +52,7 @@ public class OptimFourPiece extends AutoMode {
         // arrayFour.add(sequenceTwo);
         // events.add(new DeadlineEvent(arrayFour));
         events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
+        events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryFive, swerve));
