@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
@@ -32,7 +33,7 @@ public class Drive {
     private Timer trajTimer = new Timer();
     private PathPlannerTrajectory trajectory;
     private PPHolonomicDriveController driveController;
-    private PIDConstants translationConstants = new PIDConstants(0.01);
+    private PIDConstants translationConstants = new PIDConstants(0.02);
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
     private PIDController headingLockController = new PIDController(.01, 0, 0);
@@ -71,9 +72,16 @@ public class Drive {
             vR = 0;
         }
         // scale outputs
-        vX *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient; 
-        vY *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient;
-        vR *= SwerveConstants.kMaxRotationalSpeed * SwerveConstants.kSlowRotationCoefficient;
+        if(DriverStation.isTeleop()) {
+            vX *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient; 
+            vY *= SwerveConstants.kMaxSpeed * SwerveConstants.kSlowStrafeCoefficient;
+            vR *= SwerveConstants.kMaxRotationalSpeed * SwerveConstants.kSlowRotationCoefficient;
+        } else {
+            vX *= SwerveConstants.kMaxSpeed;
+            vY *= SwerveConstants.kMaxSpeed;
+            vR *= SwerveConstants.kMaxRotationalSpeed;
+        }
+        
 
 
         // drive swerve

@@ -30,7 +30,7 @@ public class Constants {
 
     public static class IndexerConstants {
         public static final int kMotorID = 16;
-        public static final double kIndexerSpeed = 0.25;
+        public static final double kIndexerSpeed = 0.2;
         public static final double kFeedSpeed = 0.75;
         public static final int kBeamBreakID = 0;
     }
@@ -63,10 +63,10 @@ public class Constants {
     }
 
     public static class ManipulatorConstants {
-        public static final boolean kUseShooterTable = false;
+        public static final boolean kUseShooterTable = true;
         public static final double kSpeakerSubwooferSpeed = 50;
         public static final double kSpeakerSubwooferAngle = 50;
-        public static final double kSpeakerLLSpeed = 70;
+        public static final double kSpeakerLLSpeed = 60;
         public static final double kSpeakerStageAngle = 35;
         public static final double kAmpTopSpeed = 20;
         public static final double kAmpBottomSpeed = 25;

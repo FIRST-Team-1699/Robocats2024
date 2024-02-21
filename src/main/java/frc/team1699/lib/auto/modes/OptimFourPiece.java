@@ -43,21 +43,22 @@ public class OptimFourPiece extends AutoMode {
         events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryThree, swerve));
-        ArrayList<Event> arrayThree = new ArrayList<>();
-        arrayThree.add(new WaitUntilLoadedEvent(manipulator));
-        arrayThree.add(new SpeakerAimLLEvent(manipulator));
-        SequentialEvent sequenceTwo = new SequentialEvent(arrayThree);
-        ArrayList<Event> arrayFour = new ArrayList<>();
-        arrayFour.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
-        arrayFour.add(sequenceTwo);
-        events.add(new DeadlineEvent(arrayFour));
+        // ArrayList<Event> arrayThree = new ArrayList<>();
+        // arrayThree.add(new WaitUntilLoadedEvent(manipulator));
+        // arrayThree.add(new SpeakerAimLLEvent(manipulator));
+        // SequentialEvent sequenceTwo = new SequentialEvent(arrayThree);
+        // ArrayList<Event> arrayFour = new ArrayList<>();
+        // arrayFour.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
+        // arrayFour.add(sequenceTwo);
+        // events.add(new DeadlineEvent(arrayFour));
+        events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryFive, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
-        events.add(new RunIntakeEvent(manipulator));
-        events.add(new FollowTrajectoryEvent(trajectorySix, swerve));
+        // events.add(new RunIntakeEvent(manipulator));
+        // events.add(new FollowTrajectoryEvent(trajectorySix, swerve));
         i = 0;
 
     }

@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
     swerve = new Drive(driverController);
     manipulator = new Manipulator();
     climber = new Climber();
+    CameraServer.startAutomaticCapture();
   }
 
   @Override

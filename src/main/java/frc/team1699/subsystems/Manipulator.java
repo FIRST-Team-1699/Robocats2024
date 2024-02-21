@@ -28,11 +28,11 @@ public class Manipulator {
         this.lastPose = PivotPoses.IDLE;
         pivotMap = new InterpolatingDoubleTreeMap();
         // key: angle offset, value: pivot angle
-        pivotMap.put(-30.0, 60.0);
-        pivotMap.put(-25.0, 55.0);
-        pivotMap.put(-20.0, 50.0);
-        pivotMap.put(2.0, 35.0);
-        pivotMap.put(2.5, 32.0);
+        pivotMap.put(14.0, 50.0);
+        pivotMap.put(7.0, 43.0);
+        pivotMap.put(0.0, 38.0);
+        pivotMap.put(-7.0, 33.0);
+        pivotMap.put(-15.0, 27.0);
     }
 
     public void startOrchestra() {
@@ -145,6 +145,7 @@ public class Manipulator {
                 break;
             case SPEAKER_LL_SHOOT:
                 lastPose = PivotPoses.SPEAKER_LL;
+                shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                 break;
             default:
                 break;
