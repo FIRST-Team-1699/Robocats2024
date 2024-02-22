@@ -58,6 +58,7 @@ public class Limelight {
      *     degrees / LL2: -24.85 to 24.85 degrees)
      */
     public double getVerticalOffset() {
+        System.out.println(LimelightHelpers.getTY(CAMERA_NAME));
         return LimelightHelpers.getTY(CAMERA_NAME);
     }
 
@@ -111,6 +112,7 @@ public class Limelight {
      * @return
      */
     public double getDistanceToTarget(double targetHeight) {
+        System.out.println("getting distance");
         return (targetHeight - physicalConfig.up)
                 / Math.tan(Units.degreesToRadians(physicalConfig.roll + getVerticalOffset()));
     }

@@ -50,10 +50,10 @@ public class Constants {
         public static final int kMotorID = 35;
         public static final double kEncoderOffset = 0.0;
         public static final double kTolerance = 2.0;
-        public static final double kP = 0.008;
+        public static final double kP = 0.03;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
-        public static final double kMinAngle = 35.0;
+        public static final double kD = 0.02;
+        public static final double kMinAngle = 27.0;
         public static final double kMaxAngle = 130.0; 
     }
 
@@ -65,7 +65,7 @@ public class Constants {
     public static class ManipulatorConstants {
         public static final double kSpeakerSubwooferSpeed = 50;
         public static final double kSpeakerSubwooferAngle = 50;
-        public static final double kSpeakerStageSpeed = 20;
+        public static final double kSpeakerLLSpeed = 70;
         public static final double kSpeakerStageAngle = 35;
         public static final double kAmpTopSpeed = 20;
         public static final double kAmpBottomSpeed = 25;
@@ -73,15 +73,15 @@ public class Constants {
         public static final double kTrapSpeed = 0.0;
         public static final double kTrapAngle = 80;
         public static final double kIdleAngle = 50;
-        public static final double kIntakeAngle = 50;
+        public static final double kIntakeAngle = 42;
     }
 
     public static class SwerveConstants {
         public static final double kDeadband = .02;
-        public static final double kSlowStrafeCoefficient = .85;
+        public static final double kSlowStrafeCoefficient = 1;
         public static final double kADSStrafeCoefficient = .6;
         public static final double kMaxSpeed = Units.feetToMeters(15.1) * kSlowStrafeCoefficient;
-        public static final double kSlowRotationCoefficient = .75;
+        public static final double kSlowRotationCoefficient = 1;
         public static final double kMaxRotationalSpeed = Units.degreesToRadians(720) * kSlowRotationCoefficient;
         public static final double kTrackWidth = Units.inchesToMeters(20.5);
         public static final double kHalfTrackWidth = kTrackWidth / 2.0;

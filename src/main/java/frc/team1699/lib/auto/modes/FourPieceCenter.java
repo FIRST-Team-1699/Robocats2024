@@ -38,7 +38,7 @@ public class FourPieceCenter extends AutoMode {
         events.add(new FollowTrajectoryEvent(trajectoryThree, swerve));
         events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
-        events.add(new SpeakerShootSubEvent(manipulator));
+        events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new StopIntakeEvent(manipulator));
         i = 0;
 

@@ -1,10 +1,12 @@
 package frc.team1699.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.team1699.Constants.VisionConstants;
 import frc.team1699.lib.vision.Limelight;
+import frc.team1699.lib.vision.LimelightHelpers;
 
 public class Vision {
     private static Vision vision;
@@ -37,10 +39,7 @@ public class Vision {
     }
 
     public double getSpeakerAngle() {
-        if(DriverStation.getAlliance().isPresent() && limelight.targetInView()) {
-            return Math.atan(VisionConstants.kSpeakerAimHeight / limelight.getDistanceToTarget(VisionConstants.kSpeakerAimHeight));
-        }
-        return -1.0;
+        return 35.0 + LimelightHelpers.getTY("limelight") * .9;
     }
 
     public double getSpeakerDistance() {

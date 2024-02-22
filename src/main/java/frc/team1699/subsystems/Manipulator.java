@@ -39,6 +39,7 @@ public class Manipulator {
     }
 
     public void update() {
+        System.out.println(currentState);
         if(indexer.isLoaded()) {
             isLoaded = true;
         } else {
@@ -46,6 +47,8 @@ public class Manipulator {
         }
         switch(currentState) {
             case SHOOTING:
+                System.out.print(shooter.atSpeed());
+                System.out.print("p" + pivot.isAtAngle());
                 if(shooter.atSpeed() && pivot.isAtAngle()) {
                     indexer.setWantedState(IndexStates.FEEDING);
                 }
@@ -68,7 +71,7 @@ public class Manipulator {
             case SPEAKER_SUB_SHOOT:
                 break;
             case SPEAKER_LL_SHOOT:
-                pivot.setAngle(pivotMap.get(Vision.getInstance().getSpeakerDistance()));
+                pivot.setAngle(Vision.getInstance().getSpeakerAngle());
                 break;
             default:
                 break;
@@ -90,8 +93,8 @@ public class Manipulator {
                     case SPEAKER_SUB:
                         shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                         break;
-                    case SPEAKER_AUTO:
-                        shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
+                    case SPEAKER_LL:
+                        shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                     default:
                         break;
 
@@ -136,7 +139,7 @@ public class Manipulator {
                 lastPose = PivotPoses.SPEAKER_SUB;
                 break;
             case SPEAKER_LL_SHOOT:
-                lastPose = PivotPoses.SPEAKER_AUTO;
+                lastPose = PivotPoses.SPEAKER_LL;
                 break;
             default:
                 break;
@@ -166,7 +169,7 @@ public class Manipulator {
 
     public enum PivotPoses {
         SPEAKER_SUB,
-        SPEAKER_AUTO,
+        SPEAKER_LL,
         AMP,
         IDLE
     }
