@@ -6,12 +6,18 @@ package frc.robot;
 
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.OptimFourPiece;
+import frc.team1699.lib.leds.LEDController;
+import frc.team1699.lib.leds.colors.Blue;
+import frc.team1699.lib.leds.colors.Green;
+import frc.team1699.lib.leds.colors.Purple;
+import frc.team1699.lib.leds.colors.Yellow;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
@@ -26,6 +32,8 @@ public class Robot extends TimedRobot {
   private Manipulator manipulator;
   private Climber climber;
   private AutoMode auto;
+  private LEDController ledController;
+  private boolean headingIsReady;
 
   @Override
   public void robotInit() {
@@ -35,11 +43,18 @@ public class Robot extends TimedRobot {
     manipulator = new Manipulator();
     climber = new Climber();
     CameraServer.startAutomaticCapture();
+    ledController = LEDController.getInstance();
+    ledController.start();
+    ledController.solidColor(new Blue());
+    headingIsReady = false;
   }
 
   @Override
   public void robotPeriodic() {
-    // manipulator.startOrchestra();
+    if(!headingIsReady && DriverStation.getAlliance().isPresent()) {
+      swerve.resetHeading();
+      headingIsReady = true;
+    }
   }
 
   @Override
@@ -68,9 +83,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if(driverController.getYButtonPressed()) {
-      swerve.resetHeading();
-    }
+
     if(operatorController.getRightBumper()) {
       manipulator.setWantedState(ManipulatorStates.SHOOTING);
       driverController.setRumble(RumbleType.kBothRumble, 1);
@@ -89,6 +102,17 @@ public class Robot extends TimedRobot {
       manipulator.setWantedState(ManipulatorStates.IDLE);
       driverController.setRumble(RumbleType.kBothRumble, 0);
       operatorController.setRumble(RumbleType.kBothRumble, 0);
+    }
+
+    if(manipulator.shooterAtSpeed()) {
+      ledController.solidColor(new Green());
+    } else {
+      ledController.solidColor(new Blue());
+    }
+
+    if(driverController.getYButtonPressed()) {
+      swerve.resetHeading();
+      ledController.solidColor(new Purple());
     }
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
@@ -117,7 +141,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    ledController.alternateColors(new Blue(), new Yellow());
+  }
 
   @Override
   public void testInit() {}

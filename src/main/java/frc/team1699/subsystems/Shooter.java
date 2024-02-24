@@ -1,25 +1,14 @@
 package frc.team1699.subsystems;
 
 import com.ctre.phoenix6.Orchestra;
-import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.math.controller.PIDController;
-
 import frc.team1699.Constants.ShooterConstants;
-import frc.team1699.lib.auto.modes.AutoMode;
 
 // YES I KNOW THIS VIOLATES EVERY CONVENTION
 // FROM EVERY OTHER SUBSYSTEM, LET ME COOK.
 public class Shooter {
-    private boolean isAtSpeed = false;
     private double topSetpoint = 0.0;
     private double bottomSetpoint = 0.0;
 

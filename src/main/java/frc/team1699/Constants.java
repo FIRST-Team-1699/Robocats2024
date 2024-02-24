@@ -101,4 +101,9 @@ public class Constants {
         public static final PhysicalConfig kCameraPosition = new PhysicalConfig().withTranslation(Units.inchesToMeters(-10), 0.0, Units.inchesToMeters(12)).withRotation(55.0, 0.0, 180.0);
         public static final double kSpeakerAimHeight = Units.inchesToMeters(70);
     }
+
+    public static class LEDConstants {
+        public static final int kLEDPort = 9;
+        public static final int kLEDLength = 46;
+    }
 }

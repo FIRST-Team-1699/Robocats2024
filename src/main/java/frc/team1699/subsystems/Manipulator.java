@@ -166,7 +166,10 @@ public class Manipulator {
     }
 
     public boolean shooterAtSpeed() {
-        return shooter.atSpeed();
+        if(getCurrentState() == ManipulatorStates.SPEAKER_LL_SHOOT || getCurrentState() == ManipulatorStates.SPEAKER_SUB_SHOOT || getCurrentState() == ManipulatorStates.TRAP_SHOOT || getCurrentState() == ManipulatorStates.AMP_SHOOT) {
+            return shooter.atSpeed();
+        }
+        return false;
     }
 
     public boolean isLoaded() {

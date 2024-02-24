@@ -51,10 +51,10 @@ public class Intake {
     }
 
     public void setWantedState(IntakeStates state) {
-            if(this.wantedState != state) {
-                wantedState = state;
-                handleStateTransition();
-            }
+        if(this.wantedState != state) {
+            wantedState = state;
+            handleStateTransition();
+        }
     }
 
     public enum IntakeStates {

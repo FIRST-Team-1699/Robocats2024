@@ -3,8 +3,17 @@ package frc.team1699.lib.leds;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.team1699.lib.leds.colors.HSVColor;
+import frc.team1699.Constants.LEDConstants;
 
 public class LEDController {
+    private static LEDController controller;
+
+    public static LEDController getInstance() {
+        if(controller == null) {
+            controller = new LEDController(LEDConstants.kLEDLength, LEDConstants.kLEDPort);
+        }
+        return controller;
+    }
     private int rainbowFirstPixelHue = 50;
 
     private AddressableLED leds;
@@ -13,7 +22,7 @@ public class LEDController {
 
     private HSVColor currentColor;
 
-    public LEDController(int ledLength, int port) {
+    private LEDController(int ledLength, int port) {
         this.ledLength = ledLength;
         leds = new AddressableLED(port);
         ledBuffer = new AddressableLEDBuffer(ledLength);

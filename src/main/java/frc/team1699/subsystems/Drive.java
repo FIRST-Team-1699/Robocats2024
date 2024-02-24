@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.GeometryUtil;
 import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.team1699.Constants.SwerveConstants;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -61,6 +63,12 @@ public class Drive {
         double vX = -controller.getLeftX();
         double vY = -controller.getLeftY();
         double vR = -controller.getRightX();
+        if(DriverStation.getAlliance().get() == Alliance.Red) {
+            vX *= -1;
+            vY *= -1;
+            vR *= -1;
+        }
+
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
             vX = 0;
@@ -81,8 +89,6 @@ public class Drive {
             vY *= SwerveConstants.kMaxSpeed;
             vR *= SwerveConstants.kMaxRotationalSpeed;
         }
-        
-
 
         // drive swerve
         swerve.drive(new Translation2d(vY, vX), vR, true, false);
@@ -94,6 +100,10 @@ public class Drive {
         double vY = -controller.getLeftY();
         double vR = headingLockController.calculate(targetOffset, 0.0);
 
+        if(DriverStation.getAlliance().get() == Alliance.Red) {
+            vX *= -1;
+            vY *= -1;
+        }
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
             vX = 0;
@@ -124,7 +134,11 @@ public class Drive {
 
     public void resetHeading() {
         Rotation3d gyroReading = swerve.getGyroRotation3d();
-        swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
+        if(DriverStation.getAlliance().get() == Alliance.Red) {
+            swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 180.0));
+        } else {
+            swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
+        }
     } 
 
     // /** Manually set the module states
@@ -149,6 +163,11 @@ public class Drive {
     private void driveTraj() {
         if(trajTimer.get() < trajectory.getTotalTimeSeconds()) {
             PathPlannerTrajectory.State targetState = trajectory.sample(trajTimer.get());
+            if(DriverStation.getAlliance().get() == Alliance.Red) {
+                targetState.heading = GeometryUtil.flipFieldRotation(targetState.heading);
+                targetState.positionMeters = GeometryUtil.flipFieldPosition(targetState.positionMeters);
+                targetState.targetHolonomicRotation = GeometryUtil.flipFieldRotation(targetState.targetHolonomicRotation);
+            }
             ChassisSpeeds targetSpeeds = driveController.calculateRobotRelativeSpeeds(swerve.getPose(), targetState);
             swerve.drive(targetSpeeds);
         } else {
