@@ -50,8 +50,6 @@ public class Manipulator {
         }
         switch(currentState) {
             case SHOOTING:
-                System.out.print(shooter.atSpeed());
-                System.out.print("p" + pivot.isAtAngle());
                 if(shooter.atSpeed() && pivot.isAtAngle()) {
                     indexer.setWantedState(IndexStates.FEEDING);
                 }
@@ -107,7 +105,7 @@ public class Manipulator {
                         shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                         break;
                     case TRAP:
-                        shooter.setSpeed(ManipulatorConstants.kTrapSpeed);
+                        shooter.setSeparateSpeeds(ManipulatorConstants.kTopTrapSpeed, ManipulatorConstants.kBottomTrapSpeed);
                         break;
                     case SPEAKER_GOOFY_SHOOT:
                         shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);

@@ -9,9 +9,12 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
+import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
 import frc.team1699.lib.auto.modes.OptimFourPiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
 import frc.team1699.lib.leds.LEDController;
@@ -35,7 +38,10 @@ public class Robot extends TimedRobot {
   private Climber climber;
   private AutoMode auto;
   private LEDController ledController;
-  // private boolean headingIsReady;
+
+  private SendableChooser<String> autoChooser;
+  private final String onePiece = "One Piece";
+  private final String fourPiece = "Four Piece";
 
   @Override
   public void robotInit() {
@@ -48,20 +54,30 @@ public class Robot extends TimedRobot {
     ledController = new LEDController(74, 1);
     ledController.start();
     ledController.solidColor(new Blue());
-    // headingIsReady = false;
+
+    autoChooser = new SendableChooser<String>();
+    autoChooser.addOption(onePiece, onePiece);
+    autoChooser.setDefaultOption(fourPiece, fourPiece);
   }
 
   @Override
-  public void robotPeriodic() {
-    // if(!headingIsReady && DriverStation.getAlliance().isPresent()) {
-    //   swerve.resetHeading();
-    //   headingIsReady = true;
-    // }
-  }
+  public void robotPeriodic() {}
 
   @Override
   public void autonomousInit() {
-    auto = new RedOnePieceEscape(manipulator, swerve);
+    switch(autoChooser.getSelected()) {
+      case onePiece:
+        if(DriverStation.getAlliance().get() == Alliance.Red) {
+          auto = new RedOnePieceEscape(manipulator, swerve);
+        } else {
+          auto = new BlueOnePieceEscape(manipulator, swerve);
+        }
+        break;
+      case fourPiece:
+      default:
+        auto = new OptimFourPiece(manipulator, swerve);
+        break;
+    }
     auto.initialize();
   }
 
@@ -125,16 +141,15 @@ public class Robot extends TimedRobot {
       }
     }
 
-    if(operatorController.getRawButton(7)) {
-      ledController.rainbow();
-    }
-
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
       if(ledController.getColor().getHue() != Purple.purpleHue) {
         ledController.solidColor(new Purple());
-
       }
+    }
+
+    if(operatorController.getRawButton(7)) {
+      ledController.blinkYellow();
     }
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
@@ -159,12 +174,11 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     driverController.setRumble(RumbleType.kBothRumble, 0);
     operatorController.setRumble(RumbleType.kBothRumble, 0);
+    ledController.alternateColors(new Blue(), new Yellow());
   }
 
   @Override
-  public void disabledPeriodic() {
-    ledController.alternateColors(new Blue(), new Yellow());
-  }
+  public void disabledPeriodic() {}
 
   @Override
   public void testInit() {}

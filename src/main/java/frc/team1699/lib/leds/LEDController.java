@@ -3,9 +3,12 @@ package frc.team1699.lib.leds;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.team1699.lib.leds.colors.HSVColor;
+import frc.team1699.lib.leds.colors.Red;
+import frc.team1699.lib.leds.colors.Yellow;
 
 public class LEDController {
     private int rainbowFirstPixelHue = 50;
+    private int yellowBlink = 0;
 
     private AddressableLED leds;
     private AddressableLEDBuffer ledBuffer;
@@ -41,7 +44,6 @@ public class LEDController {
 
     public void solidColor(HSVColor color) {
         for(int i = 0; i < ledLength; i++) {
-            System.out.println("changing color of " + i);
             ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
         }
         leds.setData(ledBuffer);
@@ -57,6 +59,15 @@ public class LEDController {
             }
         }
         leds.setData(ledBuffer);
+    }
+
+    public void blinkYellow() {
+        yellowBlink %= 10;
+        if(yellowBlink == 0) {
+            solidColor(new Yellow());
+        } else if(yellowBlink == 5) {
+            solidColor(new Red());
+        }
     }
 
     public HSVColor getColor() {

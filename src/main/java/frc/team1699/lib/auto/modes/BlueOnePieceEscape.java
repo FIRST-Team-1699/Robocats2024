@@ -11,9 +11,6 @@ import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
 import frc.team1699.lib.auto.events.SpeakerShootLLEvent;
-import frc.team1699.lib.auto.events.SpeakerShootSubEvent;
-import frc.team1699.lib.auto.events.StopIntakeEvent;
-import frc.team1699.lib.auto.events.WaitUntilLoadedEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
 

@@ -71,7 +71,8 @@ public class Constants {
         public static final double kAmpTopSpeed = 20;
         public static final double kAmpBottomSpeed = 25;
         public static final double kAmpAngle = 110;
-        public static final double kTrapSpeed = 50;
+        public static final double kTopTrapSpeed = 40;
+        public static final double kBottomTrapSpeed = 50;
         public static final double kTrapAngle = 55;
         public static final double kIdleAngle = 50;
         public static final double kIntakeAngle = 42;
@@ -81,7 +82,7 @@ public class Constants {
     public static class SwerveConstants {
         public static final double kDeadband = .02;
         public static final double kSlowStrafeCoefficient = 1;
-        public static final double kADSStrafeCoefficient = .6;
+        public static final double kADSStrafeCoefficient = .4;
         public static final double kMaxSpeed = Units.feetToMeters(15.1) * kSlowStrafeCoefficient;
         public static final double kSlowRotationCoefficient = 1;
         public static final double kMaxRotationalSpeed = Units.degreesToRadians(720) * kSlowRotationCoefficient;

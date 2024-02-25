@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
-import com.pathplanner.lib.util.GeometryUtil;
 import com.pathplanner.lib.util.PIDConstants;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,7 +17,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.team1699.Constants.SwerveConstants;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -168,11 +165,6 @@ public class Drive {
     private void driveTraj() {
         if(trajTimer.get() < trajectory.getTotalTimeSeconds()) {
             PathPlannerTrajectory.State targetState = trajectory.sample(trajTimer.get());
-            // if(DriverStation.getAlliance().get() == Alliance.Red) {
-            //     targetState.heading = GeometryUtil.flipFieldRotation(targetState.heading);
-            //     targetState.positionMeters = GeometryUtil.flipFieldPosition(targetState.positionMeters);
-            //     targetState.targetHolonomicRotation = GeometryUtil.flipFieldRotation(targetState.targetHolonomicRotation);
-            // }
             ChassisSpeeds targetSpeeds = driveController.calculateRobotRelativeSpeeds(swerve.getPose(), targetState);
             swerve.drive(targetSpeeds);
         } else {
@@ -182,11 +174,11 @@ public class Drive {
         }
     }
 
-    private void updateVisionData() {
-        if(vision.hasTargetInView()) {
-            swerve.addVisionMeasurement(vision.getPose2d(), Timer.getFPGATimestamp());
-        }
-    } 
+    // private void updateVisionData() {
+    //     if(vision.hasTargetInView()) {
+    //         swerve.addVisionMeasurement(vision.getPose2d(), Timer.getFPGATimestamp());
+    //     }
+    // } 
 
     public void update() {
         // updateVisionData();
@@ -217,10 +209,6 @@ public class Drive {
                 trajTimer.reset();
                 trajTimer.start();
                 doneWithTraj = false;
-                // if(DriverStation.getAlliance().get() == Alliance.Red) {
-                //     swerve.resetOdometry(GeometryUtil.flipFieldPose(trajectory.getInitialTargetHolonomicPose()));
-                // } else {
-                // }
                 swerve.resetOdometry(trajectory.getInitialTargetHolonomicPose());
                 break;
             case LOCK:
