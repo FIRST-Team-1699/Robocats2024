@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.OptimFourPiece;
-import frc.team1699.lib.auto.modes.RedOptimFourPiece;
+import frc.team1699.lib.auto.modes.RedOnePieceEscape;
 import frc.team1699.lib.leds.LEDController;
 import frc.team1699.lib.leds.colors.Blue;
 import frc.team1699.lib.leds.colors.Green;
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driverController = new XboxController(InputConstants.kDriverControllerPort);
     operatorController = new XboxController(InputConstants.kOperatorControllerPort);
-    swerve = new Drive(driverController);
+    swerve = new Drive(driverController); 
     manipulator = new Manipulator();
     climber = new Climber();
     CameraServer.startAutomaticCapture();
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    auto = new RedOptimFourPiece(manipulator, swerve);
+    auto = new RedOnePieceEscape(manipulator, swerve);
     auto.initialize();
   }
 
@@ -93,6 +93,8 @@ public class Robot extends TimedRobot {
       manipulator.setWantedState(ManipulatorStates.INTAKING);
     } else if(operatorController.getBButtonPressed()) {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_SUB_SHOOT);
+    } else if(operatorController.getYButtonPressed()) {
+      manipulator.setWantedState(ManipulatorStates.SPEAKER_GOOFY_SHOOT);
     } else if(operatorController.getAButtonPressed()) {
       manipulator.setWantedState(ManipulatorStates.AMP_SHOOT);
     } else if(operatorController.getXButtonPressed()) {

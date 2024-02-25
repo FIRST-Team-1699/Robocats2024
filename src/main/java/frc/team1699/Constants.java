@@ -75,6 +75,7 @@ public class Constants {
         public static final double kTrapAngle = 55;
         public static final double kIdleAngle = 50;
         public static final double kIntakeAngle = 42;
+        public static final double kGoofyAngle = 25;
     }
 
     public static class SwerveConstants {

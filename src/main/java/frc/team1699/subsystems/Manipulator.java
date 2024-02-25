@@ -33,6 +33,8 @@ public class Manipulator {
         pivotMap.put(0.0, 38.0);
         pivotMap.put(-7.0, 33.0);
         pivotMap.put(-15.0, 27.0);
+        this.currentState = ManipulatorStates.IDLE;
+        this.wantedState = ManipulatorStates.IDLE;
     }
 
     public void startOrchestra() {
@@ -74,9 +76,12 @@ public class Manipulator {
             case SPEAKER_LL_SHOOT:
                 if(ManipulatorConstants.kUseShooterTable) {
                     pivot.setAngle(pivotMap.get(Vision.getInstance().getTY()));
+                    System.out.println(pivotMap.get(Vision.getInstance().getTY()));
                 } else {
                     pivot.setAngle(Vision.getInstance().getSpeakerAngle());
                 }
+                break;
+            case SPEAKER_GOOFY_SHOOT:
                 break;
             default:
                 break;
@@ -104,6 +109,9 @@ public class Manipulator {
                     case TRAP:
                         shooter.setSpeed(ManipulatorConstants.kTrapSpeed);
                         break;
+                    case SPEAKER_GOOFY_SHOOT:
+                        shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                        break;
                     default:
                         break;
 
@@ -128,6 +136,7 @@ public class Manipulator {
                 pivot.setAngle(ManipulatorConstants.kIntakeAngle);
                 shooter.setSpeed(0);
                 indexer.setWantedState(IndexStates.REVERSING);
+                break;
             case STORED:
                 intake.setWantedState(IntakeStates.IDLE);
                 pivot.setAngle(ManipulatorConstants.kIdleAngle);
@@ -150,6 +159,11 @@ public class Manipulator {
                 lastPose = PivotPoses.SPEAKER_LL;
                 shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                 break;
+            case SPEAKER_GOOFY_SHOOT:
+                lastPose = PivotPoses.SPEAKER_GOOFY_SHOOT;
+                pivot.setAngle(ManipulatorConstants.kGoofyAngle);
+                shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+            break;
             default:
                 break;
             
@@ -188,6 +202,7 @@ public class Manipulator {
         SPEAKER_LL,
         AMP,
         TRAP,
+        SPEAKER_GOOFY_SHOOT,
         IDLE
     }
 
@@ -200,6 +215,7 @@ public class Manipulator {
         SPEAKER_SUB_SHOOT,
         SPEAKER_LL_SHOOT,
         TRAP_SHOOT,
-        AMP_SHOOT
+        AMP_SHOOT,
+        SPEAKER_GOOFY_SHOOT
     }
 }
