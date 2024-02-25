@@ -27,9 +27,6 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class Drive {
-//    private DriveState currentState = DriveState.LOCK;
-//    private DriveState wantedState = DriveState.LOCK;
-
     private DriveState currentState = DriveState.TELEOP_DRIVE;
     private DriveState wantedState = DriveState.TELEOP_DRIVE;
     private Timer trajTimer = new Timer();
@@ -38,7 +35,7 @@ public class Drive {
     private PIDConstants translationConstants = new PIDConstants(0.02);
     private PIDConstants rotationConstants = new PIDConstants(0.2);
     private boolean doneWithTraj = true;
-    private PIDController headingLockController = new PIDController(.01, 0, 0);
+    private PIDController headingLockController = new PIDController(.013, 0, 0);
 
     private SwerveDrive swerve;
     private XboxController controller;
@@ -55,6 +52,7 @@ public class Drive {
         this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(14.5));
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
         headingLockController.enableContinuousInput(-180, 180);
+        headingLockController.setTolerance(3);
         this.vision = Vision.getInstance();
     }
 
@@ -63,11 +61,11 @@ public class Drive {
         double vX = -controller.getLeftX();
         double vY = -controller.getLeftY();
         double vR = -controller.getRightX();
-        if(DriverStation.getAlliance().get() == Alliance.Red) {
-            vX *= -1;
-            vY *= -1;
-            vR *= -1;
-        }
+        // if(DriverStation.getAlliance().get() == Alliance.Red) {
+        //     vX *= -1;
+        //     vY *= -1;
+        //     vR *= -1;
+        // }
 
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
@@ -100,10 +98,10 @@ public class Drive {
         double vY = -controller.getLeftY();
         double vR = headingLockController.calculate(targetOffset, 0.0);
 
-        if(DriverStation.getAlliance().get() == Alliance.Red) {
-            vX *= -1;
-            vY *= -1;
-        }
+        // if(DriverStation.getAlliance().get() == Alliance.Red) {
+        //     vX *= -1;
+        //     vY *= -1;
+        // }
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
             vX = 0;
@@ -127,18 +125,18 @@ public class Drive {
         swerve.drive(new Translation2d(vY, vX), vR, true, false);
     }
 
-     public void setTrajectory(PathPlannerTrajectory trajectory) {
-
+    public void setTrajectory(PathPlannerTrajectory trajectory) {
         this.trajectory = trajectory;
     }
 
     public void resetHeading() {
         Rotation3d gyroReading = swerve.getGyroRotation3d();
-        if(DriverStation.getAlliance().get() == Alliance.Red) {
-            swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 180.0));
-        } else {
-            swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
-        }
+        // if(DriverStation.getAlliance().get() == Alliance.Red) {
+        //     swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 180.0));
+        // } else {
+        //     swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
+        // }
+        swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
     } 
 
     // /** Manually set the module states
@@ -160,14 +158,21 @@ public class Drive {
         swerve.lockPose();
     }
 
+    public boolean headingAimed() {
+        if(vision.hasTargetInView() && getState() == DriveState.TELEOP_SPEAKER_TRACK && headingLockController.atSetpoint()) {
+            return true;
+        }
+        return false;
+    }
+
     private void driveTraj() {
         if(trajTimer.get() < trajectory.getTotalTimeSeconds()) {
             PathPlannerTrajectory.State targetState = trajectory.sample(trajTimer.get());
-            if(DriverStation.getAlliance().get() == Alliance.Red) {
-                targetState.heading = GeometryUtil.flipFieldRotation(targetState.heading);
-                targetState.positionMeters = GeometryUtil.flipFieldPosition(targetState.positionMeters);
-                targetState.targetHolonomicRotation = GeometryUtil.flipFieldRotation(targetState.targetHolonomicRotation);
-            }
+            // if(DriverStation.getAlliance().get() == Alliance.Red) {
+            //     targetState.heading = GeometryUtil.flipFieldRotation(targetState.heading);
+            //     targetState.positionMeters = GeometryUtil.flipFieldPosition(targetState.positionMeters);
+            //     targetState.targetHolonomicRotation = GeometryUtil.flipFieldRotation(targetState.targetHolonomicRotation);
+            // }
             ChassisSpeeds targetSpeeds = driveController.calculateRobotRelativeSpeeds(swerve.getPose(), targetState);
             swerve.drive(targetSpeeds);
         } else {
@@ -212,7 +217,11 @@ public class Drive {
                 trajTimer.reset();
                 trajTimer.start();
                 doneWithTraj = false;
-                swerve.resetOdometry(new Pose2d(trajectory.sample(0).positionMeters, swerve.getOdometryHeading()));
+                // if(DriverStation.getAlliance().get() == Alliance.Red) {
+                //     swerve.resetOdometry(GeometryUtil.flipFieldPose(trajectory.getInitialTargetHolonomicPose()));
+                // } else {
+                // }
+                swerve.resetOdometry(trajectory.getInitialTargetHolonomicPose());
                 break;
             case LOCK:
                 break;

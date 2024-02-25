@@ -18,13 +18,13 @@ public class Constants {
         // CAN IDs of winch motors
         public static final int kPortWinchID = 12;
         public static final int kStarWinchID = 23;
-        public static final double kP = 0.5;
+        public static final double kP = 0.2;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kF = 0.0;
-        public static final double kPortClimberTopPosition = 440;
+        public static final double kPortClimberTopPosition = 115;
         public static final double kPortClimberBottomPosition = 0.0;
-        public static final double kStarClimberTopPosition = 440;
+        public static final double kStarClimberTopPosition = 115;
         public static final double kStarClimberBottomPosition = 0.0;
     }
 
@@ -71,8 +71,8 @@ public class Constants {
         public static final double kAmpTopSpeed = 20;
         public static final double kAmpBottomSpeed = 25;
         public static final double kAmpAngle = 110;
-        public static final double kTrapSpeed = 0.0;
-        public static final double kTrapAngle = 80;
+        public static final double kTrapSpeed = 50;
+        public static final double kTrapAngle = 55;
         public static final double kIdleAngle = 50;
         public static final double kIntakeAngle = 42;
     }
@@ -103,7 +103,7 @@ public class Constants {
     }
 
     public static class LEDConstants {
-        public static final int kLEDPort = 9;
-        public static final int kLEDLength = 46;
+        public static final int kLEDPort = 1;
+        public static final int kLEDLength = 74;
     }
 }

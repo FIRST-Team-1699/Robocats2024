@@ -1,10 +1,13 @@
 package frc.team1699.lib.auto.modes;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
@@ -18,8 +21,16 @@ import frc.team1699.subsystems.Manipulator;
 public class FourPieceCenter extends AutoMode {
     private ArrayList<Event> events;
     private int i;
+    private Manipulator manipulator;
+    private Drive swerve;
 
     public FourPieceCenter(Manipulator manipulator, Drive swerve) {
+        this.manipulator = manipulator;
+        this.swerve = swerve;
+    }
+
+    @Override
+    public void initialize() {
         PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("TestTwoPathOne").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("TestTwoPathTwo").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(45));
         PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("TestTwoPathThree").getTrajectory(new ChassisSpeeds(), new Rotation2d());
@@ -41,11 +52,6 @@ public class FourPieceCenter extends AutoMode {
         events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new StopIntakeEvent(manipulator));
         i = 0;
-
-    }
-
-    @Override
-    public void initialize() {
         events.get(i).initialize();
     }
 

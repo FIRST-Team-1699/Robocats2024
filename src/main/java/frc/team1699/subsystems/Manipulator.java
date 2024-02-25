@@ -100,6 +100,10 @@ public class Manipulator {
                         break;
                     case SPEAKER_LL:
                         shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                        break;
+                    case TRAP:
+                        shooter.setSpeed(ManipulatorConstants.kTrapSpeed);
+                        break;
                     default:
                         break;
 
@@ -130,9 +134,8 @@ public class Manipulator {
                 indexer.setWantedState(IndexStates.LOADED);
                 break;
             case TRAP_SHOOT:
-                // TODO check if you are loaded (with indexer.isLoaded()). if you aren't, the state transition is failed and you go back to idle
                 pivot.setAngle(ManipulatorConstants.kTrapAngle);
-                shooter.setSpeed(ManipulatorConstants.kTrapSpeed);
+                lastPose = PivotPoses.TRAP;
                 break;
             case AMP_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kAmpAngle);
@@ -166,10 +169,14 @@ public class Manipulator {
     }
 
     public boolean shooterAtSpeed() {
-        if(getCurrentState() == ManipulatorStates.SPEAKER_LL_SHOOT || getCurrentState() == ManipulatorStates.SPEAKER_SUB_SHOOT || getCurrentState() == ManipulatorStates.TRAP_SHOOT || getCurrentState() == ManipulatorStates.AMP_SHOOT) {
+        if(getCurrentState() == ManipulatorStates.SPEAKER_LL_SHOOT || getCurrentState() == ManipulatorStates.TRAP_SHOOT || getCurrentState() == ManipulatorStates.SPEAKER_SUB_SHOOT || getCurrentState() == ManipulatorStates.TRAP_SHOOT || getCurrentState() == ManipulatorStates.AMP_SHOOT) {
             return shooter.atSpeed();
         }
         return false;
+    }
+
+    public boolean pivotAtPose() {
+        return pivot.isAtAngle();
     }
 
     public boolean isLoaded() {
@@ -180,6 +187,7 @@ public class Manipulator {
         SPEAKER_SUB,
         SPEAKER_LL,
         AMP,
+        TRAP,
         IDLE
     }
 
