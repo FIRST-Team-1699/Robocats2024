@@ -50,7 +50,7 @@ public class Constants {
         public static final int kMotorID = 35;
         public static final double kEncoderOffset = 0.0;
         public static final double kTolerance = 2.0;
-        public static final double kP = 0.03;
+        public static final double kP = 0.025;
         public static final double kI = 0.0;
         public static final double kD = 0.02;
         public static final double kMinAngle = 27.0;

@@ -38,6 +38,8 @@ public class Climber {
     }
 
     public void overridePosition() {
+        portController.setReference(0, ControlType.kVoltage);
+        starController.setReference(0, ControlType.kVoltage);
         portEncoder.setPosition(0);
         starEncoder.setPosition(0);
     }

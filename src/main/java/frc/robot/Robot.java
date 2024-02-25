@@ -52,7 +52,6 @@ public class Robot extends TimedRobot {
     climber = new Climber();
     CameraServer.startAutomaticCapture();
     ledController = new LEDController(74, 1);
-    ledController.start();
     ledController.solidColor(new Blue());
 
     autoChooser = new SendableChooser<String>();

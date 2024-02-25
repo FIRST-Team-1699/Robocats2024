@@ -73,8 +73,9 @@ public class Manipulator {
                 break;
             case SPEAKER_LL_SHOOT:
                 if(ManipulatorConstants.kUseShooterTable) {
-                    pivot.setAngle(pivotMap.get(Vision.getInstance().getTY()));
-                    System.out.println(pivotMap.get(Vision.getInstance().getTY()));
+                    if(Vision.getInstance().hasTargetInView()) {
+                        pivot.setAngle(pivotMap.get(Vision.getInstance().getTY()));
+                    }
                 } else {
                     pivot.setAngle(Vision.getInstance().getSpeakerAngle());
                 }
