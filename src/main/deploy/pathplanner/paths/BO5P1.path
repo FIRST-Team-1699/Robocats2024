@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 1.416233607241989,
+        "y": 4.106617897952385
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8609165789760156,
-        "y": 5.819804782466708
+        "x": 1.737949277700357,
+        "y": 4.095524254143477
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.4734569469138945,
-        "y": 7.0
+        "x": 2.3702869748081836,
+        "y": 4.372865349366208
       },
       "prevControl": {
-        "x": 3.0072179980347054,
-        "y": 7.0
+        "x": 2.1190725445111385,
+        "y": 4.300515168565123
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,18 +32,21 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 4.2,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -35.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "folder": "BlueFivePiece",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.53840850538844,
-        "y": 2.3161943466744086
+        "x": 2.7234346360584607,
+        "y": 2.5238039665268523
       },
       "prevControl": {
-        "x": 1.4829275372836466,
-        "y": 2.4481294676875076
+        "x": 1.6679536679536673,
+        "y": 2.6557390875399514
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,18 +32,18 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 4.2,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -52.0,
+    "rotation": 130.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "OnePieceEscape",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

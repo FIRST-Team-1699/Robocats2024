@@ -54,7 +54,6 @@ public class Indexer {
                 }
             default:
                 break;
-
         }
     }
 

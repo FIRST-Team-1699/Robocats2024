@@ -1,31 +1,41 @@
 package frc.team1699.lib.leds;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import frc.team1699.lib.leds.colors.Blue;
+import frc.team1699.lib.leds.colors.Green;
 import frc.team1699.lib.leds.colors.HSVColor;
 import frc.team1699.lib.leds.colors.Red;
 import frc.team1699.lib.leds.colors.Yellow;
+import frc.team1699.subsystems.Drive;
+import frc.team1699.subsystems.Manipulator;
+import frc.team1699.subsystems.Vision;
 
-public class LEDController {
-    // private LEDStates wantedState, currentState;
+public class NewLEDController {
     private int rainbowFirstPixelHue = 50;
     private int yellowBlink = 0;
+    private HSVColor lastAimColor = new Red();
 
     private AddressableLED leds;
     private AddressableLEDBuffer ledBuffer;
     private int ledLength;
+    private ArrayList<LEDStates> ledStateBuffer;
+    private LEDStates ledState;
 
-    private HSVColor currentColor;
-    // private HSVColor alternateColorOne, alternateColorTwo;
+    private Drive swerve;
+    private Manipulator manipulator;
 
-    public LEDController(int ledLength, int port) {
-        // this.wantedState = LEDStates.SOLID;
-        // this.currentState = LEDStates.SOLID;
+    public NewLEDController(int ledLength, int port, Drive swerve, Manipulator manipulator) {
         this.ledLength = ledLength;
-        leds = new AddressableLED(port);
-        ledBuffer = new AddressableLEDBuffer(ledLength);
+        this.leds = new AddressableLED(port);
+        this.ledBuffer = new AddressableLEDBuffer(ledLength);
         leds.setLength(ledLength);
         leds.start();
+        this.ledStateBuffer = new ArrayList<>();
+        this.swerve = swerve;
+        this.manipulator = manipulator;
     }
     
     // private void rainbow() {
@@ -43,21 +53,20 @@ public class LEDController {
             ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
         }
         leds.setData(ledBuffer);
-        currentColor = color;
     }
 
-    public void alternateColors(HSVColor colorOne, HSVColor colorTwo) {
-        for(int i = 0; i < ledLength; i++) {
-            if(i%2 == 0) {
-                ledBuffer.setHSV(i, colorOne.getHue(), colorOne.getSaturation(), colorOne.getValue());
-            } else {
-                ledBuffer.setHSV(i, colorTwo.getHue(), colorTwo.getSaturation(), colorTwo.getValue());
-            }
-        }
-        leds.setData(ledBuffer);
-    }
+    // private void alternateColors(HSVColor colorOne, HSVColor colorTwo) {
+    //     for(int i = 0; i < ledLength; i++) {
+    //         if(i % 2 == 0) {
+    //             ledBuffer.setHSV(i, colorOne.getHue(), colorOne.getSaturation(), colorOne.getValue());
+    //         } else {
+    //             ledBuffer.setHSV(i, colorTwo.getHue(), colorTwo.getSaturation(), colorTwo.getValue());
+    //         }
+    //     }
+    //     leds.setData(ledBuffer);
+    // }
 
-    public void blinkYellow() {
+    private void blinkYellowRed() {
         yellowBlink %= 10;
         if(yellowBlink == 0) {
             solidColor(new Yellow());
@@ -67,64 +76,63 @@ public class LEDController {
         yellowBlink++;
     }
 
-    public HSVColor getColor() {
-        return currentColor;
+    public void update() {
+        if(ledStateBuffer.size() > 0) {
+            handleStateTransition(getPriorityState(ledStateBuffer));
+            ledStateBuffer.clear();
+        }
+        switch(ledState) {
+            case AIMING:
+                if(!lastAimColor.equals(new Green()) && swerve.headingAimed() && manipulator.pivotAtPose() && manipulator.shooterAtSpeed()) {
+                    lastAimColor = new Green();
+                    solidColor(lastAimColor);
+                } else if(!lastAimColor.equals(new Red()) && !Vision.getInstance().hasTargetInView()) {
+                    lastAimColor = new Red();
+                    solidColor(lastAimColor);
+                } else {
+                    lastAimColor = new Blue();
+                    solidColor(lastAimColor);
+                }
+                break;
+            case AMPLIFY:
+                blinkYellowRed();
+                break;
+            case IDLE:
+                break;
+            default:
+                break;
+        }
     }
 
-    // public void update() {
-    //     switch(wantedState) {
-    //         case ALTERNATE:
-    //             break;
-    //         case BLINKING:
-    //             blinkYellow();
-    //             break;
-    //         case RAINBOW:
-    //             rainbow();
-    //             break;
-    //         case SOLID:
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
+    private void handleStateTransition(LEDStates newState) {
+        switch(newState) {
+            case AIMING:
+                solidColor(new Red());
+                break;
+            case AMPLIFY:
+                break;
+            case IDLE:
+                solidColor(new Blue());
+                break;
+            default:
+                break;
 
-    // private void handleStateTransition() {
-    //     switch(wantedState) {
-    //         case ALTERNATE:
-    //             break;
-    //         case BLINKING:
-    //             break;
-    //         case RAINBOW:
-    //             break;
-    //         case SOLID:
-    //             solidColor(currentColor);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    //     currentState = wantedState;
-    // }
+        }
+        ledState = newState;
+    }
 
-    // public void setWantedState(LEDStates wantedState) {
-    //     if(this.wantedState != wantedState) {
-    //         this.wantedState = wantedState;
-    //     }
-    //     handleStateTransition();
-    // }
+    private LEDStates getPriorityState(ArrayList<LEDStates> buffer) {
+        if(buffer.contains(LEDStates.AMPLIFY)) {
+            return LEDStates.AMPLIFY;
+        } else if(buffer.contains(LEDStates.AIMING)) {
+            return LEDStates.AIMING;
+        }
+        return LEDStates.IDLE;
+    }
 
-    // public void setColor(HSVColor color) {
-    //     currentColor = color;
-    // }
-
-    // public void setAlternate(HSVColor colorOne, HSVColor colorTwo) {
-    //     alternateColorOne = colorOne;
-    //     alternateColorTwo = colorTwo;
-    // }
-
-    // public enum LEDStates {
-    //     ALTERNATE,
-    //     SOLID,
-    //     BLINKING,
-    //     RAINBOW
-    // }
+    public enum LEDStates {
+        AMPLIFY,
+        AIMING,
+        IDLE
+    }
 }

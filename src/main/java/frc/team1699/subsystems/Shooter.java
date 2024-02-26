@@ -22,8 +22,6 @@ public class Shooter {
     private final double kI = 0.0;
     private final double kD = 0.0;
     private final double kV = 0.11;
-
-    private Orchestra orchestra;
     
     public Shooter() {
         motorRequest = new VelocityVoltage(0.0);
@@ -37,18 +35,6 @@ public class Shooter {
         topFX.getConfigurator().apply(configs);
         bottomFX = new TalonFX(ShooterConstants.kBottomMotorID);
         bottomFX.getConfigurator().apply(configs);
-
-        orchestra = new Orchestra();
-        orchestra.addInstrument(topFX);
-        orchestra.addInstrument(bottomFX);
-        orchestra.loadMusic("stacy.chrp");
-    }
-
-    public void startOrchestra() {
-        if(orchestra.isPlaying()) {
-            return;
-        }
-        orchestra.play();
     }
 
     public void setSpeed(double speed) {
@@ -62,17 +48,13 @@ public class Shooter {
     }
 
     public boolean atSpeed() {
-        if(Math.abs(topFX.getVelocity().getValueAsDouble() - topSetpoint) >= 5) {
-            return false;
-        }
-        if(Math.abs(bottomFX.getVelocity().getValueAsDouble() - bottomSetpoint) >= 5) {
+        if(Math.abs(topFX.getVelocity().getValueAsDouble() - topSetpoint) >= ShooterConstants.kTolerance || Math.abs(bottomFX.getVelocity().getValueAsDouble()) - bottomSetpoint >= ShooterConstants.kTolerance) {
             return false;
         }
         return true;
     }
 
     public void update() {
-        // check if we are at speed and anything else i think of later
         topFX.setControl(motorRequest.withVelocity(topSetpoint));
         bottomFX.setControl(motorRequest.withVelocity(bottomSetpoint));
     }

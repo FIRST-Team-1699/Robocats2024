@@ -26,7 +26,6 @@ public class Intake {
                 break;
             default:
                 break;
-            
         }
     }
 

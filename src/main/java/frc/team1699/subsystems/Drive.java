@@ -58,11 +58,6 @@ public class Drive {
         double vX = -controller.getLeftX();
         double vY = -controller.getLeftY();
         double vR = -controller.getRightX();
-        // if(DriverStation.getAlliance().get() == Alliance.Red) {
-        //     vX *= -1;
-        //     vY *= -1;
-        //     vR *= -1;
-        // }
 
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
@@ -95,10 +90,6 @@ public class Drive {
         double vY = -controller.getLeftY();
         double vR = headingLockController.calculate(targetOffset, 0.0);
 
-        // if(DriverStation.getAlliance().get() == Alliance.Red) {
-        //     vX *= -1;
-        //     vY *= -1;
-        // }
         // apply deadbands
         if(Math.abs(vX) < SwerveConstants.kDeadband) {
             vX = 0;
@@ -128,11 +119,6 @@ public class Drive {
 
     public void resetHeading() {
         Rotation3d gyroReading = swerve.getGyroRotation3d();
-        // if(DriverStation.getAlliance().get() == Alliance.Red) {
-        //     swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 180.0));
-        // } else {
-        //     swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
-        // }
         swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
     } 
 
@@ -144,13 +130,6 @@ public class Drive {
     //     swerve.setModuleStates(moduleStates, false);
     // }
 
-    /** Set an X to keep the swerve from moving */
-    //photonvision-heading
-   /* private void lock() {
-        swerve.lockPose();
-    }
-
-    public void update()  */
     private void lock() {
         swerve.lockPose();
     }

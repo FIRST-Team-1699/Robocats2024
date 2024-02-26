@@ -6,16 +6,12 @@ import edu.wpi.first.math.util.Units;
 import frc.team1699.lib.vision.Limelight.PhysicalConfig;
 
 public class Constants {
-    // The DI/O port where the LED strip is plugged in
-    public static final int kLEDPort = 0;
-
     public static class InputConstants {
         public static final int kDriverControllerPort = 0;
         public static final int kOperatorControllerPort = 1;
     }
 
     public static class ClimberConstants {
-        // CAN IDs of winch motors
         public static final int kPortWinchID = 12;
         public static final int kStarWinchID = 23;
         public static final double kP = 0.2;
@@ -60,6 +56,7 @@ public class Constants {
     public static class ShooterConstants {
         public static final int kTopMotorID = 33;
         public static final int kBottomMotorID = 34;
+        public static final double kTolerance = 5.0;
     }
 
     public static class ManipulatorConstants {

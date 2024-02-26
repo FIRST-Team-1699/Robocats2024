@@ -37,10 +37,6 @@ public class Manipulator {
         this.wantedState = ManipulatorStates.IDLE;
     }
 
-    public void startOrchestra() {
-        shooter.startOrchestra();
-    }
-
     public void update() {
         System.out.println(currentState);
         if(indexer.isLoaded()) {
@@ -115,16 +111,13 @@ public class Manipulator {
                         break;
 
                 }
-                // TODO tell the pivoter to start aiming
                 break;
             case IDLE:
                 intake.setWantedState(IntakeStates.IDLE);
                 indexer.setWantedState(IndexStates.EMPTY);
-                // pivot.setAngle(ManipulatorConstants.kIdleAngle);
                 shooter.setSpeed(0.0);
                 break;
             case INTAKING:
-                // TODO check if you are loaded. if so, you can't intake and the transition is failed
                 intake.setWantedState(IntakeStates.INTAKING);
                 pivot.setAngle(ManipulatorConstants.kIntakeAngle);
                 indexer.setWantedState(IndexStates.INTAKING);

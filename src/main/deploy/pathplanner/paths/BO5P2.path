@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.07,
-        "y": 7.19
+        "x": 2.37,
+        "y": 4.37
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9376348662607235,
-        "y": 7.275581398009644
+        "x": 2.5831566438545748,
+        "y": 4.204189133523731
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.010668021336043,
-        "y": 5.57
+        "x": 2.7197367547874425,
+        "y": 4.197215989062516
       },
       "prevControl": {
-        "x": 1.8347545266519112,
-        "y": 5.819804782466708
+        "x": 2.70245814253031,
+        "y": 3.883636099581735
       },
       "nextControl": {
-        "x": 2.146928320432667,
-        "y": 5.376504472918353
+        "x": 2.7382261611356244,
+        "y": 4.532769904674852
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.07,
-        "y": 5.57
+        "x": 2.16,
+        "y": 5.537577201284932
       },
       "prevControl": {
-        "x": 2.4468296708019635,
-        "y": 5.57
+        "x": 2.354138766655913,
+        "y": 4.597867528442163
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,15 +46,15 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.15,
       "rotationDegrees": 0.0,
-      "rotateFast": false
+      "rotateFast": true
     }
   ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 4.2,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -65,9 +65,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BlueFivePiece",
   "previewStartingState": {
-    "rotation": 45.0,
+    "rotation": -30.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
