@@ -13,7 +13,7 @@ import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
 import frc.team1699.subsystems.Vision;
 
-public class NewLEDController {
+public class LEDController {
     private int rainbowFirstPixelHue = 50;
     private int yellowBlink = 0;
     private HSVColor lastAimColor = new Red();
@@ -27,7 +27,7 @@ public class NewLEDController {
     private Drive swerve;
     private Manipulator manipulator;
 
-    public NewLEDController(int ledLength, int port, Drive swerve, Manipulator manipulator) {
+    public LEDController(int ledLength, int port, Drive swerve, Manipulator manipulator) {
         this.ledLength = ledLength;
         this.leds = new AddressableLED(port);
         this.ledBuffer = new AddressableLEDBuffer(ledLength);
@@ -128,6 +128,10 @@ public class NewLEDController {
             return LEDStates.AIMING;
         }
         return LEDStates.IDLE;
+    }
+
+    public void addState(LEDStates state) {
+        ledStateBuffer.add(state);
     }
 
     public enum LEDStates {

@@ -6,7 +6,7 @@ import frc.team1699.lib.leds.colors.HSVColor;
 import frc.team1699.lib.leds.colors.Red;
 import frc.team1699.lib.leds.colors.Yellow;
 
-public class LEDController {
+public class OldLEDController {
     // private LEDStates wantedState, currentState;
     private int rainbowFirstPixelHue = 50;
     private int yellowBlink = 0;
@@ -18,7 +18,7 @@ public class LEDController {
     private HSVColor currentColor;
     // private HSVColor alternateColorOne, alternateColorTwo;
 
-    public LEDController(int ledLength, int port) {
+    public OldLEDController(int ledLength, int port) {
         // this.wantedState = LEDStates.SOLID;
         // this.currentState = LEDStates.SOLID;
         this.ledLength = ledLength;

@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -18,15 +17,11 @@ import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
 import frc.team1699.lib.auto.modes.OptimFourPiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
 import frc.team1699.lib.leds.LEDController;
+import frc.team1699.lib.leds.LEDController.LEDStates;
 import frc.team1699.lib.leds.colors.Blue;
-import frc.team1699.lib.leds.colors.Green;
-import frc.team1699.lib.leds.colors.Purple;
-import frc.team1699.lib.leds.colors.Red;
-import frc.team1699.lib.leds.colors.Yellow;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
-import frc.team1699.subsystems.Vision;
 import frc.team1699.subsystems.Drive.DriveState;
 import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 
@@ -51,7 +46,7 @@ public class Robot extends TimedRobot {
     manipulator = new Manipulator();
     climber = new Climber();
     CameraServer.startAutomaticCapture();
-    ledController = new LEDController(74, 1);
+    ledController = new LEDController(74, 1, swerve, manipulator);
     ledController.solidColor(new Blue());
 
     autoChooser = new SendableChooser<String>();
@@ -60,7 +55,10 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    ledController.addState(LEDStates.IDLE);
+    ledController.update();
+  }
 
   @Override
   public void autonomousInit() {
@@ -116,39 +114,19 @@ public class Robot extends TimedRobot {
       manipulator.setWantedState(ManipulatorStates.TRAP_SHOOT);
     } else if(driverController.getRightBumper()) {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
-      if(!Vision.getInstance().hasTargetInView()) {
-        if(ledController.getColor().getHue() != Red.redHue) {
-          ledController.solidColor(new Red());
-        } 
-      } else {
-        if(swerve.headingAimed() && manipulator.pivotAtPose() && manipulator.shooterAtSpeed()) {
-          if(ledController.getColor().getHue() != Green.greenHue) {
-            ledController.solidColor(new Green());
-          }
-        } else {
-          if(ledController.getColor().getHue() != Blue.blueHue) {
-            ledController.solidColor(new Blue());
-          }
-        }
-      }
+      ledController.addState(LEDStates.AIMING);
     } else {
       manipulator.setWantedState(ManipulatorStates.IDLE);
       driverController.setRumble(RumbleType.kBothRumble, 0);
       operatorController.setRumble(RumbleType.kBothRumble, 0);
-      if(ledController.getColor().getHue() != Blue.blueHue) {
-        ledController.solidColor(new Blue());
-      }
     }
 
     if(driverController.getYButtonPressed()) {
       swerve.resetHeading();
-      if(ledController.getColor().getHue() != Purple.purpleHue) {
-        ledController.solidColor(new Purple());
-      }
     }
 
     if(operatorController.getRawButton(7)) {
-      ledController.blinkYellow();
+      ledController.addState(LEDStates.AMPLIFY);
     }
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
@@ -173,7 +151,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     driverController.setRumble(RumbleType.kBothRumble, 0);
     operatorController.setRumble(RumbleType.kBothRumble, 0);
-    ledController.alternateColors(new Blue(), new Yellow());
+    ledController.addState(LEDStates.IDLE);
   }
 
   @Override
