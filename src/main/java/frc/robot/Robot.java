@@ -10,10 +10,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
+import frc.team1699.lib.auto.modes.FivePieceBlue;
 import frc.team1699.lib.auto.modes.OptimFourPiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
 import frc.team1699.lib.leds.LEDController;
@@ -52,6 +55,7 @@ public class Robot extends TimedRobot {
     autoChooser = new SendableChooser<String>();
     autoChooser.addOption(onePiece, onePiece);
     autoChooser.setDefaultOption(fourPiece, fourPiece);
+    SmartDashboard.putData(autoChooser);
   }
 
   @Override
@@ -62,6 +66,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    // auto = new FivePieceBlue(manipulator, swerve);
     switch(autoChooser.getSelected()) {
       case onePiece:
         if(DriverStation.getAlliance().get() == Alliance.Red) {
