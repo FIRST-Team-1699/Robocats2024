@@ -107,6 +107,8 @@ public class Manipulator {
                     case SPEAKER_GOOFY_SHOOT:
                         shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                         break;
+                    case SHUFFLE:
+                        shooter.setSpeed(ManipulatorConstants.kShuffleAngle);
                     default:
                         break;
 
@@ -115,7 +117,7 @@ public class Manipulator {
             case IDLE:
                 intake.setWantedState(IntakeStates.IDLE);
                 indexer.setWantedState(IndexStates.EMPTY);
-                shooter.setSpeed(0.0);
+                shooter.setSpeed(0);
                 break;
             case INTAKING:
                 intake.setWantedState(IntakeStates.INTAKING);
@@ -133,6 +135,7 @@ public class Manipulator {
                 intake.setWantedState(IntakeStates.IDLE);
                 pivot.setAngle(ManipulatorConstants.kIdleAngle);
                 indexer.setWantedState(IndexStates.LOADED);
+                shooter.setSpeed(0);
                 break;
             case TRAP_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kTrapAngle);
@@ -143,6 +146,10 @@ public class Manipulator {
                 shooter.setSeparateSpeeds(ManipulatorConstants.kAmpTopSpeed, ManipulatorConstants.kAmpBottomSpeed);
                 lastPose = PivotPoses.AMP;
                 break;
+            case SHUFFLE:
+                pivot.setAngle(ManipulatorConstants.kShuffleAngle);
+                shooter.setSpeed(ManipulatorConstants.kShuffleAngle);
+                lastPose = PivotPoses.SHUFFLE;
             case SPEAKER_SUB_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kSpeakerSubwooferAngle);
                 lastPose = PivotPoses.SPEAKER_SUB;
@@ -195,6 +202,7 @@ public class Manipulator {
         AMP,
         TRAP,
         SPEAKER_GOOFY_SHOOT,
+        SHUFFLE,
         IDLE
     }
 
@@ -208,6 +216,7 @@ public class Manipulator {
         SPEAKER_LL_SHOOT,
         TRAP_SHOOT,
         AMP_SHOOT,
+        SHUFFLE,
         SPEAKER_GOOFY_SHOOT
     }
 }

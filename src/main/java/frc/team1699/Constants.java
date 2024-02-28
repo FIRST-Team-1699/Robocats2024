@@ -61,6 +61,8 @@ public class Constants {
 
     public static class ManipulatorConstants {
         public static final boolean kUseShooterTable = true;
+        public static final double kShuffleAngle = 35;
+        public static final double kShuffleSpeed = 30;
         public static final double kSpeakerSubwooferSpeed = 50;
         public static final double kSpeakerSubwooferAngle = 50;
         public static final double kSpeakerLLSpeed = 60;

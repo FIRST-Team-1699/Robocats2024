@@ -83,15 +83,21 @@ public class LEDController {
         }
         switch(ledState) {
             case AIMING:
-                if(!lastAimColor.equals(new Green()) && swerve.headingAimed() && manipulator.pivotAtPose() && manipulator.shooterAtSpeed()) {
-                    lastAimColor = new Green();
-                    solidColor(lastAimColor);
-                } else if(!lastAimColor.equals(new Red()) && !Vision.getInstance().hasTargetInView()) {
-                    lastAimColor = new Red();
-                    solidColor(lastAimColor);
+                if(swerve.headingAimed() && manipulator.pivotAtPose() && manipulator.shooterAtSpeed()) {
+                    if(!lastAimColor.equals(new Green())) {
+                        lastAimColor = new Green();
+                        solidColor(lastAimColor);
+                    }
+                } else if(!Vision.getInstance().hasTargetInView()) {
+                    if(!lastAimColor.equals(new Red())) {
+                        lastAimColor = new Red();
+                        solidColor(lastAimColor);
+                    }
                 } else {
-                    lastAimColor = new Blue();
-                    solidColor(lastAimColor);
+                    if(!lastAimColor.equals(new Blue())) {
+                        lastAimColor = new Blue();
+                        solidColor(lastAimColor);
+                    }   
                 }
                 break;
             case AMPLIFY:

@@ -33,4 +33,8 @@ public class HSVColor {
     public int getValue() {
         return value;
     }
+
+    public boolean equals(HSVColor compareColor) {
+        return getHue() == compareColor.getHue();
+    }
 }

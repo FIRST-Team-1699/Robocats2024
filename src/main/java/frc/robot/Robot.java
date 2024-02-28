@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
     } else if(operatorController.getBButtonPressed()) {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_SUB_SHOOT);
     } else if(operatorController.getYButtonPressed()) {
-      manipulator.setWantedState(ManipulatorStates.SPEAKER_GOOFY_SHOOT);
+      manipulator.setWantedState(ManipulatorStates.SHUFFLE);
     } else if(operatorController.getAButtonPressed()) {
       manipulator.setWantedState(ManipulatorStates.AMP_SHOOT);
     } else if(operatorController.getXButtonPressed()) {

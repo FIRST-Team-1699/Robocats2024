@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
+import frc.team1699.lib.auto.events.SpeakerShootGoofyEvent;
 import frc.team1699.lib.auto.events.SpeakerShootLLEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
@@ -31,7 +32,7 @@ public class BlueOnePieceEscape extends AutoMode {
         events = new ArrayList<Event>();
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
-        events.add(new SpeakerShootLLEvent(manipulator));
+        events.add(new SpeakerShootGoofyEvent(manipulator));
         i = 0;
         events.get(i).initialize();
     }
