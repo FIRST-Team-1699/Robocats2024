@@ -84,10 +84,8 @@ public class LEDController {
         switch(ledState) {
             case AIMING:
                 if(swerve.headingAimed() && manipulator.pivotAtPose() && manipulator.shooterAtSpeed()) {
-                    if(!lastAimColor.equals(new Green())) {
-                        lastAimColor = new Green();
-                        solidColor(lastAimColor);
-                    }
+                    lastAimColor = new Green();
+                    solidColor(lastAimColor);
                 } else if(!Vision.getInstance().hasTargetInView()) {
                     if(!lastAimColor.equals(new Red())) {
                         lastAimColor = new Red();
@@ -104,6 +102,11 @@ public class LEDController {
                 blinkYellowRed();
                 break;
             case IDLE:
+                if(manipulator.isLoaded()) {
+                    solidColor(new Yellow());
+                } else {
+                    solidColor(new Blue());
+                }
                 break;
             default:
                 break;
@@ -113,12 +116,10 @@ public class LEDController {
     private void handleStateTransition(LEDStates newState) {
         switch(newState) {
             case AIMING:
-                solidColor(new Red());
                 break;
             case AMPLIFY:
                 break;
             case IDLE:
-                solidColor(new Blue());
                 break;
             default:
                 break;

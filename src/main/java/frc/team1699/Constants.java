@@ -71,7 +71,7 @@ public class Constants {
         public static final double kAmpBottomSpeed = 25;
         public static final double kAmpAngle = 110;
         public static final double kTopTrapSpeed = 40;
-        public static final double kBottomTrapSpeed = 50;
+        public static final double kBottomTrapSpeed = 60;
         public static final double kTrapAngle = 55;
         public static final double kIdleAngle = 50;
         public static final double kIntakeAngle = 42;

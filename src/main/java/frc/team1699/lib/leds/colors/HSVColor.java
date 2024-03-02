@@ -35,6 +35,8 @@ public class HSVColor {
     }
 
     public boolean equals(HSVColor compareColor) {
+        System.out.println("already at that color");
+        System.out.println(getHue() == compareColor.getHue());
         return getHue() == compareColor.getHue();
     }
 }
