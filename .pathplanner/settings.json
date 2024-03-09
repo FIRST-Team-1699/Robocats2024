@@ -3,9 +3,10 @@
   "robotLength": 0.76,
   "holonomicMode": true,
   "pathFolders": [
+    "BlueFivePiece",
     "FourPiece",
     "FourPieceSubwoofer",
-    "BlueFivePiece",
+    "7407Blue4Piece",
     "OnePieceEscape"
   ],
   "autoFolders": [],

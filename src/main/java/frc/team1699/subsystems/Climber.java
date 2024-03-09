@@ -63,4 +63,29 @@ public class Climber {
         portController.setReference(portEncoder.getPosition() - 1, ControlType.kPosition);
         starController.setReference(starEncoder.getPosition() - 1, ControlType.kPosition);
     }
+
+    /**
+     * 
+     * @param up true is up, false is down
+     */
+    public void slowPort(boolean up) {
+        if(up) {
+            portController.setReference(portEncoder.getPosition() + 1, ControlType.kPosition);
+        } else {
+            portController.setReference(portEncoder.getPosition() - 1, ControlType.kPosition);
+        }
+    }
+
+    /**
+     * 
+     * @param up true is up, false is down
+     */
+    public void slowStar(boolean up) {
+        if(up) {
+            starController.setReference(starEncoder.getPosition() + 1, ControlType.kPosition);
+        } else {
+            starController.setReference(starEncoder.getPosition() - 1, ControlType.kPosition);
+        }
+    }
+
 }

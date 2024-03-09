@@ -14,7 +14,7 @@ import frc.team1699.subsystems.Manipulator;
 import frc.team1699.subsystems.Vision;
 
 public class LEDController {
-    private int rainbowFirstPixelHue = 50;
+    private int rainbowFirstPixelHue = 50;      
     private int yellowBlink = 0;
     private HSVColor lastAimColor = new Red();
 
@@ -23,7 +23,6 @@ public class LEDController {
     private int ledLength;
     private ArrayList<LEDStates> ledStateBuffer;
     private LEDStates ledState;
-
     private Drive swerve;
     private Manipulator manipulator;
 

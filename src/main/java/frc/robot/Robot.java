@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
-import frc.team1699.lib.auto.modes.FivePieceBlue;
+import frc.team1699.lib.auto.modes.ChoateFourPiece;
 import frc.team1699.lib.auto.modes.OptimFourPiece;
+import frc.team1699.lib.auto.modes.OptimThreePiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
 import frc.team1699.lib.leds.LEDController;
 import frc.team1699.lib.leds.LEDController.LEDStates;
@@ -39,7 +39,9 @@ public class Robot extends TimedRobot {
 
   private SendableChooser<String> autoChooser;
   private final String onePiece = "One Piece";
+  private final String choateAUTO = "CHOATE CHOATE CHOATE";
   private final String fourPiece = "Four Piece";
+  private final String threePiece = "Three Piece";
 
   @Override
   public void robotInit() {
@@ -54,6 +56,8 @@ public class Robot extends TimedRobot {
 
     autoChooser = new SendableChooser<String>();
     autoChooser.addOption(onePiece, onePiece);
+    autoChooser.addOption(choateAUTO, choateAUTO);
+    autoChooser.addOption(threePiece, threePiece);
     autoChooser.setDefaultOption(fourPiece, fourPiece);
     SmartDashboard.putData(autoChooser);
   }
@@ -62,6 +66,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     ledController.addState(LEDStates.IDLE);
     ledController.update();
+    manipulator.printPivotEncoder();
   }
 
   @Override
@@ -75,6 +80,11 @@ public class Robot extends TimedRobot {
           auto = new BlueOnePieceEscape(manipulator, swerve);
         }
         break;
+      case choateAUTO:
+        auto = new ChoateFourPiece(manipulator, swerve);
+        break;
+      case threePiece:
+        auto = new OptimThreePiece(manipulator, swerve);
       case fourPiece:
       default:
         auto = new OptimFourPiece(manipulator, swerve);
@@ -167,13 +177,31 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    manipulator.printPivotEncoder();
+
     if(operatorController.getRightTriggerAxis() > 0.1) {
-      climber.slowUp();
+      climber.slowStar(true);
     } else if(operatorController.getRightBumper()) {
-      climber.slowDown();
-    } if(operatorController.getAButtonPressed()) {
+      climber.slowStar(false);
+    }
+    
+    // for when you're zeroed, do this.
+    if(operatorController.getAButtonPressed()) {
       climber.overridePosition();
     }
+
+    if(operatorController.getLeftTriggerAxis() > 0.1) {
+      climber.slowPort(true);
+    } else if(operatorController.getLeftBumper()) {
+      climber.slowPort(false);
+    }
+
+    if(operatorController.getPOV() == 0) {
+      climber.slowUp();
+    } else if(operatorController.getPOV() == 180) {
+      climber.slowDown();
+    }
+
   }
 
   @Override

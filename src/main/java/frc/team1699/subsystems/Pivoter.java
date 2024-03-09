@@ -26,13 +26,21 @@ public class Pivoter {
         pivotController.setP(PivoterConstants.kP);
         pivotController.setI(PivoterConstants.kI);
         pivotController.setD(PivoterConstants.kD);
+        pivotController.setFF(PivoterConstants.kFF);
+        pivotController.setIZone(PivoterConstants.kIZone);
         pivotController.setOutputRange(-.8, .8);
     }
+
+    // public void setAngle(double angle) {
+    //     angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
+    //     setpoint = angle - 23;
+    //     pivotController.setReference(setpoint, ControlType.kPosition);
+    // }
 
     public void setAngle(double angle) {
         angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
         setpoint = angle - 23;
-        pivotController.setReference(setpoint, ControlType.kPosition);
+        pivotController.setReference(setpoint, ControlType.kSmartMotion);
     }
 
     public boolean isAtAngle() {

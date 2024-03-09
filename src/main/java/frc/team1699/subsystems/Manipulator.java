@@ -1,6 +1,7 @@
 package frc.team1699.subsystems;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team1699.Constants.ManipulatorConstants;
 import frc.team1699.subsystems.Indexer.IndexStates;
 import frc.team1699.subsystems.Intake.IntakeStates;
@@ -38,7 +39,6 @@ public class Manipulator {
     }
 
     public void update() {
-        System.out.println(currentState);
         if(indexer.isLoaded()) {
             isLoaded = true;
         } else {
@@ -99,7 +99,11 @@ public class Manipulator {
                         shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                         break;
                     case SPEAKER_LL:
-                        shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                        if(DriverStation.isAutonomous()) {
+                            shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed - 5);
+                        } else {
+                            shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                        }
                         break;
                     case TRAP:
                         shooter.setSeparateSpeeds(ManipulatorConstants.kTopTrapSpeed, ManipulatorConstants.kBottomTrapSpeed);
@@ -194,6 +198,10 @@ public class Manipulator {
 
     public boolean isLoaded() {
         return indexer.isLoaded();
+    }
+
+    public void printPivotEncoder() {
+        pivot.printEncoderValue();
     }
 
     public enum PivotPoses {

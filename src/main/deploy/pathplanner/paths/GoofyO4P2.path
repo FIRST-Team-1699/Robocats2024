@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4714249428498863,
-        "y": 4.133967125077108
+        "x": 2.9,
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6326789796436741,
-        "y": 2.653361878152329
+        "x": 1.7320840327326068,
+        "y": 4.906255016497379
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.31535977357669,
-        "y": 2.42
+        "x": 2.582386879059473,
+        "y": 5.77
       },
       "prevControl": {
-        "x": 2.259878805471897,
-        "y": 2.551935121013099
+        "x": 1.5823868790594728,
+        "y": 5.77
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -38,14 +44,14 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": -57.0,
+    "velocity": 0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "7407Blue4Piece",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -40.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -2,7 +2,6 @@ package frc.team1699.subsystems;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
@@ -50,7 +49,7 @@ public class Drive {
             e.printStackTrace(System.out);
         }
         this.controller = controller;
-        this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(14.5));
+        this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(24.75 / Math.sqrt(2)));
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
         headingLockController.enableContinuousInput(-180, 180);
         headingLockController.setTolerance(3);

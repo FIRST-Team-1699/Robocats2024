@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4714249428498863,
-        "y": 4.133967125077108
+        "x": 2.9,
+        "y": 5.53
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6326789796436741,
-        "y": 2.653361878152329
+        "x": 2.843080082465267,
+        "y": 5.91453207461292
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.31535977357669,
-        "y": 2.42
+        "x": 2.3624950107043077,
+        "y": 6.83
       },
       "prevControl": {
-        "x": 2.259878805471897,
-        "y": 2.551935121013099
+        "x": 2.5824152279380685,
+        "y": 6.478190730269201
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,12 +38,12 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": -57.0,
+    "velocity": 0,
+    "rotation": 38.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "7407Blue4Piece",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

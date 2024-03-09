@@ -1,6 +1,5 @@
 package frc.team1699.subsystems;
 
-import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -17,19 +16,14 @@ public class Shooter {
     private TalonFXConfiguration configs;
 
     private VelocityVoltage motorRequest;
-
-    private final double kP = 0.0;
-    private final double kI = 0.0;
-    private final double kD = 0.0;
-    private final double kV = 0.11;
     
     public Shooter() {
         motorRequest = new VelocityVoltage(0.0);
         configs = new TalonFXConfiguration();
-        configs.Slot0.kP = kP;
-        configs.Slot0.kI = kI;
-        configs.Slot0.kD = kD;
-        configs.Slot0.kV = kV;
+        configs.Slot0.kP = ShooterConstants.kP;
+        configs.Slot0.kI = ShooterConstants.kI;
+        configs.Slot0.kD = ShooterConstants.kD;
+        configs.Slot0.kV = ShooterConstants.kV;
         configs.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 1;
         topFX = new TalonFX(ShooterConstants.kTopMotorID);
         topFX.getConfigurator().apply(configs);

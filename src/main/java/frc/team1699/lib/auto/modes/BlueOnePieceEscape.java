@@ -11,7 +11,6 @@ import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
 import frc.team1699.lib.auto.events.SpeakerShootGoofyEvent;
-import frc.team1699.lib.auto.events.SpeakerShootLLEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
 
