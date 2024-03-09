@@ -1,10 +1,13 @@
 package frc.team1699.lib.auto.modes;
 
 import java.util.ArrayList;
+
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.team1699.lib.auto.HandledPath;
 import frc.team1699.lib.auto.events.DeadlineEvent;
 import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
@@ -20,14 +23,29 @@ import frc.team1699.subsystems.Manipulator;
 public class OptimFourPiece extends AutoMode {
     private ArrayList<Event> events;
     private int i;
+    private Manipulator manipulator;
+    private Drive swerve;
 
     public OptimFourPiece(Manipulator manipulator, Drive swerve) {
+        this.events = new ArrayList<Event>();
+        this.i = 0;
+        this.manipulator = manipulator;
+        this.swerve = swerve;
+    }
+
+    @Override
+    public void initialize() {
+        // HandledPath trajectoryOne = new HandledPath("O4P1");
+        // HandledPath trajectoryTwo = new HandledPath("O4P2", Rotation2d.fromDegrees(40));
+        // HandledPath trajectoryThree = new HandledPath("O4P3");
+        // HandledPath trajectoryFour = new HandledPath("O4P4");
+        // HandledPath trajectoryFive = new HandledPath("O4P5", Rotation2d.fromDegrees(-38));
+        
         PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("O4P1").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("O4P2").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(40));
         PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("O4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("O4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("O4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(-38));
-        events = new ArrayList<Event>();
         events.add(new SpeakerShootSubEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
@@ -49,12 +67,6 @@ public class OptimFourPiece extends AutoMode {
         events.add(new FollowTrajectoryEvent(trajectoryFive, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
-        i = 0;
-
-    }
-
-    @Override
-    public void initialize() {
         events.get(i).initialize();
     }
 

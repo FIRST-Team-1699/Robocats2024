@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.team1699.subsystems.Manipulator;
 import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 
-// TODO: make it not jank by having shooter logic to see if shooting is done, preferably not with a timer. Color sensor?
 public class SpeakerShootSubEvent extends Event {
     private Manipulator manipulator;
     private Timer timer;

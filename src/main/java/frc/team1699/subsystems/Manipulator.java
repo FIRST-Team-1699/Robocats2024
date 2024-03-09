@@ -56,6 +56,9 @@ public class Manipulator {
                 if(isLoaded) {
                     indexer.setWantedState(IndexStates.LOADED);
                 }
+                if(pivotAtPose()) {
+                    intake.setWantedState(IntakeStates.INTAKING);
+                }
                 break;
             case OUTTAKING:
                 break;
@@ -124,7 +127,6 @@ public class Manipulator {
                 shooter.setSpeed(0);
                 break;
             case INTAKING:
-                intake.setWantedState(IntakeStates.INTAKING);
                 pivot.setAngle(ManipulatorConstants.kIntakeAngle);
                 indexer.setWantedState(IndexStates.INTAKING);
                 shooter.setSpeed(0);

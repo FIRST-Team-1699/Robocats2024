@@ -9,7 +9,6 @@ import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -24,7 +23,7 @@ import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-
+// i hate kevin he is so mean = true;
 public class Drive {
     private DriveState currentState = DriveState.TELEOP_DRIVE;
     private DriveState wantedState = DriveState.TELEOP_DRIVE;
@@ -121,9 +120,8 @@ public class Drive {
         this.trajectory = trajectory;
     }
 
-    public void resetHeading() {
-        Rotation3d gyroReading = swerve.getGyroRotation3d();
-        swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
+    public void zeroGyro() {
+        swerve.zeroGyro();
     } 
 
     // /** Manually set the module states
@@ -150,6 +148,9 @@ public class Drive {
             PathPlannerTrajectory.State targetState = trajectory.sample(trajTimer.get());
             ChassisSpeeds targetSpeeds = driveController.calculateRobotRelativeSpeeds(swerve.getPose(), targetState);
             swerve.drive(targetSpeeds);
+
+            System.out.println("TARG SPED" + targetSpeeds);
+            System.out.println("GYRO" + swerve.getOdometryHeading());
         } else {
             trajTimer.stop();
             doneWithTraj = true;
@@ -193,7 +194,7 @@ public class Drive {
                 trajTimer.reset();
                 trajTimer.start();
                 doneWithTraj = false;
-                swerve.resetOdometry(trajectory.getInitialTargetHolonomicPose());
+                swerve.resetOdometry(trajectory.getInitialDifferentialPose());
                 break;
             case LOCK:
                 break;

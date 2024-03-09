@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,6 +24,7 @@ import frc.team1699.lib.auto.modes.ChoateFourPiece;
 import frc.team1699.lib.auto.modes.OptimFourPiece;
 import frc.team1699.lib.auto.modes.OptimThreePiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
+import frc.team1699.lib.auto.modes.TestTrajectoryMode;
 import frc.team1699.lib.leds.LEDController;
 import frc.team1699.lib.leds.LEDController.LEDStates;
 import frc.team1699.lib.leds.colors.Blue;
@@ -66,12 +72,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     ledController.addState(LEDStates.IDLE);
     ledController.update();
-    manipulator.printPivotEncoder();
   }
 
   @Override
   public void autonomousInit() {
-    // auto = new FivePieceBlue(manipulator, swerve);
     switch(autoChooser.getSelected()) {
       case onePiece:
         if(DriverStation.getAlliance().get() == Alliance.Red) {
@@ -90,6 +94,7 @@ public class Robot extends TimedRobot {
         auto = new OptimFourPiece(manipulator, swerve);
         break;
     }
+
     auto.initialize();
   }
 
@@ -137,7 +142,7 @@ public class Robot extends TimedRobot {
     }
 
     if(driverController.getYButtonPressed()) {
-      swerve.resetHeading();
+      swerve.zeroGyro();
     }
 
     if(operatorController.getRawButton(7)) {
