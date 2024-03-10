@@ -26,7 +26,7 @@ public class Constants {
 
     public static class IndexerConstants {
         public static final int kMotorID = 16;
-        public static final double kIndexerSpeed = 0.2;
+        public static final double kIndexerSpeed = 0.25;
         public static final double kFeedSpeed = 0.75;
         public static final int kBeamBreakID = 0;
     }
@@ -34,7 +34,7 @@ public class Constants {
     public static class IntakeConstants {
         public static final int kDeckMotorID = 31;
         public static final int kBilgeMotorID = 32;
-        public static final double kDeckSpeed = -0.75;
+        public static final double kDeckSpeed = -0.375;
         public static final double kBilgeSpeed = -0.75;
         // for later
         // indexer = 1 x 1000/20

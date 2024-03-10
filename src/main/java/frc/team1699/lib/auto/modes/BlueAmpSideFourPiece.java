@@ -16,16 +16,17 @@ import frc.team1699.lib.auto.events.SpeakerShootSubEvent;
 import frc.team1699.lib.auto.events.WaitUntilLoadedEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
-
-public class ChoateFourPiece extends AutoMode {
+// TODO fix
+public class BlueAmpSideFourPiece extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public ChoateFourPiece(Manipulator manipulator, Drive swerve) {
-        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("GoofyO4P1").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("GoofyO4P2").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(40));
-        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("GoofyO4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("GoofyO4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+    public BlueAmpSideFourPiece(Manipulator manipulator, Drive swerve) {
+        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("O4P1").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("O4P2").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(40));
+        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("O4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("O4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("O4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(-33));
         events = new ArrayList<Event>();
         events.add(new SpeakerShootSubEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
@@ -44,6 +45,11 @@ public class ChoateFourPiece extends AutoMode {
         events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
+        events.add(new RunIntakeEvent(manipulator));
+        events.add(new FollowTrajectoryEvent(trajectoryFive, swerve));
+        events.add(new WaitUntilLoadedEvent(manipulator));
+        events.add(new SpeakerShootLLEvent(manipulator));
+        swerve.zeroGyro();
         i = 0;
 
     }

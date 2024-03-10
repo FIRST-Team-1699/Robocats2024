@@ -20,6 +20,7 @@ public class Pivoter {
         pivotMotor = new CANSparkMax(PivoterConstants.kMotorID, MotorType.kBrushless);
         pivotEncoder = pivotMotor.getAlternateEncoder(Type.kQuadrature, 8192);
         pivotEncoder.setPositionConversionFactor(360);
+        pivotMotor.setInverted(true);
         pivotEncoder.setInverted(true);
         pivotController = pivotMotor.getPIDController();
         pivotController.setFeedbackDevice(pivotEncoder);
@@ -31,17 +32,17 @@ public class Pivoter {
         pivotController.setOutputRange(-.8, .8);
     }
 
-    // public void setAngle(double angle) {
-    //     angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
-    //     setpoint = angle - 23;
-    //     pivotController.setReference(setpoint, ControlType.kPosition);
-    // }
-
     public void setAngle(double angle) {
         angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
         setpoint = angle - 23;
-        pivotController.setReference(setpoint, ControlType.kSmartMotion);
+        pivotController.setReference(setpoint, ControlType.kPosition);
     }
+
+    // public void setAngle(double angle) {
+    //     angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
+    //     setpoint = angle - 23;
+    //     pivotController.setReference(setpoint, ControlType.kSmartMotion);
+    // }
 
     public boolean isAtAngle() {
         if(Math.abs(pivotEncoder.getPosition() - setpoint) <= PivoterConstants.kTolerance) {

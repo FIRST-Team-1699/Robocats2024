@@ -121,9 +121,8 @@ public class Drive {
         this.trajectory = trajectory;
     }
 
-    public void resetHeading() {
-        Rotation3d gyroReading = swerve.getGyroRotation3d();
-        swerve.setGyro(new Rotation3d(gyroReading.getX(), gyroReading.getY(), 0.0));
+    public void zeroGyro() {
+        swerve.zeroGyro();
     } 
 
     // /** Manually set the module states
@@ -193,7 +192,8 @@ public class Drive {
                 trajTimer.reset();
                 trajTimer.start();
                 doneWithTraj = false;
-                swerve.resetOdometry(trajectory.getInitialTargetHolonomicPose());
+                Pose2d targetPose = trajectory.getInitialTargetHolonomicPose();
+                swerve.resetOdometry(new Pose2d(targetPose.getX(), targetPose.getY(), getHeading()));
                 break;
             case LOCK:
                 break;

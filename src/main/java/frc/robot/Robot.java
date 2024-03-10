@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
-import frc.team1699.lib.auto.modes.ChoateFourPiece;
-import frc.team1699.lib.auto.modes.OptimFourPiece;
+import frc.team1699.lib.auto.modes.BlueAmpSideFourPiece;
 import frc.team1699.lib.auto.modes.OptimThreePiece;
+import frc.team1699.lib.auto.modes.RedAmpSideFourPiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
 import frc.team1699.lib.leds.LEDController;
 import frc.team1699.lib.leds.LEDController.LEDStates;
@@ -29,7 +29,6 @@ import frc.team1699.subsystems.Drive.DriveState;
 import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 
 public class Robot extends TimedRobot {
-
   private XboxController driverController, operatorController;
   private Drive swerve;
   private Manipulator manipulator;
@@ -39,8 +38,8 @@ public class Robot extends TimedRobot {
 
   private SendableChooser<String> autoChooser;
   private final String onePiece = "One Piece";
-  private final String choateAUTO = "CHOATE CHOATE CHOATE";
-  private final String fourPiece = "Four Piece";
+  private final String fourPiecePodium = "Pod Side Four Piece";
+  private final String fourPieceAmp = "Amp Side Four Piece";
   private final String threePiece = "Three Piece";
 
   @Override
@@ -56,9 +55,9 @@ public class Robot extends TimedRobot {
 
     autoChooser = new SendableChooser<String>();
     autoChooser.addOption(onePiece, onePiece);
-    autoChooser.addOption(choateAUTO, choateAUTO);
     autoChooser.addOption(threePiece, threePiece);
-    autoChooser.setDefaultOption(fourPiece, fourPiece);
+    autoChooser.addOption(fourPiecePodium, fourPiecePodium);
+    autoChooser.setDefaultOption(fourPieceAmp, fourPieceAmp);
     SmartDashboard.putData(autoChooser);
   }
 
@@ -66,12 +65,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     ledController.addState(LEDStates.IDLE);
     ledController.update();
-    manipulator.printPivotEncoder();
   }
 
   @Override
   public void autonomousInit() {
-    // auto = new FivePieceBlue(manipulator, swerve);
     switch(autoChooser.getSelected()) {
       case onePiece:
         if(DriverStation.getAlliance().get() == Alliance.Red) {
@@ -80,14 +77,23 @@ public class Robot extends TimedRobot {
           auto = new BlueOnePieceEscape(manipulator, swerve);
         }
         break;
-      case choateAUTO:
-        auto = new ChoateFourPiece(manipulator, swerve);
-        break;
       case threePiece:
         auto = new OptimThreePiece(manipulator, swerve);
-      case fourPiece:
+      case fourPieceAmp:
+        if(DriverStation.getAlliance().get() == Alliance.Red) {
+          auto = new RedAmpSideFourPiece(manipulator, swerve);
+        } else {
+          auto = new BlueAmpSideFourPiece(manipulator, swerve);
+        }
+        break;
+      case fourPiecePodium:
+        if(DriverStation.getAlliance().get() == Alliance.Red) {
+          auto = new BlueAmpSideFourPiece(manipulator, swerve);
+        } else {
+          auto = new RedAmpSideFourPiece(manipulator, swerve);
+        }
+        break;
       default:
-        auto = new OptimFourPiece(manipulator, swerve);
         break;
     }
     auto.initialize();
@@ -137,7 +143,7 @@ public class Robot extends TimedRobot {
     }
 
     if(driverController.getYButtonPressed()) {
-      swerve.resetHeading();
+      swerve.zeroGyro();
     }
 
     if(operatorController.getRawButton(7)) {

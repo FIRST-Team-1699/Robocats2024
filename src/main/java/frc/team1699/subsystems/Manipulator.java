@@ -31,7 +31,7 @@ public class Manipulator {
         // key: angle offset, value: pivot angle
         pivotMap.put(14.0, 50.0);
         pivotMap.put(7.0, 43.0);
-        pivotMap.put(0.0, 38.0);
+        pivotMap.put(0.0, 37.0);
         pivotMap.put(-7.0, 33.0);
         pivotMap.put(-15.0, 27.0);
         this.currentState = ManipulatorStates.IDLE;
@@ -99,11 +99,12 @@ public class Manipulator {
                         shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                         break;
                     case SPEAKER_LL:
-                        if(DriverStation.isAutonomous()) {
-                            shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed - 5);
-                        } else {
-                            shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
-                        }
+                        // if(DriverStation.isAutonomous()) {
+                        //     shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed - 5);
+                        // } else {
+                        //     shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                        // }
+                        shooter.setSpeed(-Vision.getInstance().getTY() + 45);
                         break;
                     case TRAP:
                         shooter.setSeparateSpeeds(ManipulatorConstants.kTopTrapSpeed, ManipulatorConstants.kBottomTrapSpeed);
