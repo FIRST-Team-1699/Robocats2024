@@ -30,6 +30,7 @@ public class Pivoter {
         pivotController.setFF(PivoterConstants.kFF);
         pivotController.setIZone(PivoterConstants.kIZone);
         pivotController.setOutputRange(-.8, .8);
+        pivotMotor.setSmartCurrentLimit(PivoterConstants.kPivotCurrentLimit);
     }
 
     public void setAngle(double angle) {
@@ -51,7 +52,7 @@ public class Pivoter {
         return false;
     }
 
-    public void printEncoderValue() {
-        System.out.println(pivotEncoder.getPosition());
+    public void printCurrent() {
+        System.out.println(pivotMotor.getOutputCurrent());
     }
 }

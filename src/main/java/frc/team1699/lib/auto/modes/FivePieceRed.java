@@ -16,19 +16,18 @@ import frc.team1699.lib.auto.events.SpeakerShootSubEvent;
 import frc.team1699.lib.auto.events.WaitUntilLoadedEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
-
-public class FivePieceBlue extends AutoMode {
+// TODO fix
+public class FivePieceRed extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public FivePieceBlue(Manipulator manipulator, Drive swerve) {
-        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("RO4P1").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("RO4P2").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(-23));
-        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("RO4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("RO4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("RO4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(35));
-        PathPlannerTrajectory trajectorySix = PathPlannerPath.fromPathFile("B5P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(35));
-
+    public FivePieceRed(Manipulator manipulator, Drive swerve) {
+        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("O4P1").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("O4P2").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(40));
+        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("O4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("O4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("O4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(-33));
+        PathPlannerTrajectory trajectorySix = PathPlannerPath.fromPathFile("R5P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(-30));
         events = new ArrayList<Event>();
         events.add(new SpeakerShootSubEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));

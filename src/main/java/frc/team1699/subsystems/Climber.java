@@ -6,12 +6,14 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import frc.team1699.Constants.ClimberConstants;;
+import frc.team1699.Constants.ClimberConstants;
+import frc.team1699.lib.sensors.BeamBreak;;
 
 public class Climber {
     private CANSparkMax portWinch, starWinch;
     private SparkPIDController portController, starController;
     private RelativeEncoder portEncoder, starEncoder;
+    private BeamBreak portBeamBreak, starBeamBreak;
 
     public Climber() {
         portWinch = new CANSparkMax(ClimberConstants.kPortWinchID, MotorType.kBrushless);
@@ -35,6 +37,10 @@ public class Climber {
         starController.setD(ClimberConstants.kD);
         starController.setFF(ClimberConstants.kF); 
         starController.setOutputRange(-.6, .6);
+        portBeamBreak = new BeamBreak(ClimberConstants.kPortBeamBreakID);
+        starBeamBreak = new BeamBreak(ClimberConstants.kStarBeamBreakID);
+        portWinch.setSmartCurrentLimit(ClimberConstants.kClimberCurrentLimit);
+        starWinch.setSmartCurrentLimit(ClimberConstants.kClimberCurrentLimit);
     }
 
     public void overridePosition() {
@@ -88,4 +94,39 @@ public class Climber {
         }
     }
 
+    public void printVoltages() {
+        System.out.println("PORT" + portWinch.getOutputCurrent());
+        System.out.println("STAR" + starWinch.getOutputCurrent());
+    }
+
+    public void printPositions() {
+        System.out.println("PORT" + portEncoder.getPosition());
+        System.out.println("STAR" + starEncoder.getPosition()); 
+    }
+
+    public void beamBreakCheck() {
+        if(portBeamBreak.isBroken()) {
+            portWinch.set(0);
+        }
+        if(starBeamBreak.isBroken()) {
+            starWinch.set(0);
+        }
+    }
+
+    public void bringToZero() {
+        if(portBeamBreak.isBroken()) {
+            portController.setReference(0, ControlType.kVoltage);
+            portWinch.set(0);
+            portEncoder.setPosition(0);
+        } else {
+            portWinch.set(-.05);
+        }
+        if(starBeamBreak.isBroken()) {
+            starController.setReference(0, ControlType.kVoltage);
+            starWinch.set(0);
+            starEncoder.setPosition(0);
+        } else {
+            starWinch.set(-.05);
+        }
+    }
 }

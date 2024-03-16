@@ -1,6 +1,7 @@
 package frc.team1699.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.team1699.Constants.IndexerConstants;
 import frc.team1699.lib.sensors.BeamBreak;
@@ -14,6 +15,7 @@ public class Indexer {
 
     public Indexer() {
         indexMotor = new CANSparkMax(IndexerConstants.kMotorID, MotorType.kBrushless);
+        indexMotor.setIdleMode(IdleMode.kBrake);
         indexBeamBreak = new BeamBreak(IndexerConstants.kBeamBreakID);
         hasNote = false;
         wantedState = IndexStates.EMPTY;
@@ -67,6 +69,7 @@ public class Indexer {
                 break;
             case LOADED:
                 indexMotor.set(0);
+                System.out.println("STOPPING INDEXER");
                 break;
             case REVERSING:
                 indexMotor.set(-IndexerConstants.kIndexerSpeed);

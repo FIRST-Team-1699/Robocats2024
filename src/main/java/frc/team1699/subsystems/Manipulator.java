@@ -1,7 +1,6 @@
 package frc.team1699.subsystems;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.team1699.Constants.ManipulatorConstants;
 import frc.team1699.subsystems.Indexer.IndexStates;
 import frc.team1699.subsystems.Intake.IntakeStates;
@@ -29,10 +28,13 @@ public class Manipulator {
         this.lastPose = PivotPoses.IDLE;
         pivotMap = new InterpolatingDoubleTreeMap();
         // key: angle offset, value: pivot angle
-        pivotMap.put(14.0, 50.0);
+        pivotMap.put(14.9, 59.0);
+        pivotMap.put(14.5, 56.0);
+        pivotMap.put(14.0, 54.0);
         pivotMap.put(7.0, 43.0);
-        pivotMap.put(0.0, 37.0);
+        pivotMap.put(0.0, 40.0);
         pivotMap.put(-7.0, 33.0);
+        pivotMap.put(-12.0, 28.0);
         pivotMap.put(-15.0, 27.0);
         this.currentState = ManipulatorStates.IDLE;
         this.wantedState = ManipulatorStates.IDLE;
@@ -84,6 +86,7 @@ public class Manipulator {
         indexer.update();
         intake.update();
         shooter.update();
+        pivot.printCurrent();
     }
 
     private void handleStateTransition() {
@@ -94,6 +97,7 @@ public class Manipulator {
                         shooter.setSeparateSpeeds(ManipulatorConstants.kAmpTopSpeed, ManipulatorConstants.kAmpBottomSpeed);
                         break;
                     case IDLE:
+                        shooter.setSpeed(ManipulatorConstants.kIdleSpeed);
                         break;
                     case SPEAKER_SUB:
                         shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
@@ -158,6 +162,7 @@ public class Manipulator {
             case SPEAKER_SUB_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kSpeakerSubwooferAngle);
                 lastPose = PivotPoses.SPEAKER_SUB;
+                shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                 break;
             case SPEAKER_LL_SHOOT:
                 lastPose = PivotPoses.SPEAKER_LL;
@@ -199,10 +204,6 @@ public class Manipulator {
 
     public boolean isLoaded() {
         return indexer.isLoaded();
-    }
-
-    public void printPivotEncoder() {
-        pivot.printEncoderValue();
     }
 
     public enum PivotPoses {

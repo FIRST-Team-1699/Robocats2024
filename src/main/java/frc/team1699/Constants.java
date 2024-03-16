@@ -22,20 +22,23 @@ public class Constants {
         public static final double kPortClimberBottomPosition = 0.0;
         public static final double kStarClimberTopPosition = 115;
         public static final double kStarClimberBottomPosition = 0.0;
+        public static final int kPortBeamBreakID = 1;
+        public static final int kStarBeamBreakID = 5;
+        public static final int kClimberCurrentLimit = 20;
     }
 
     public static class IndexerConstants {
         public static final int kMotorID = 16;
-        public static final double kIndexerSpeed = 0.25;
+        public static final double kIndexerSpeed = 0.4;
         public static final double kFeedSpeed = 0.75;
-        public static final int kBeamBreakID = 0;
+        public static final int kBeamBreakID = 2;
     }
 
     public static class IntakeConstants {
         public static final int kDeckMotorID = 31;
         public static final int kBilgeMotorID = 32;
-        public static final double kDeckSpeed = -0.375;
-        public static final double kBilgeSpeed = -0.75;
+        public static final double kDeckSpeed = -0.4;
+        public static final double kBilgeSpeed = -0.8;
         // for later
         // indexer = 1 x 1000/20
         // bottom intake = .5 x 1000/7
@@ -46,20 +49,21 @@ public class Constants {
         public static final int kMotorID = 11;
         public static final double kEncoderOffset = 0.0;
         public static final double kTolerance = 2.0;
-        public static final double kP = 0.02;
+        public static final double kP = 0.022;
         public static final double kI = 0.0;
-        public static final double kD = 0.02;
+        public static final double kD = 0.015;
         public static final double kFF = 0.0;
         public static final double kIZone = 0.0;
         public static final double kMinAngle = 27.0;
         public static final double kMaxAngle = 130.0; 
+        public static final int kPivotCurrentLimit = 20;
     }
 
     public static class ShooterConstants {
         public static final int kTopMotorID = 33;
         public static final int kBottomMotorID = 34;
         public static final double kTolerance = 5.0;
-        public static final double kP = 0.0;
+        public static final double kP = 0.002;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kV = 0.11;
@@ -67,6 +71,7 @@ public class Constants {
 
     public static class ManipulatorConstants {
         public static final boolean kUseShooterTable = true;
+        public static final double kIdleSpeed = 4;
         public static final double kShuffleAngle = 35;
         public static final double kShuffleSpeed = 30;
         public static final double kSpeakerSubwooferSpeed = 50;

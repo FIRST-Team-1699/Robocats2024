@@ -10,9 +10,9 @@
     "OnePieceEscape"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 2.5,
+  "defaultMaxVel": 2.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
-  "defaultMaxAngAccel": 720.0,
+  "defaultMaxAngAccel": 690.0,
   "maxModuleSpeed": 4.6
 }

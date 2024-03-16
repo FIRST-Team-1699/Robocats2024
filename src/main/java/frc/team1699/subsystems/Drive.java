@@ -32,7 +32,7 @@ public class Drive {
     private PathPlannerTrajectory trajectory;
     private PPHolonomicDriveController driveController;
     private PIDConstants translationConstants = new PIDConstants(0.02);
-    private PIDConstants rotationConstants = new PIDConstants(0.2);
+    private PIDConstants rotationConstants = new PIDConstants(0.35);
     private boolean doneWithTraj = true;
     private PIDController headingLockController = new PIDController(.013, 0, 0);
 

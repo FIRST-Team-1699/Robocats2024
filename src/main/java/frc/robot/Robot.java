@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1699.Constants.InputConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
+import frc.team1699.lib.auto.modes.FivePieceBlue;
+import frc.team1699.lib.auto.modes.FivePieceRed;
 import frc.team1699.lib.auto.modes.BlueAmpSideFourPiece;
 import frc.team1699.lib.auto.modes.OptimThreePiece;
 import frc.team1699.lib.auto.modes.RedAmpSideFourPiece;
@@ -25,6 +27,7 @@ import frc.team1699.lib.leds.colors.Blue;
 import frc.team1699.subsystems.Climber;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
+import frc.team1699.subsystems.Vision;
 import frc.team1699.subsystems.Drive.DriveState;
 import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 
@@ -38,6 +41,7 @@ public class Robot extends TimedRobot {
 
   private SendableChooser<String> autoChooser;
   private final String onePiece = "One Piece";
+  private final String fivePiece = "Five Piece";
   private final String fourPiecePodium = "Pod Side Four Piece";
   private final String fourPieceAmp = "Amp Side Four Piece";
   private final String threePiece = "Three Piece";
@@ -57,6 +61,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption(onePiece, onePiece);
     autoChooser.addOption(threePiece, threePiece);
     autoChooser.addOption(fourPiecePodium, fourPiecePodium);
+    autoChooser.addOption(fivePiece, fivePiece);
     autoChooser.setDefaultOption(fourPieceAmp, fourPieceAmp);
     SmartDashboard.putData(autoChooser);
   }
@@ -65,6 +70,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     ledController.addState(LEDStates.IDLE);
     ledController.update();
+    climber.printPositions();
   }
 
   @Override
@@ -91,6 +97,13 @@ public class Robot extends TimedRobot {
           auto = new BlueAmpSideFourPiece(manipulator, swerve);
         } else {
           auto = new RedAmpSideFourPiece(manipulator, swerve);
+        }
+        break;
+      case fivePiece:
+        if(DriverStation.getAlliance().get() == Alliance.Red) {
+          auto = new FivePieceRed(manipulator, swerve);
+        } else {
+          auto = new FivePieceBlue(manipulator, swerve);
         }
         break;
       default:
@@ -153,7 +166,9 @@ public class Robot extends TimedRobot {
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
       swerve.setWantedState(DriveState.LOCK);
     } else if(driverController.getRightBumper()) {
-      swerve.setWantedState(DriveState.TELEOP_SPEAKER_TRACK);
+      if(Vision.getInstance().hasTargetInView()) {
+        swerve.setWantedState(DriveState.TELEOP_SPEAKER_TRACK);
+      }
     } else if(swerve.getState() != DriveState.TELEOP_DRIVE) {
       swerve.setWantedState(DriveState.TELEOP_DRIVE);
     }
@@ -166,6 +181,7 @@ public class Robot extends TimedRobot {
 
     swerve.update();
     manipulator.update();
+    climber.beamBreakCheck();
   }
 
   @Override
@@ -183,31 +199,28 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    manipulator.printPivotEncoder();
+    // manipulator.printPivotEncoder();
 
-    if(operatorController.getRightTriggerAxis() > 0.1) {
-      climber.slowStar(true);
-    } else if(operatorController.getRightBumper()) {
-      climber.slowStar(false);
-    }
+    // if(operatorController.getRightTriggerAxis() > 0.1) {
+    //   climber.slowStar(true);
+    // } else if(operatorController.getRightBumper()) {
+    //   climber.slowStar(false);
+    // }
     
-    // for when you're zeroed, do this.
+    // // for when you're zeroed, do this.
+    // if(operatorController.getAButtonPressed()) {
+    //   climber.overridePosition();
+    // }
+
+    // if(operatorController.getLeftTriggerAxis() > 0.1) {
+    //   climber.slowPort(true);
+    // } else if(operatorController.getLeftBumper()) {
+    //   climber.slowPort(false);
+    // }
     if(operatorController.getAButtonPressed()) {
-      climber.overridePosition();
+      climber.bringToZero();
     }
-
-    if(operatorController.getLeftTriggerAxis() > 0.1) {
-      climber.slowPort(true);
-    } else if(operatorController.getLeftBumper()) {
-      climber.slowPort(false);
-    }
-
-    if(operatorController.getPOV() == 0) {
-      climber.slowUp();
-    } else if(operatorController.getPOV() == 180) {
-      climber.slowDown();
-    }
-
+    climber.beamBreakCheck();
   }
 
   @Override
