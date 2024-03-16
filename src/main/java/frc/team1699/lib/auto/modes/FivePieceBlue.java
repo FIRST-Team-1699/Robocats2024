@@ -27,7 +27,7 @@ public class FivePieceBlue extends AutoMode {
         PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("RO4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("RO4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("RO4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(35));
-        PathPlannerTrajectory trajectorySix = PathPlannerPath.fromPathFile("B5P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(35));
+        PathPlannerTrajectory trajectorySix = PathPlannerPath.fromPathFile("B5P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(10));
 
         events = new ArrayList<Event>();
         events.add(new SpeakerShootSubEvent(manipulator));

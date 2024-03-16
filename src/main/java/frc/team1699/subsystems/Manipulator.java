@@ -86,7 +86,7 @@ public class Manipulator {
         indexer.update();
         intake.update();
         shooter.update();
-        pivot.printCurrent();
+        // pivot.printCurrent();
     }
 
     private void handleStateTransition() {
@@ -126,7 +126,7 @@ public class Manipulator {
             case IDLE:
                 intake.setWantedState(IntakeStates.IDLE);
                 indexer.setWantedState(IndexStates.EMPTY);
-                shooter.setSpeed(0);
+                shooter.setSpeed(ManipulatorConstants.kIdleSpeed);
                 break;
             case INTAKING:
                 intake.setWantedState(IntakeStates.INTAKING);

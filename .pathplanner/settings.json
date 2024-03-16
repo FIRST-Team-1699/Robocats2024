@@ -3,14 +3,12 @@
   "robotLength": 0.76,
   "holonomicMode": true,
   "pathFolders": [
-    "BlueFivePiece",
     "FourPiece",
     "FourPieceSubwoofer",
-    "7407Blue4Piece",
     "OnePieceEscape"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 2.0,
+  "defaultMaxVel": 4.1999,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 690.0,

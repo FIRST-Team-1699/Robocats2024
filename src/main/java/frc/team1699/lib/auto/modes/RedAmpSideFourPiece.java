@@ -26,7 +26,7 @@ public class RedAmpSideFourPiece extends AutoMode {
         PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("RO4P2").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(-23));
         PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("RO4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("RO4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("RO4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(35));
+        PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("RO4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(20));
         events = new ArrayList<Event>();
         events.add(new SpeakerShootSubEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));

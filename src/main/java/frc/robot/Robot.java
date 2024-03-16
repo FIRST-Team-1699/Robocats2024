@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   private Manipulator manipulator;
   private Climber climber;
   private AutoMode auto;
-  private LEDController ledController;
+  // private LEDController ledController;
 
   private SendableChooser<String> autoChooser;
   private final String onePiece = "One Piece";
@@ -54,8 +54,8 @@ public class Robot extends TimedRobot {
     manipulator = new Manipulator();
     climber = new Climber();
     CameraServer.startAutomaticCapture();
-    ledController = new LEDController(74, 1, swerve, manipulator);
-    ledController.solidColor(new Blue());
+    // ledController = new LEDController(74, 1, swerve, manipulator);
+    // ledController.solidColor(new Blue());
 
     autoChooser = new SendableChooser<String>();
     autoChooser.addOption(onePiece, onePiece);
@@ -68,9 +68,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    ledController.addState(LEDStates.IDLE);
-    ledController.update();
-    climber.printPositions();
+    // ledController.addState(LEDStates.IDLE);
+    // ledController.update();
   }
 
   @Override
@@ -132,8 +131,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     if(operatorController.getRightBumper()) {
       manipulator.setWantedState(ManipulatorStates.SHOOTING);
-      driverController.setRumble(RumbleType.kBothRumble, 1);
-      operatorController.setRumble(RumbleType.kBothRumble, 1);
+      // driverController.setRumble(RumbleType.kBothRumble, 1);
+      // operatorController.setRumble(RumbleType.kBothRumble, 1);
     } else if(operatorController.getLeftTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.OUTTAKING);
     } else if(operatorController.getRightTriggerAxis() > 0.1) {
@@ -148,11 +147,11 @@ public class Robot extends TimedRobot {
       manipulator.setWantedState(ManipulatorStates.TRAP_SHOOT);
     } else if(driverController.getRightBumper()) {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
-      ledController.addState(LEDStates.AIMING);
+      // ledController.addState(LEDStates.AIMING);
     } else {
       manipulator.setWantedState(ManipulatorStates.IDLE);
-      driverController.setRumble(RumbleType.kBothRumble, 0);
-      operatorController.setRumble(RumbleType.kBothRumble, 0);
+      // driverController.setRumble(RumbleType.kBothRumble, 0);
+      // operatorController.setRumble(RumbleType.kBothRumble, 0);
     }
 
     if(driverController.getYButtonPressed()) {
@@ -160,7 +159,7 @@ public class Robot extends TimedRobot {
     }
 
     if(operatorController.getRawButton(7)) {
-      ledController.addState(LEDStates.AMPLIFY);
+      // ledController.addState(LEDStates.AMPLIFY);
     }
 
     if(swerve.getState() != DriveState.LOCK && driverController.getXButton()) {
@@ -186,9 +185,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    driverController.setRumble(RumbleType.kBothRumble, 0);
-    operatorController.setRumble(RumbleType.kBothRumble, 0);
-    ledController.addState(LEDStates.IDLE);
+    // driverController.setRumble(RumbleType.kBothRumble, 0);
+    // operatorController.setRumble(RumbleType.kBothRumble, 0);
+    // ledController.addState(LEDStates.IDLE);
   }
 
   @Override

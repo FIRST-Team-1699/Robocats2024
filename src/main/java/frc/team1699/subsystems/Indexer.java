@@ -69,7 +69,6 @@ public class Indexer {
                 break;
             case LOADED:
                 indexMotor.set(0);
-                System.out.println("STOPPING INDEXER");
                 break;
             case REVERSING:
                 indexMotor.set(-IndexerConstants.kIndexerSpeed);
