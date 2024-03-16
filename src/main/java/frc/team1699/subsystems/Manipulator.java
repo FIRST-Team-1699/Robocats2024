@@ -34,7 +34,7 @@ public class Manipulator {
         pivotMap.put(7.0, 43.0);
         pivotMap.put(0.0, 40.0);
         pivotMap.put(-7.0, 33.0);
-        pivotMap.put(-12.0, 28.0);
+        pivotMap.put(-12.0, 27.0);
         pivotMap.put(-15.0, 27.0);
         this.currentState = ManipulatorStates.IDLE;
         this.wantedState = ManipulatorStates.IDLE;
@@ -108,7 +108,7 @@ public class Manipulator {
                         // } else {
                         //     shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                         // }
-                        shooter.setSpeed(-Vision.getInstance().getTY() + 45);
+                        shooter.setSpeed(-Vision.getInstance().getTY() + 38);
                         break;
                     case TRAP:
                         shooter.setSeparateSpeeds(ManipulatorConstants.kTopTrapSpeed, ManipulatorConstants.kBottomTrapSpeed);

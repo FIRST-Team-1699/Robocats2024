@@ -5,6 +5,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.team1699.lib.auto.events.AimSpeakerEvent;
 import frc.team1699.lib.auto.events.DeadlineEvent;
 import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
@@ -28,19 +29,21 @@ public class FivePieceBlue extends AutoMode {
         PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("RO4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("RO4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(35));
         PathPlannerTrajectory trajectorySix = PathPlannerPath.fromPathFile("B5P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(10));
-
         events = new ArrayList<Event>();
         events.add(new SpeakerShootSubEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
-        ArrayList<Event> arrayOne = new ArrayList<>();
-        arrayOne.add(new WaitUntilLoadedEvent(manipulator));
-        arrayOne.add(new SpeakerAimLLEvent(manipulator));
-        SequentialEvent sequenceOne = new SequentialEvent(arrayOne);
-        ArrayList<Event> arrayTwo = new ArrayList<>();
-        arrayTwo.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
-        arrayTwo.add(sequenceOne);
-        events.add(new DeadlineEvent(arrayTwo));
+        events.add(new WaitUntilLoadedEvent(manipulator));
+        events.add(new SpeakerShootLLEvent(manipulator));
+        events.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
+        // ArrayList<Event> arrayOne = new ArrayList<>();
+        // arrayOne.add(new WaitUntilLoadedEvent(manipulator));
+        // arrayOne.add(new SpeakerAimLLEvent(manipulator));
+        // SequentialEvent sequenceOne = new SequentialEvent(arrayOne);
+        // ArrayList<Event> arrayTwo = new ArrayList<>();
+        // arrayTwo.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
+        // arrayTwo.add(sequenceOne);
+        // events.add(new DeadlineEvent(arrayTwo));
         events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryThree, swerve));
@@ -53,10 +56,10 @@ public class FivePieceBlue extends AutoMode {
         events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectorySix, swerve));
+        events.add(new AimSpeakerEvent(swerve, manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
         swerve.zeroGyro();
         i = 0;
-
     }
 
     @Override
