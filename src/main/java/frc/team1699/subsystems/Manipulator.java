@@ -2,6 +2,7 @@ package frc.team1699.subsystems;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.team1699.Constants.ManipulatorConstants;
+import frc.team1699.lib.sensors.BeamBreak;
 import frc.team1699.subsystems.Indexer.IndexStates;
 import frc.team1699.subsystems.Intake.IntakeStates;
 
@@ -10,6 +11,7 @@ public class Manipulator {
     private Indexer indexer;
     private Pivoter pivot;
     private Shooter shooter;
+    private BeamBreak intakeBreak;
 
     private ManipulatorStates wantedState;
     private ManipulatorStates currentState;
@@ -25,6 +27,7 @@ public class Manipulator {
         indexer = new Indexer();
         pivot = new Pivoter();
         shooter = new Shooter();
+        intakeBreak = new BeamBreak(ManipulatorConstants.kIntakeBreakID);
         this.lastPose = PivotPoses.IDLE;
         pivotMap = new InterpolatingDoubleTreeMap();
         // key: angle offset, value: pivot angle
@@ -190,6 +193,10 @@ public class Manipulator {
 
     public ManipulatorStates getCurrentState() {
         return currentState;
+    }
+
+    public boolean intakeLoaded() {
+        return intakeBreak.isBroken();
     }
 
     public boolean shooterAtSpeed() {

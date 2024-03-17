@@ -70,6 +70,7 @@ public class Constants {
     }
 
     public static class ManipulatorConstants {
+        public static final int kIntakeBreakID = 8;
         public static final boolean kUseShooterTable = true;
         public static final double kIdleSpeed = 15;
         public static final double kShuffleAngle = 35;

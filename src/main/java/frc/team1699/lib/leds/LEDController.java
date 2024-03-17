@@ -101,7 +101,7 @@ public class LEDController {
                 blinkYellowRed();
                 break;
             case IDLE:
-                if(manipulator.isLoaded()) {
+                if(manipulator.intakeLoaded() || manipulator.isLoaded()) {
                     solidColor(new Yellow());
                 } else {
                     solidColor(new Blue());
