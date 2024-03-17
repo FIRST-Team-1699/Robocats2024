@@ -37,15 +37,15 @@ public class LEDController {
         this.manipulator = manipulator;
     }
     
-    // private void rainbow() {
-    //     for (int i = 0; i < ledLength; i++) {
-    //         final int hue = (rainbowFirstPixelHue + (i * 180 / ledLength)) % 180;
-    //         ledBuffer.setHSV(i, hue, 255, 50);
-    //     }
-    //     rainbowFirstPixelHue += 3;
-    //     rainbowFirstPixelHue %= 180;
-    //     leds.setData(ledBuffer);
-    // }
+    public void rainbow() {
+        for (int i = 0; i < ledLength; i++) {
+            final int hue = (rainbowFirstPixelHue + (i * 180 / ledLength)) % 180;
+            ledBuffer.setHSV(i, hue, 255, 50);
+        }
+        rainbowFirstPixelHue += 3;
+        rainbowFirstPixelHue %= 180;
+        leds.setData(ledBuffer);
+    }
 
     public void solidColor(HSVColor color) {
         for(int i = 0; i < ledLength; i++) {
