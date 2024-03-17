@@ -48,11 +48,11 @@ public class Constants {
     public static class PivoterConstants {
         public static final int kMotorID = 11;
         public static final double kEncoderOffset = 0.0;
-        public static final double kTolerance = 2.0;
-        public static final double kP = 0.022;
-        public static final double kI = 0.0;
-        public static final double kD = 0.015;
-        public static final double kFF = 0.0;
+        public static final double kTolerance = 1.0;
+        public static final double kP = 5e-5;
+        public static final double kI = 0;
+        public static final double kD = 0.0;
+        public static final double kFF = 0.000156;
         public static final double kIZone = 0.0;
         public static final double kMinAngle = 27.0;
         public static final double kMaxAngle = 130.0; 
@@ -62,8 +62,8 @@ public class Constants {
     public static class ShooterConstants {
         public static final int kTopMotorID = 33;
         public static final int kBottomMotorID = 34;
-        public static final double kTolerance = 5.0;
-        public static final double kP = 0.002;
+        public static final double kTolerance = 2.0;
+        public static final double kP = 0.05;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kV = 0.11;

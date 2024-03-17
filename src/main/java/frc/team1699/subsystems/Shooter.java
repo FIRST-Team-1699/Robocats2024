@@ -51,5 +51,7 @@ public class Shooter {
     public void update() {
         topFX.setControl(motorRequest.withVelocity(topSetpoint));
         bottomFX.setControl(motorRequest.withVelocity(bottomSetpoint));
+        // System.out.println("TOP ERROR: " + topFX.getClosedLoopError());
+        // System.out.println("BOTTOM ERROR: " + bottomFX.getClosedLoopError());
     }
 }

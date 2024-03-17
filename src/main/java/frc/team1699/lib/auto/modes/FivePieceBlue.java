@@ -33,9 +33,9 @@ public class FivePieceBlue extends AutoMode {
         events.add(new SpeakerShootSubEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
+        events.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
-        events.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
         // ArrayList<Event> arrayOne = new ArrayList<>();
         // arrayOne.add(new WaitUntilLoadedEvent(manipulator));
         // arrayOne.add(new SpeakerAimLLEvent(manipulator));

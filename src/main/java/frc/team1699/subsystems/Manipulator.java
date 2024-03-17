@@ -34,7 +34,7 @@ public class Manipulator {
         pivotMap.put(7.0, 43.0);
         pivotMap.put(0.0, 40.0);
         pivotMap.put(-7.0, 33.0);
-        pivotMap.put(-12.0, 27.0);
+        pivotMap.put(-12.0, 28.5);
         pivotMap.put(-15.0, 27.0);
         this.currentState = ManipulatorStates.IDLE;
         this.wantedState = ManipulatorStates.IDLE;
@@ -87,6 +87,7 @@ public class Manipulator {
         intake.update();
         shooter.update();
         // pivot.printCurrent();
+        // pivot.printPosition();
     }
 
     private void handleStateTransition() {
@@ -108,7 +109,7 @@ public class Manipulator {
                         // } else {
                         //     shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                         // }
-                        shooter.setSpeed(-Vision.getInstance().getTY() + 38);
+                        shooter.setSpeed(-Vision.getInstance().getTY() + 43);
                         break;
                     case TRAP:
                         shooter.setSeparateSpeeds(ManipulatorConstants.kTopTrapSpeed, ManipulatorConstants.kBottomTrapSpeed);
@@ -132,7 +133,7 @@ public class Manipulator {
                 intake.setWantedState(IntakeStates.INTAKING);
                 pivot.setAngle(ManipulatorConstants.kIntakeAngle);
                 indexer.setWantedState(IndexStates.INTAKING);
-                shooter.setSpeed(0);
+                // shooter.setSpeed(0);
                 break;
             case OUTTAKING:
                 intake.setWantedState(IntakeStates.REVERSING);
@@ -144,7 +145,7 @@ public class Manipulator {
                 intake.setWantedState(IntakeStates.IDLE);
                 pivot.setAngle(ManipulatorConstants.kIdleAngle);
                 indexer.setWantedState(IndexStates.LOADED);
-                shooter.setSpeed(0);
+                // shooter.setSpeed(0);
                 break;
             case TRAP_SHOOT:
                 pivot.setAngle(ManipulatorConstants.kTrapAngle);

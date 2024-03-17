@@ -29,21 +29,25 @@ public class Pivoter {
         pivotController.setD(PivoterConstants.kD);
         pivotController.setFF(PivoterConstants.kFF);
         pivotController.setIZone(PivoterConstants.kIZone);
-        pivotController.setOutputRange(-.8, .8);
+        pivotController.setOutputRange(-1, 1);
         pivotMotor.setSmartCurrentLimit(PivoterConstants.kPivotCurrentLimit);
-    }
 
-    public void setAngle(double angle) {
-        angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
-        setpoint = angle - 23;
-        pivotController.setReference(setpoint, ControlType.kPosition);
+        pivotController.setSmartMotionMaxVelocity(5700, 0);
+        pivotController.setSmartMotionMaxAccel(5700, 0);
+        pivotController.setSmartMotionAllowedClosedLoopError(PivoterConstants.kTolerance, 0);
     }
 
     // public void setAngle(double angle) {
     //     angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
     //     setpoint = angle - 23;
-    //     pivotController.setReference(setpoint, ControlType.kSmartMotion);
+    //     pivotController.setReference(setpoint, ControlType.kPosition);
     // }
+
+    public void setAngle(double angle) {
+        angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
+        setpoint = angle - 23;
+        pivotController.setReference(setpoint, ControlType.kSmartMotion);
+    }
 
     public boolean isAtAngle() {
         if(Math.abs(pivotEncoder.getPosition() - setpoint) <= PivoterConstants.kTolerance) {
@@ -54,5 +58,9 @@ public class Pivoter {
 
     public void printCurrent() {
         System.out.println(pivotMotor.getOutputCurrent());
+    }
+
+    public void printPosition() {
+        System.out.println(pivotEncoder.getPosition());
     }
 }
