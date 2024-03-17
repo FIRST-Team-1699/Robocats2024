@@ -7,7 +7,10 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.team1699.lib.leds.colors.Blue;
 import frc.team1699.lib.leds.colors.Green;
 import frc.team1699.lib.leds.colors.HSVColor;
+import frc.team1699.lib.leds.colors.Orange;
+import frc.team1699.lib.leds.colors.Pink;
 import frc.team1699.lib.leds.colors.Red;
+import frc.team1699.lib.leds.colors.Teal;
 import frc.team1699.lib.leds.colors.Yellow;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
@@ -38,12 +41,12 @@ public class LEDController {
     }
     
     public void rainbow() {
-        for (int i = 0; i < ledLength; i++) {
+        for (int i = 0; i < ledLength; i ++) {
             final int hue = (rainbowFirstPixelHue + (i * 180 / ledLength)) % 180;
-            ledBuffer.setHSV(i, hue, 255, 50);
+            ledBuffer.setHSV(i, hue * 13 % 180, 255, 50);
         }
-        rainbowFirstPixelHue += 3;
-        rainbowFirstPixelHue %= 180;
+        // rainbowFirstPixelHue += 3;
+        // rainbowFirstPixelHue %= 180;
         leds.setData(ledBuffer);
     }
 
@@ -101,11 +104,7 @@ public class LEDController {
                 blinkYellowRed();
                 break;
             case IDLE:
-                if(manipulator.intakeLoaded() || manipulator.isLoaded()) {
-                    solidColor(new Yellow());
-                } else {
-                    solidColor(new Blue());
-                }
+
                 break;
             default:
                 break;
@@ -119,6 +118,14 @@ public class LEDController {
             case AMPLIFY:
                 break;
             case IDLE:
+                if(manipulator.isLoaded()) {
+                    solidColor(new Blue());
+                } else if(manipulator.intakeLoaded()) {
+                    solidColor(new Pink());
+                } else {
+                    // solidColor(new Blue());
+                    rainbow();
+                }
                 break;
             default:
                 break;

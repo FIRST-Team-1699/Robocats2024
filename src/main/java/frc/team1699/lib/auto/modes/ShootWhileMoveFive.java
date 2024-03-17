@@ -5,53 +5,54 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.team1699.lib.auto.events.DeadlineEvent;
 import frc.team1699.lib.auto.events.Event;
 import frc.team1699.lib.auto.events.FollowTrajectoryEvent;
+import frc.team1699.lib.auto.events.ParallelEvent;
 import frc.team1699.lib.auto.events.RunIntakeEvent;
 import frc.team1699.lib.auto.events.SequentialEvent;
-import frc.team1699.lib.auto.events.SpeakerAimLLEvent;
 import frc.team1699.lib.auto.events.SpeakerShootLLEvent;
-import frc.team1699.lib.auto.events.SpeakerShootSubEvent;
 import frc.team1699.lib.auto.events.WaitUntilLoadedEvent;
 import frc.team1699.subsystems.Drive;
 import frc.team1699.subsystems.Manipulator;
 
-public class RedAmpSideFourPiece extends AutoMode {
+public class ShootWhileMoveFive extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public RedAmpSideFourPiece(Manipulator manipulator, Drive swerve) {
-        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("RO4P1").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("RO4P2").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(-23));
-        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("RO4P3").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("RO4P4").getTrajectory(new ChassisSpeeds(), new Rotation2d());
-        PathPlannerTrajectory trajectoryFive = PathPlannerPath.fromPathFile("4PR5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(20));
+    public ShootWhileMoveFive(Manipulator manipulator, Drive swerve) {
+        PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("FivePieceOnePlusTwo").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("FivePieceThreePlusFour").getTrajectory(new ChassisSpeeds(), new Rotation2d());
+        PathPlannerTrajectory trajectoryThree = PathPlannerPath.fromPathFile("RO4P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(30));
+        PathPlannerTrajectory trajectoryFour = PathPlannerPath.fromPathFile("B5P5").getTrajectory(new ChassisSpeeds(), Rotation2d.fromDegrees(10));
         events = new ArrayList<Event>();
-        events.add(new SpeakerShootSubEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
-        events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
         ArrayList<Event> arrayOne = new ArrayList<>();
-        arrayOne.add(new WaitUntilLoadedEvent(manipulator));
-        arrayOne.add(new SpeakerAimLLEvent(manipulator));
-        SequentialEvent sequenceOne = new SequentialEvent(arrayOne);
+        arrayOne.add(new FollowTrajectoryEvent(trajectoryOne, swerve)); // follow trajectory from start to first note to middle
         ArrayList<Event> arrayTwo = new ArrayList<>();
-        arrayTwo.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
-        arrayTwo.add(sequenceOne);
-        events.add(new DeadlineEvent(arrayTwo));
-        events.add(new SpeakerShootLLEvent(manipulator));
+        arrayTwo.add(new SpeakerShootLLEvent(manipulator)); // shoot first note
+        arrayTwo.add(new RunIntakeEvent(manipulator)); // intake
+        arrayTwo.add(new WaitUntilLoadedEvent(manipulator)); // wait until intook
+        arrayTwo.add(new SpeakerShootLLEvent(manipulator)); // shoot second note
+        arrayOne.add(new SequentialEvent(arrayTwo)); // sequentially
+        events.add(new ParallelEvent(arrayOne)); // parallel
+        ArrayList<Event> arrayThree = new ArrayList<>();
+        arrayThree.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
+        ArrayList<Event> arrayFour = new ArrayList<>();
+        arrayFour.add(new RunIntakeEvent(manipulator));
+        arrayFour.add(new WaitUntilLoadedEvent(manipulator));
+        arrayFour.add(new SpeakerShootLLEvent(manipulator));
+        arrayThree.add(new SequentialEvent(arrayFour));
+        events.add(new ParallelEvent(arrayThree));
         events.add(new RunIntakeEvent(manipulator));
         events.add(new FollowTrajectoryEvent(trajectoryThree, swerve));
-        events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
         events.add(new RunIntakeEvent(manipulator));
-        events.add(new FollowTrajectoryEvent(trajectoryFive, swerve));
+        events.add(new FollowTrajectoryEvent(trajectoryFour, swerve));
         events.add(new WaitUntilLoadedEvent(manipulator));
         events.add(new SpeakerShootLLEvent(manipulator));
         swerve.zeroGyro();
         i = 0;
-
     }
 
     @Override

@@ -27,6 +27,7 @@ public class Indexer {
     }
 
     public void update() {
+        System.out.println(currentState);
         if(isLoaded()) {
             hasNote = true;
         } else {
@@ -46,6 +47,8 @@ public class Indexer {
             case LOADED:
                 if(!hasNote) {
                     setWantedState(IndexStates.EMPTY);
+                } else {
+                    indexMotor.set(0);
                 }
                 break;
             case REVERSING:
@@ -54,6 +57,7 @@ public class Indexer {
                 if(hasNote) {
                     setWantedState(IndexStates.LOADED);
                 }
+                break;
             default:
                 break;
         }

@@ -29,8 +29,8 @@ public class Constants {
 
     public static class IndexerConstants {
         public static final int kMotorID = 16;
-        public static final double kIndexerSpeed = 0.4;
-        public static final double kFeedSpeed = 0.75;
+        public static final double kIndexerSpeed = 0.45;
+        public static final double kFeedSpeed = 0.90;
         public static final int kBeamBreakID = 2;
     }
 
@@ -70,7 +70,7 @@ public class Constants {
     }
 
     public static class ManipulatorConstants {
-        public static final int kIntakeBreakID = 8;
+        public static final int kIntakeBreakID = 7;
         public static final boolean kUseShooterTable = true;
         public static final double kIdleSpeed = 15;
         public static final double kShuffleAngle = 35;
@@ -82,9 +82,9 @@ public class Constants {
         public static final double kAmpTopSpeed = 22;
         public static final double kAmpBottomSpeed = 4;
         public static final double kAmpAngle = 105;
-        public static final double kTopTrapSpeed = 40;
-        public static final double kBottomTrapSpeed = 60;
-        public static final double kTrapAngle = 55;
+        public static final double kTopTrapSpeed = 35;
+        public static final double kBottomTrapSpeed = 90;
+        public static final double kTrapAngle = 43;
         public static final double kIdleAngle = 50;
         public static final double kIntakeAngle = 42;
         public static final double kGoofyAngle = 25;
@@ -116,7 +116,7 @@ public class Constants {
     }
 
     public static class LEDConstants {
-        public static final int kLEDPort = 1;
-        public static final int kLEDLength = 74;
+        public static final int kLEDPort = 5;
+        public static final int kLEDLength = 66;
     }
 }

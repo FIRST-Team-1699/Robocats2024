@@ -9,15 +9,18 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1699.Constants.InputConstants;
+import frc.team1699.Constants.LEDConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
 import frc.team1699.lib.auto.modes.FivePieceBlue;
 import frc.team1699.lib.auto.modes.FivePieceRed;
 import frc.team1699.lib.auto.modes.BlueAmpSideFourPiece;
 import frc.team1699.lib.auto.modes.OptimThreePiece;
+import frc.team1699.lib.auto.modes.OptimizingFivePieceBlue;
 import frc.team1699.lib.auto.modes.RedAmpSideFourPiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
 import frc.team1699.lib.leds.LEDController;
@@ -53,7 +56,7 @@ public class Robot extends TimedRobot {
     manipulator = new Manipulator();
     climber = new Climber();
     CameraServer.startAutomaticCapture();
-    ledController = new LEDController(74, 1, swerve, manipulator);
+    ledController = new LEDController(LEDConstants.kLEDLength, LEDConstants.kLEDPort, swerve, manipulator);
     ledController.solidColor(new Blue());
 
     autoChooser = new SendableChooser<String>();
@@ -101,7 +104,7 @@ public class Robot extends TimedRobot {
         if(DriverStation.getAlliance().get() == Alliance.Red) {
           auto = new FivePieceRed(manipulator, swerve);
         } else {
-          auto = new FivePieceBlue(manipulator, swerve);
+          auto = new OptimizingFivePieceBlue(manipulator, swerve);
         }
         break;
       default:
@@ -147,10 +150,17 @@ public class Robot extends TimedRobot {
     } else if(driverController.getRightBumper()) {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_LL_SHOOT);
       ledController.addState(LEDStates.AIMING);
+      if(manipulator.pivotAtPose() && manipulator.shooterAtSpeed() && Vision.getInstance().hasTargetInView()) {
+        driverController.setRumble(RumbleType.kBothRumble, 1);
+        operatorController.setRumble(RumbleType.kBothRumble, 1);
+      } else {
+        driverController.setRumble(RumbleType.kBothRumble, 0);
+        operatorController.setRumble(RumbleType.kBothRumble, 0);
+      }
     } else {
       manipulator.setWantedState(ManipulatorStates.IDLE);
-      // driverController.setRumble(RumbleType.kBothRumble, 0);
-      // operatorController.setRumble(RumbleType.kBothRumble, 0);
+      driverController.setRumble(RumbleType.kBothRumble, 0);
+      operatorController.setRumble(RumbleType.kBothRumble, 0);
     }
 
     if(driverController.getYButtonPressed()) {

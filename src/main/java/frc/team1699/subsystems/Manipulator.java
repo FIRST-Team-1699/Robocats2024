@@ -129,7 +129,11 @@ public class Manipulator {
                 break;
             case IDLE:
                 intake.setWantedState(IntakeStates.IDLE);
-                indexer.setWantedState(IndexStates.EMPTY);
+                if(isLoaded) {
+                    indexer.setWantedState(IndexStates.LOADED);
+                } else {
+                    indexer.setWantedState(IndexStates.EMPTY);
+                }
                 shooter.setSpeed(ManipulatorConstants.kIdleSpeed);
                 break;
             case INTAKING:
