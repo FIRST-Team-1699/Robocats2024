@@ -3,6 +3,8 @@ package frc.team1699.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.math.MathUtil;
 import frc.team1699.Constants.ShooterConstants;
 
 // YES I KNOW THIS VIOLATES EVERY CONVENTION
@@ -32,13 +34,13 @@ public class Shooter {
     }
 
     public void setSpeed(double speed) {
-        topSetpoint = speed;
-        bottomSetpoint = speed;
+        topSetpoint = MathUtil.clamp(speed, 0, 95);
+        bottomSetpoint = MathUtil.clamp(speed, 0, 95);
     }
 
     public void setSeparateSpeeds(double topSpeed, double bottomSpeed) {
-        topSetpoint = topSpeed;
-        bottomSetpoint = bottomSpeed;
+        topSetpoint = MathUtil.clamp(topSpeed, 0, 95);
+        bottomSetpoint = MathUtil.clamp(bottomSpeed, 0, 95);
     }
 
     public boolean atSpeed() {
