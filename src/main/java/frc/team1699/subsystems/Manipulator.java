@@ -31,14 +31,16 @@ public class Manipulator {
         this.lastPose = PivotPoses.IDLE;
         pivotMap = new InterpolatingDoubleTreeMap();
         // key: angle offset, value: pivot angle
-        pivotMap.put(14.9, 59.0);
-        pivotMap.put(14.5, 56.0);
+        pivotMap.put(14.9, 58.0);
+        pivotMap.put(14.5, 55.0);
         pivotMap.put(14.0, 54.0);
         pivotMap.put(7.0, 43.0);
         pivotMap.put(0.0, 40.0);
         pivotMap.put(-7.0, 33.0);
-        pivotMap.put(-12.0, 28.5);
-        pivotMap.put(-15.0, 27.0);
+        pivotMap.put(-10.0, 29.5);
+        pivotMap.put(-12.0, 28.0);
+        pivotMap.put(-14.0, 25.0);
+        pivotMap.put(-15.0, 24.5);
         this.currentState = ManipulatorStates.IDLE;
         this.wantedState = ManipulatorStates.IDLE;
     }
@@ -112,7 +114,7 @@ public class Manipulator {
                         // } else {
                         //     shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
                         // }
-                        shooter.setSpeed(-Vision.getInstance().getTY() + 43);
+                        shooter.setSpeed(-Vision.getInstance().getTY() + 49);
                         break;
                     case TRAP:
                         shooter.setSeparateSpeeds(ManipulatorConstants.kTopTrapSpeed, ManipulatorConstants.kBottomTrapSpeed);

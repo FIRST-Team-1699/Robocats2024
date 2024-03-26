@@ -54,7 +54,7 @@ public class Constants {
         public static final double kD = 0.0;
         public static final double kFF = 0.000156;
         public static final double kIZone = 0.0;
-        public static final double kMinAngle = 27.0;
+        public static final double kMinAngle = 25.0;
         public static final double kMaxAngle = 130.0; 
         public static final int kPivotCurrentLimit = 20;
     }
@@ -79,8 +79,8 @@ public class Constants {
         public static final double kSpeakerSubwooferAngle = 50;
         public static final double kSpeakerLLSpeed = 60;
         public static final double kSpeakerStageAngle = 35;
-        public static final double kAmpTopSpeed = 22;
-        public static final double kAmpBottomSpeed = 4;
+        public static final double kAmpTopSpeed = 18;
+        public static final double kAmpBottomSpeed = 2;
         public static final double kAmpAngle = 105;
         public static final double kTopTrapSpeed = 35;
         public static final double kBottomTrapSpeed = 90;
@@ -92,10 +92,10 @@ public class Constants {
 
     public static class SwerveConstants {
         public static final double kDeadband = .02;
-        public static final double kSlowStrafeCoefficient = 1;
-        public static final double kADSStrafeCoefficient = .4;
+        public static final double kSlowStrafeCoefficient = 1; // FOR OUTREACH, THIS IS A PERCENT OUT OF 100
+        public static final double kADSStrafeCoefficient = .75;
         public static final double kMaxSpeed = Units.feetToMeters(15.1) * kSlowStrafeCoefficient;
-        public static final double kSlowRotationCoefficient = 1;
+        public static final double kSlowRotationCoefficient = 1; //PLEASE CHANGE BACK TO 1
         public static final double kMaxRotationalSpeed = Units.degreesToRadians(720) * kSlowRotationCoefficient;
         public static final double kTrackWidth = Units.inchesToMeters(20.5);
         public static final double kHalfTrackWidth = kTrackWidth / 2.0;

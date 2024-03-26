@@ -27,7 +27,6 @@ public class Indexer {
     }
 
     public void update() {
-        System.out.println(currentState);
         if(isLoaded()) {
             hasNote = true;
         } else {

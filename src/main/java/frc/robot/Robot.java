@@ -16,13 +16,14 @@ import frc.team1699.Constants.InputConstants;
 import frc.team1699.Constants.LEDConstants;
 import frc.team1699.lib.auto.modes.AutoMode;
 import frc.team1699.lib.auto.modes.BlueOnePieceEscape;
-import frc.team1699.lib.auto.modes.FivePieceBlue;
+import frc.team1699.lib.auto.modes.DoNothing;
 import frc.team1699.lib.auto.modes.FivePieceRed;
 import frc.team1699.lib.auto.modes.BlueAmpSideFourPiece;
 import frc.team1699.lib.auto.modes.OptimThreePiece;
 import frc.team1699.lib.auto.modes.OptimizingFivePieceBlue;
 import frc.team1699.lib.auto.modes.RedAmpSideFourPiece;
 import frc.team1699.lib.auto.modes.RedOnePieceEscape;
+import frc.team1699.lib.auto.modes.ShootAndWait;
 import frc.team1699.lib.leds.LEDController;
 import frc.team1699.lib.leds.LEDController.LEDStates;
 import frc.team1699.lib.leds.colors.Blue;
@@ -42,11 +43,16 @@ public class Robot extends TimedRobot {
   private LEDController ledController;
 
   private SendableChooser<String> autoChooser;
-  private final String onePiece = "One Piece";
+  private final String onePiece = "One Piece And Escape";
   private final String fivePiece = "Five Piece";
   private final String fourPiecePodium = "Pod Side Four Piece";
   private final String fourPieceAmp = "Amp Side Four Piece";
   private final String threePiece = "Three Piece";
+  private final String doNothing = "Do Nothing";
+  private final String scoreAndWait = "Shoot Preload Only";
+
+  private String lastChosenAuto = fivePiece;
+  private static boolean initialAutoSet = false;
 
   @Override
   public void robotInit() {
@@ -64,57 +70,28 @@ public class Robot extends TimedRobot {
     autoChooser.addOption(threePiece, threePiece);
     autoChooser.addOption(fourPiecePodium, fourPiecePodium);
     autoChooser.addOption(fivePiece, fivePiece);
+    autoChooser.addOption(doNothing, doNothing);
+    autoChooser.addOption(scoreAndWait, scoreAndWait);
     autoChooser.setDefaultOption(fourPieceAmp, fourPieceAmp);
     SmartDashboard.putData(autoChooser);
   }
 
   @Override
   public void robotPeriodic() {
-    ledController.addState(LEDStates.IDLE);
-    ledController.update();
+    if(!DriverStation.isDisabled()) {
+      ledController.addState(LEDStates.IDLE);
+      ledController.update();
+    }
   }
 
   @Override
   public void autonomousInit() {
-    switch(autoChooser.getSelected()) {
-      case onePiece:
-        if(DriverStation.getAlliance().get() == Alliance.Red) {
-          auto = new RedOnePieceEscape(manipulator, swerve);
-        } else {
-          auto = new BlueOnePieceEscape(manipulator, swerve);
-        }
-        break;
-      case threePiece:
-        auto = new OptimThreePiece(manipulator, swerve);
-      case fourPieceAmp:
-        if(DriverStation.getAlliance().get() == Alliance.Red) {
-          auto = new RedAmpSideFourPiece(manipulator, swerve);
-        } else {
-          auto = new BlueAmpSideFourPiece(manipulator, swerve);
-        }
-        break;
-      case fourPiecePodium:
-        if(DriverStation.getAlliance().get() == Alliance.Red) {
-          auto = new BlueAmpSideFourPiece(manipulator, swerve);
-        } else {
-          auto = new RedAmpSideFourPiece(manipulator, swerve);
-        }
-        break;
-      case fivePiece:
-        if(DriverStation.getAlliance().get() == Alliance.Red) {
-          auto = new FivePieceRed(manipulator, swerve);
-        } else {
-          auto = new OptimizingFivePieceBlue(manipulator, swerve);
-        }
-        break;
-      default:
-        break;
-    }
     auto.initialize();
   }
 
   @Override
   public void autonomousPeriodic() {
+    // ledController.addState(LEDStates.AUTO);
     if(auto.isFinished()) {
       auto.finish();
     } else {
@@ -137,7 +114,7 @@ public class Robot extends TimedRobot {
       // operatorController.setRumble(RumbleType.kBothRumble, 1);
     } else if(operatorController.getLeftTriggerAxis() > 0.1) {
       manipulator.setWantedState(ManipulatorStates.OUTTAKING);
-    } else if(operatorController.getRightTriggerAxis() > 0.1) {
+    } else if(operatorController.getRightTriggerAxis() > 0.1 && !manipulator.isLoaded()) {
       manipulator.setWantedState(ManipulatorStates.INTAKING);
     } else if(operatorController.getBButtonPressed()) {
       manipulator.setWantedState(ManipulatorStates.SPEAKER_SUB_SHOOT);
@@ -189,18 +166,63 @@ public class Robot extends TimedRobot {
 
     swerve.update();
     manipulator.update();
-    climber.beamBreakCheck();
   }
 
   @Override
   public void disabledInit() {
     // driverController.setRumble(RumbleType.kBothRumble, 0);
     // operatorController.setRumble(RumbleType.kBothRumble, 0);
-    ledController.addState(LEDStates.IDLE);
+    ledController.addState(LEDStates.AUTO);
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    if((autoChooser.getSelected() != lastChosenAuto || !initialAutoSet) && DriverStation.getAlliance().isPresent()) {
+      lastChosenAuto = autoChooser.getSelected();
+      initialAutoSet = true;
+      switch(autoChooser.getSelected()) {
+        case scoreAndWait:
+          auto = new ShootAndWait(manipulator, swerve);
+          break;
+        case doNothing:
+          auto = new DoNothing();
+          break;
+        case onePiece:
+          if(DriverStation.getAlliance().get() == Alliance.Red) {
+            auto = new RedOnePieceEscape(manipulator, swerve);
+          } else {
+            auto = new BlueOnePieceEscape(manipulator, swerve);
+          }
+          break;
+        case threePiece:
+          auto = new OptimThreePiece(manipulator, swerve);
+        case fourPieceAmp:
+          if(DriverStation.getAlliance().get() == Alliance.Red) {
+            auto = new RedAmpSideFourPiece(manipulator, swerve);
+          } else {
+            auto = new BlueAmpSideFourPiece(manipulator, swerve);
+          }
+          break;
+        case fourPiecePodium:
+          if(DriverStation.getAlliance().get() == Alliance.Red) {
+            auto = new BlueAmpSideFourPiece(manipulator, swerve);
+          } else {
+            auto = new RedAmpSideFourPiece(manipulator, swerve);
+          }
+          break;
+        case fivePiece:
+          if(DriverStation.getAlliance().get() == Alliance.Red) {
+            auto = new FivePieceRed(manipulator, swerve);
+          } else {
+            auto = new OptimizingFivePieceBlue(manipulator, swerve);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    ledController.update();
+  }
 
   @Override
   public void testInit() {}

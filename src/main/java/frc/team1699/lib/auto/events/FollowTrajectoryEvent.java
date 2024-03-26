@@ -28,7 +28,6 @@ public class FollowTrajectoryEvent extends Event {
     }
 
     public void finish() {
-        System.out.println(swerve.getHeading());
         swerve.setWantedState(DriveState.LOCK);
     }
 }

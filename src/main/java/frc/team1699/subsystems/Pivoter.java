@@ -47,6 +47,7 @@ public class Pivoter {
         angle = MathUtil.clamp(angle, PivoterConstants.kMinAngle, PivoterConstants.kMaxAngle);
         setpoint = angle - 23;
         pivotController.setReference(setpoint, ControlType.kSmartMotion);
+        System.out.println(angle);
     }
 
     public boolean isAtAngle() {

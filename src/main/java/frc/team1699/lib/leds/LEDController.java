@@ -43,7 +43,7 @@ public class LEDController {
     public void rainbow() {
         for (int i = 0; i < ledLength; i ++) {
             final int hue = (rainbowFirstPixelHue + (i * 180 / ledLength)) % 180;
-            ledBuffer.setHSV(i, hue * 13 % 180, 255, 50);
+            ledBuffer.setHSV(i, hue * 6 % 180, 255, 50);
         }
         // rainbowFirstPixelHue += 3;
         // rainbowFirstPixelHue %= 180;
@@ -53,6 +53,20 @@ public class LEDController {
     public void solidColor(HSVColor color) {
         for(int i = 0; i < ledLength; i++) {
             ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
+        }
+        leds.setData(ledBuffer);
+    }
+
+    public void setAutoColor() {
+        for(int i = 0; i < ledLength; i++) {
+            int iPerStrip = i % 11;
+            if(iPerStrip < 2 || iPerStrip > 8) {
+                ledBuffer.setHSV(i, new Teal().getHue(), new Teal().getSaturation(), new Teal().getValue());
+            } else if(iPerStrip < 4 || iPerStrip > 6) {
+                ledBuffer.setHSV(i, new Pink().getHue(), new Pink().getSaturation(), new Pink().getValue());
+            } else {
+                ledBuffer.setHSV(i, 0, 0, 30);
+            }
         }
         leds.setData(ledBuffer);
     }
@@ -113,6 +127,9 @@ public class LEDController {
 
     private void handleStateTransition(LEDStates newState) {
         switch(newState) {
+            case AUTO:
+                setAutoColor();
+                break;
             case AIMING:
                 break;
             case AMPLIFY:
@@ -135,7 +152,9 @@ public class LEDController {
     }
 
     private LEDStates getPriorityState(ArrayList<LEDStates> buffer) {
-        if(buffer.contains(LEDStates.AMPLIFY)) {
+        if(buffer.contains(LEDStates.AUTO)) {
+            return LEDStates.AUTO;
+        } else if(buffer.contains(LEDStates.AMPLIFY)) {
             return LEDStates.AMPLIFY;
         } else if(buffer.contains(LEDStates.AIMING)) {
             return LEDStates.AIMING;
@@ -150,6 +169,7 @@ public class LEDController {
     public enum LEDStates {
         AMPLIFY,
         AIMING,
-        IDLE
+        IDLE,
+        AUTO
     }
 }

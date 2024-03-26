@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.team1699.Constants.SwerveConstants;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -38,7 +37,6 @@ public class Drive {
     private SwerveDrive swerve;
     private XboxController controller;
     private Vision vision;
-    private Field2d field;
 
     public Drive(XboxController controller) {
         try {
@@ -49,11 +47,10 @@ public class Drive {
         }
         this.controller = controller;
         this.driveController = new PPHolonomicDriveController(translationConstants, rotationConstants, SwerveConstants.kMaxSpeed, Units.inchesToMeters(24.75 / Math.sqrt(2)));
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.NONE;
         headingLockController.enableContinuousInput(-180, 180);
         headingLockController.setTolerance(3);
         this.vision = Vision.getInstance();
-        field = new Field2d();
     }
 
     private void teleopDrive() {
@@ -153,6 +150,7 @@ public class Drive {
             doneWithTraj = true;
             setWantedState(DriveState.LOCK);
         }
+        System.out.println(trajTimer.get());
     }
 
     // private void updateVisionData() {
@@ -162,7 +160,6 @@ public class Drive {
     // } 
 
     public void update() {
-        field.setRobotPose(getPose());
         // updateVisionData();
         switch (currentState) {
             case FOLLOW_TRAJ:
