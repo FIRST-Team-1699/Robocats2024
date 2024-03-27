@@ -1,18 +1,18 @@
 package frc.team1699.lib.auto.events;
 
-import frc.team1699.subsystems.Intake;
-import frc.team1699.subsystems.Intake.IntakeStates;
+import frc.team1699.subsystems.Manipulator;
+import frc.team1699.subsystems.Manipulator.ManipulatorStates;
 
 public class RunIntakeEvent extends Event {
-    private Intake intake;
+    private Manipulator manipulator;
 
-    public RunIntakeEvent(Intake intake) {
-        this.intake = intake;
+    public RunIntakeEvent(Manipulator manipulator) {
+        this.manipulator = manipulator;
     }
     
     @Override
     public void initialize() {
-        intake.setWantedState(IntakeStates.INTAKING);
+        manipulator.setWantedState(ManipulatorStates.INTAKING);
     }
 
     @Override

@@ -11,22 +11,22 @@ import frc.team1699.lib.auto.events.RunIntakeEvent;
 import frc.team1699.lib.auto.events.StopIntakeEvent;
 import frc.team1699.lib.auto.events.WaitEvent;
 import frc.team1699.subsystems.Drive;
-import frc.team1699.subsystems.Intake;
+import frc.team1699.subsystems.Manipulator;
 
 public class TestIntakeMode extends AutoMode {
     private ArrayList<Event> events;
     private int i;
 
-    public TestIntakeMode(Intake intake, Drive swerve) {
+    public TestIntakeMode(Manipulator manipulator, Drive swerve) {
         events = new ArrayList<Event>();
-        events.add(new RunIntakeEvent(intake));
+        events.add(new RunIntakeEvent(manipulator));
         PathPlannerTrajectory trajectoryOne = PathPlannerPath.fromPathFile("Auto Intake Test").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         PathPlannerTrajectory trajectoryTwo = PathPlannerPath.fromPathFile("TestIntakeSecond").getTrajectory(new ChassisSpeeds(), new Rotation2d());
         events.add(new FollowTrajectoryEvent(trajectoryOne, swerve));
         events.add(new WaitEvent(0.5));
         events.add(new FollowTrajectoryEvent(trajectoryTwo, swerve));
         events.add(new WaitEvent(0.5));
-        events.add(new StopIntakeEvent(intake));
+        events.add(new StopIntakeEvent(manipulator));
 
         i = 0;
     }

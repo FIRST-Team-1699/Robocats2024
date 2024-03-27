@@ -1,68 +1,59 @@
 package frc.team1699.subsystems;
 
-import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.math.controller.PIDController;
 
+import edu.wpi.first.math.MathUtil;
 import frc.team1699.Constants.ShooterConstants;
-import frc.team1699.lib.auto.modes.AutoMode;
 
 // YES I KNOW THIS VIOLATES EVERY CONVENTION
 // FROM EVERY OTHER SUBSYSTEM, LET ME COOK.
 public class Shooter {
-    private boolean isAtSpeed = true;
-    private double setpoint = 0.0;
+    private double topSetpoint = 0.0;
+    private double bottomSetpoint = 0.0;
 
     private TalonFX topFX;
     private TalonFX bottomFX;
     private TalonFXConfiguration configs;
 
-    private VoltageOut motorRequest;
-
-    private PIDController topPID;
-    private PIDController bottomPID;
-
-    private final double kTopP = 0.0;
-    private final double kTopI = 0.0;
-    private final double kTopD = 0.0;
-
-    private final double kBottomP = 0.0;
-    private final double kBottomI = 0.0;
-    private final double kBottomD = 0.0;
+    private VelocityVoltage motorRequest;
     
     public Shooter() {
-        motorRequest = new VoltageOut(0);
-        TalonFXConfiguration configs = new TalonFXConfiguration();
+        motorRequest = new VelocityVoltage(0.0);
+        configs = new TalonFXConfiguration();
+        configs.Slot0.kP = ShooterConstants.kP;
+        configs.Slot0.kI = ShooterConstants.kI;
+        configs.Slot0.kD = ShooterConstants.kD;
+        configs.Slot0.kV = ShooterConstants.kV;
+        configs.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 1;
         topFX = new TalonFX(ShooterConstants.kTopMotorID);
+        topFX.getConfigurator().apply(configs);
         bottomFX = new TalonFX(ShooterConstants.kBottomMotorID);
-
-        // PIDs
-        topPID = new PIDController(kTopP, kTopI, kTopD);
-        bottomPID = new PIDController(kBottomP, kBottomI, kBottomD);
+        bottomFX.getConfigurator().apply(configs);
     }
 
     public void setSpeed(double speed) {
-        // TODO give the motors a new setpoint
-        // is at speed becomes false
-        topFX.setControl(motorRequest.withOutput(speed));
+        topSetpoint = MathUtil.clamp(speed, 0, 95);
+        bottomSetpoint = MathUtil.clamp(speed, 0, 95);
+    }
 
+    public void setSeparateSpeeds(double topSpeed, double bottomSpeed) {
+        topSetpoint = MathUtil.clamp(topSpeed, 0, 95);
+        bottomSetpoint = MathUtil.clamp(bottomSpeed, 0, 95);
     }
 
     public boolean atSpeed() {
-        // returns the value of isatspeed
-        return false;
+        if(Math.abs(topFX.getVelocity().getValueAsDouble() - topSetpoint) >= ShooterConstants.kTolerance || Math.abs(bottomFX.getVelocity().getValueAsDouble()) - bottomSetpoint >= ShooterConstants.kTolerance) {
+            return false;
+        }
+        return true;
     }
 
     public void update() {
-        // check if we are at speed and anything else i think of later
-
+        topFX.setControl(motorRequest.withVelocity(topSetpoint));
+        bottomFX.setControl(motorRequest.withVelocity(bottomSetpoint));
+        // System.out.println("TOP ERROR: " + topFX.getClosedLoopError());
+        // System.out.println("BOTTOM ERROR: " + bottomFX.getClosedLoopError());
     }
 }

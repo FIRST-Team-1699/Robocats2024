@@ -1,0 +1,95 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.417975978809101,
+        "y": 4.515113030226061
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.620051525817337,
+        "y": 3.97271308828332
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.789651293588302,
+        "y": 4.515113030226061
+      },
+      "prevControl": {
+        "x": 6.144635146413151,
+        "y": 4.41249682499365
+      },
+      "nextControl": {
+        "x": 7.282095475465273,
+        "y": 4.593456422797398
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.592764614100657,
+        "y": 4.632388693348815
+      },
+      "prevControl": {
+        "x": 9.089133078969281,
+        "y": 4.976028399796324
+      },
+      "nextControl": {
+        "x": 7.830472803802752,
+        "y": 4.1046482092964185
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.605392067926994,
+        "y": 3.8554374251605648
+      },
+      "prevControl": {
+        "x": 8.226278166842054,
+        "y": 4.207264414528831
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.55,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.5500000000000003,
+      "rotationDegrees": 20.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.1999,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 690.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -20.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

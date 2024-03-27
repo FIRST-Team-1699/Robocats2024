@@ -14,6 +14,7 @@ public class Intake {
     public Intake() {
         deckIntakeMotor = new CANSparkMax(IntakeConstants.kDeckMotorID, MotorType.kBrushless);
         bilgeIntakeMotor = new CANSparkMax(IntakeConstants.kBilgeMotorID, MotorType.kBrushless);
+        bilgeIntakeMotor.setInverted(false);
     }
 
     public void update() {
@@ -26,7 +27,6 @@ public class Intake {
                 break;
             default:
                 break;
-            
         }
     }
 
@@ -51,10 +51,10 @@ public class Intake {
     }
 
     public void setWantedState(IntakeStates state) {
-            if(this.wantedState != state) {
-                wantedState = state;
-                handleStateTransition();
-            }
+        if(this.wantedState != state) {
+            wantedState = state;
+            handleStateTransition();
+        }
     }
 
     public enum IntakeStates {

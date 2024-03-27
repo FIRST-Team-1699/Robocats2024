@@ -1,52 +1,89 @@
 package frc.team1699.subsystems;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.team1699.Constants.ManipulatorConstants;
+import frc.team1699.lib.sensors.BeamBreak;
 import frc.team1699.subsystems.Indexer.IndexStates;
 import frc.team1699.subsystems.Intake.IntakeStates;
-import frc.team1699.subsystems.Pivoter.PivoterStates;
 
 public class Manipulator {
     private Intake intake;
     private Indexer indexer;
     private Pivoter pivot;
     private Shooter shooter;
+    private BeamBreak intakeBreak;
 
     private ManipulatorStates wantedState;
     private ManipulatorStates currentState;
 
     private boolean isLoaded;
 
+    private PivotPoses lastPose;
+
+    private InterpolatingDoubleTreeMap pivotMap;
+
     public Manipulator() {
         intake = new Intake();
         indexer = new Indexer();
         pivot = new Pivoter();
         shooter = new Shooter();
+        intakeBreak = new BeamBreak(ManipulatorConstants.kIntakeBreakID);
+        this.lastPose = PivotPoses.IDLE;
+        pivotMap = new InterpolatingDoubleTreeMap();
+        // key: angle offset, value: pivot angle
+        pivotMap.put(14.9, 58.0);
+        pivotMap.put(14.5, 55.0);
+        pivotMap.put(14.0, 54.0);
+        pivotMap.put(7.0, 43.0);
+        pivotMap.put(0.0, 40.0);
+        pivotMap.put(-7.0, 33.0);
+        pivotMap.put(-10.0, 29.5);
+        pivotMap.put(-12.0, 28.0);
+        pivotMap.put(-14.0, 25.0);
+        pivotMap.put(-15.0, 24.5);
+        this.currentState = ManipulatorStates.IDLE;
+        this.wantedState = ManipulatorStates.IDLE;
     }
 
     public void update() {
+        if(indexer.isLoaded()) {
+            isLoaded = true;
+        } else {
+            isLoaded = false;
+        }
         switch(currentState) {
-            case AIMING:
+            case SHOOTING:
+                if(shooter.atSpeed() && pivot.isAtAngle()) {
+                    indexer.setWantedState(IndexStates.FEEDING);
+                }
                 break;
             case IDLE:
                 break;
             case INTAKING:
+                if(isLoaded) {
+                    indexer.setWantedState(IndexStates.LOADED);
+                }
+                break;
+            case OUTTAKING:
                 break;
             case STORED:
                 break;
             case TRAP_SHOOT:
-                if(shooter.atSpeed()) {
-                    indexer.setWantedState(IndexStates.FEEDING);
-                }
                 break;
             case AMP_SHOOT:
-                if(shooter.atSpeed()) {
-                    indexer.setWantedState(IndexStates.FEEDING);
+                break;
+            case SPEAKER_SUB_SHOOT:
+                break;
+            case SPEAKER_LL_SHOOT:
+                if(ManipulatorConstants.kUseShooterTable) {
+                    if(Vision.getInstance().hasTargetInView()) {
+                        pivot.setAngle(pivotMap.get(Vision.getInstance().getTY()));
+                    }
+                } else {
+                    pivot.setAngle(Vision.getInstance().getSpeakerAngle());
                 }
                 break;
-            case SPEAKER_SHOOT:
-                if(shooter.atSpeed()) {
-                    indexer.setWantedState(IndexStates.FEEDING);
-                }
+            case SPEAKER_GOOFY_SHOOT:
                 break;
             default:
                 break;
@@ -54,42 +91,98 @@ public class Manipulator {
         indexer.update();
         intake.update();
         shooter.update();
-        pivot.update();
+        // pivot.printCurrent();
+        // pivot.printPosition();
     }
 
     private void handleStateTransition() {
-        // TODO add indexer stuff after we know about indexer
         switch(wantedState) {
-            case AIMING:
-                // TODO tell the pivoter to start aiming
+            case SHOOTING:
+                switch(lastPose) {
+                    case AMP:
+                        shooter.setSeparateSpeeds(ManipulatorConstants.kAmpTopSpeed, ManipulatorConstants.kAmpBottomSpeed);
+                        break;
+                    case IDLE:
+                        shooter.setSpeed(ManipulatorConstants.kIdleSpeed);
+                        break;
+                    case SPEAKER_SUB:
+                        shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
+                        break;
+                    case SPEAKER_LL:
+                        // if(DriverStation.isAutonomous()) {
+                        //     shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed - 5);
+                        // } else {
+                        //     shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                        // }
+                        shooter.setSpeed(-Vision.getInstance().getTY() + 49);
+                        break;
+                    case TRAP:
+                        shooter.setSeparateSpeeds(ManipulatorConstants.kTopTrapSpeed, ManipulatorConstants.kBottomTrapSpeed);
+                        break;
+                    case SPEAKER_GOOFY_SHOOT:
+                        shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                        break;
+                    case SHUFFLE:
+                        shooter.setSpeed(ManipulatorConstants.kShuffleAngle);
+                    default:
+                        break;
+
+                }
                 break;
             case IDLE:
                 intake.setWantedState(IntakeStates.IDLE);
-                pivot.setWantedState(PivoterStates.STORED);
+                if(isLoaded) {
+                    indexer.setWantedState(IndexStates.LOADED);
+                } else {
+                    indexer.setWantedState(IndexStates.EMPTY);
+                }
+                shooter.setSpeed(ManipulatorConstants.kIdleSpeed);
                 break;
             case INTAKING:
-                // TODO check if you are loaded. if so, you can't intake and the transition is failed
                 intake.setWantedState(IntakeStates.INTAKING);
-                pivot.setWantedState(PivoterStates.STORED);
+                pivot.setAngle(ManipulatorConstants.kIntakeAngle);
+                indexer.setWantedState(IndexStates.INTAKING);
+                // shooter.setSpeed(0);
+                break;
+            case OUTTAKING:
+                intake.setWantedState(IntakeStates.REVERSING);
+                pivot.setAngle(ManipulatorConstants.kIntakeAngle);
                 shooter.setSpeed(0);
+                indexer.setWantedState(IndexStates.REVERSING);
                 break;
             case STORED:
                 intake.setWantedState(IntakeStates.IDLE);
-                pivot.setWantedState(PivoterStates.STORED);
+                pivot.setAngle(ManipulatorConstants.kIdleAngle);
+                indexer.setWantedState(IndexStates.LOADED);
+                // shooter.setSpeed(0);
                 break;
             case TRAP_SHOOT:
-                // TODO check if you are loaded (with indexer.isLoaded()). if you aren't, the state transition is failed and you go back to idle
-                pivot.setWantedState(PivoterStates.TRAP);
-                shooter.setSpeed(ManipulatorConstants.kTrapSpeed);
+                pivot.setAngle(ManipulatorConstants.kTrapAngle);
+                lastPose = PivotPoses.TRAP;
                 break;
             case AMP_SHOOT:
-                pivot.setWantedState(PivoterStates.AMP);
-                shooter.setSpeed(ManipulatorConstants.kAmpSpeed);
+                pivot.setAngle(ManipulatorConstants.kAmpAngle);
+                shooter.setSeparateSpeeds(ManipulatorConstants.kAmpTopSpeed, ManipulatorConstants.kAmpBottomSpeed);
+                lastPose = PivotPoses.AMP;
                 break;
-            case SPEAKER_SHOOT:
-                pivot.setWantedState(PivoterStates.SPEAKER);
+            case SHUFFLE:
+                pivot.setAngle(ManipulatorConstants.kShuffleAngle);
+                shooter.setSpeed(ManipulatorConstants.kShuffleAngle);
+                lastPose = PivotPoses.SHUFFLE;
+            case SPEAKER_SUB_SHOOT:
+                pivot.setAngle(ManipulatorConstants.kSpeakerSubwooferAngle);
+                lastPose = PivotPoses.SPEAKER_SUB;
                 shooter.setSpeed(ManipulatorConstants.kSpeakerSubwooferSpeed);
                 break;
+            case SPEAKER_LL_SHOOT:
+                lastPose = PivotPoses.SPEAKER_LL;
+                shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+                break;
+            case SPEAKER_GOOFY_SHOOT:
+                lastPose = PivotPoses.SPEAKER_GOOFY_SHOOT;
+                pivot.setAngle(ManipulatorConstants.kGoofyAngle);
+                shooter.setSpeed(ManipulatorConstants.kSpeakerLLSpeed);
+            break;
             default:
                 break;
             
@@ -100,17 +193,54 @@ public class Manipulator {
     public void setWantedState(ManipulatorStates state) {
         if(this.wantedState != state) {
             wantedState = state;
-            handleStateTransition();
         }
+        handleStateTransition();
     }
 
-    enum ManipulatorStates {
+    public ManipulatorStates getCurrentState() {
+        return currentState;
+    }
+
+    public boolean intakeLoaded() {
+        return intakeBreak.isBroken();
+    }
+
+    public boolean shooterAtSpeed() {
+        if(getCurrentState() == ManipulatorStates.SPEAKER_LL_SHOOT || getCurrentState() == ManipulatorStates.TRAP_SHOOT || getCurrentState() == ManipulatorStates.SPEAKER_SUB_SHOOT || getCurrentState() == ManipulatorStates.TRAP_SHOOT || getCurrentState() == ManipulatorStates.AMP_SHOOT) {
+            return shooter.atSpeed();
+        }
+        return false;
+    }
+
+    public boolean pivotAtPose() {
+        return pivot.isAtAngle();
+    }
+
+    public boolean isLoaded() {
+        return indexer.isLoaded();
+    }
+
+    public enum PivotPoses {
+        SPEAKER_SUB,
+        SPEAKER_LL,
+        AMP,
+        TRAP,
+        SPEAKER_GOOFY_SHOOT,
+        SHUFFLE,
+        IDLE
+    }
+
+    public enum ManipulatorStates {
         INTAKING,
-        SPEAKER_SHOOT,
-        AIMING,
+        OUTTAKING,
+        SHOOTING,
         IDLE,
         STORED,
+        SPEAKER_SUB_SHOOT,
+        SPEAKER_LL_SHOOT,
         TRAP_SHOOT,
-        AMP_SHOOT
+        AMP_SHOOT,
+        SHUFFLE,
+        SPEAKER_GOOFY_SHOOT
     }
 }
